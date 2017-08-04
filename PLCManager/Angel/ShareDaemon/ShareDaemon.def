@@ -1,0 +1,4 @@
+LIBRARY	"ShareDaemon"
+EXPORTS
+	SetShareDaemon	@1
+	GetShareDaemon	@2

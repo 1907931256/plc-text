@@ -1,0 +1,127 @@
+#pragma once
+
+typedef enum EMSG_ID
+{
+	EMSG_PLAT_REQ_MSG = 1,
+	EMSG_PLAT_RES_MSG,
+	EMSG_PLAT_MSG,
+	EMSG_PROTOCOL_ERROR,
+	EMSG_RTSP_PDU,
+	EMSG_MEDIA_DATA,
+	EMSG_ON_COMPELETE,
+	EMSG_SET_MEDIA_HANDLE,
+
+	EMSG_HEARDBEAT,
+	EMSG_ON_TIMEOUT,
+	EMSG_ON_OPT_TIMEOUT,
+	EMSG_CMS_LOGIN,
+	EMSG_CMS_LOGOUT,
+	EMSG_CMS_SET_STATE,
+	EMSG_DMS_LOGIN,
+	EMSG_ON_DMS_LOGIN,
+	EMSG_DMS_LOGOUT,
+	EMSG_GET_DEV_STATUS,
+	EMSG_CONNECT,
+	EMSG_SEND,
+	EMSG_RECV,
+	EMSG_DISCONNECT,
+	EMSG_ON_CONNECT,
+	EMSG_SEND_DATA_MSG,
+	EMSG_ON_SEND_DATA_MSG,
+	EMSG_MEDIA_GET_URL,
+	EMSG_PTZ_CONTROL,
+	EMSG_SEND_CFL_MSG,
+	
+	EMSG_MEDIA_DEC_OPEN,
+	EMSG_MEDIA_DEC_OPEN_SOUND,
+	EMSG_ON_MEDIA_DEC_OPEN,
+	EMSG_MEDIA_PLAY,
+	EMSG_MEDIA_PAUSE,
+	EMSG_ON_MEDIA_PAUSE,
+	EMSG_MEDIA_STOP,
+	EMSG_ON_MEDIA_STOP,
+	EMSG_MEDIA_CLOSE,
+	EMSG_ON_MEDIA_CLOSE,
+	EMSG_MEDIA_SEEK_TO_TIME,
+	EMSG_MEDIA_SEEK_TO_POS,
+	EMSG_ON_MEDIA_SEEK,
+	EMSG_MEDIA_SET_SPEED,
+	EMSG_ON_MEDIA_SET_SEED,
+	EMSG_MEDIA_SEND_DATA,
+	EMSG_MEDIA_CLEAR_BUF,
+	EMSG_SAVE_FILE,
+	EMSG_STOP_SAVE_FILE,
+	EMSG_CAPTUREPICTURE,
+	EMSG_SET_DEC_PARAM,
+    EMSG_SET_DEC_PARAM2,             
+	EMSG_SET_DEC_SOUND,
+	EMSG_SET_DEC_VOLUME,
+	EMSG_SET_DEC_COLOR,
+	EMSG_SET_DEC_FLUENCY,
+	EMSG_MEDIA_RETRY_PUSH_DATA,
+	EMSG_BUFFER_SATE_CHANNGE,
+	EMSG_ADD_DEV_TO_DMS,
+	EMSG_ON_SELECT_CHANNGE,
+	EMSG_GETFILE,				// 下载文件
+	EMSG_PUTFILE,				// 下载文件
+	EMSG_UPGRADE,				// 升级消息回调
+	EMSG_GET_RECORD_FILE,		// 查询AS300 录像文件
+	EMSG_SET_TIME,				//设置rtsp的开始播放和结束时间.
+    EMSG_LBUTTORN_DblClk,             //鼠标左键双击事件
+
+	EMSG_EVENT_CALL_BACK		= 1000,
+	EMSG_ON_LOGIN				= 1001,		// 登录返回
+	EMSG_ON_MEDIA_PLAY			= 1002,		// 打开视频结果返回
+	EMSG_ON_MEDIA_DISCONNECT	= 1003,		// 媒体异常断开
+	EMSG_ON_SAVE_FILE			= 1004,		// 保存文件：id,结果,0,0,文件名
+	EMSG_ON_CAPTUREPICTURE		= 1005,		// 抓图成功后返回：id,结果,0,0,文件名
+	EMSG_ON_MEDIA_END			= 1006,		// 媒体文件播放结束通知：id,窗口号,结果
+	EMSG_ON_PLAY_POS_BITS		= 1007,		// 本地文件时--暂时不用
+	EMSG_ON_PLAY_TIME_BITS		= 1008,		// 当前解码的时间：id,lView,码率,0,时间
+	EMSG_ON_MEDIA_DOWNLOAD		= 1009,		// 下载文件：id，下载ID，结果
+	EMSG_ON_DOWNLOAD_SIZE		= 1010,		// 本地文件时，回放进度回调：id,lView,已下载量（单位字节）
+	EMSG_ON_DOWNLOAD_COMPELETE	= 1011,		// 文件下载结束
+	EMSG_ON_ALARM				= 1012,		// 告警信息回调：id,通道号,类型,状态,信息； 信息格式：设备ID, 通道号, 级别, 告警时间, 设备类型, 描述
+	EMSG_ON_DEVICE_STATUS		= 1013,		// 设备状态：id,状态值,0,0,设备ID；状态值：1在线，2断线，3挂起，4移除
+	EMSG_ON_DISCONNECT			= 1014,		// 系统异常断线
+	EMSG_ON_SEARCH_DEVS			= 1015,		// 搜索设备结果返回
+	EMSG_ON_RELOGIN				= 1016,		// 系统重新登录成功
+	EMSG_ON_LOGOUT				= 1017,		// 系统登出
+	EMSG_ON_DRAW_WND			= 1018,		// 窗口绘制
+	EMSG_ON_GETFILE				= 1019,		// 下载文件
+	EMSG_ON_UPGRADE				= 1020,		// 升级消息回调
+	EMSG_ON_PUTFILE				= 1021,		// 上传文件
+	EMSG_ON_GET_RECORD_FILE		= 1022,		// 搜索平台或设备的录像或图片文件
+	EMSG_ON_GET_DEVICE_LIST		= 1023,		// 登录平台，返回的设备列表
+    EMSG_ON_OUT_FULL_SCREEN		= 1024,		// 回放退出全屏，需要界面更新录像回放状态信息
+    EMSG_ON_INIT_OK		= 1025,		// 初始化完成
+}EMSG_ID;
+
+typedef enum EERROR
+{
+	ERR_NO_ERROR = 0,
+    ERR_ERROR_EX = -20000,//在消息回调的时候，param1如果是ERR_ERROR_EX,则param2表示具体的前端返回的消息错误代码
+	ERR_ERROR = -10000,
+	ERR_TIMEOUT,			// 超时
+	ERR_NOACTIVE_TIME_OUT,	// 长时间没有效应
+	ERR_NET_CONNECT,		// 网络连接出错
+	ERR_NOT_LOGIN,			// 没有登录
+	ERR_RTSP_SETUP,			// RTSP连接，Setup出错
+	ERR_RTSP_PLAY,			// RTSP连接，Play出错
+	ERR_NO_SUPPORT,			// 不支持
+	ERR_CREATE_FILE_ERROR,	// 创建文件失败
+	ERR_USER_LOGGED,		// 已经登录
+	ERR_IN_TALKING = -9990,			// 设备已经在对讲
+	ERR_NET_ERROR,			// 网络异常
+	ERR_USER_ERROR,			// 用户名密码不匹配
+	ERR_OPEN_FILE,			// 打开文件失败
+	ERR_USER_CANCEL,		// 用户取消
+	ERR_REPEAT_OPT,			// 重复操作，比较正在升级还没有结束，又开始了一次
+    ERR_FILE_LEN_ZERO,	    // 文件为空文件
+}EERROR;
+
+typedef struct SInfoEx
+{
+	int nPlayPort;
+	int nDrawMark;
+}SInfoEx;

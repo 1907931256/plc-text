@@ -1,0 +1,366 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\ConfigSet.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ConfigSet.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIGSET_DIALOG DIALOGEX 0, 0, 599, 342
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "PLC配置文件工具"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_MAINTAB,"SysTabControl32",0x0,0,0,592,335
+END
+
+IDD_DLG_GENERAL DIALOGEX 0, 0, 585, 303
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "基本配置文件基本不变化，暂时不配置",IDC_STATIC,155,130,152,16
+END
+
+IDD_DLG_GROUP DIALOGEX 0, 0, 695, 356
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "添加预案",IDC_BTN_TVWALL_CROUP,636,15,50,14
+    COMBOBOX        IDC_GROUP_NUM,31,17,32,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "组号:",IDC_STATIC,9,19,20,8
+    LTEXT           "TvWall_IP:",IDC_STATIC,73,19,36,8
+    LTEXT           "屏幕分割数:",IDC_STATIC,473,19,44,8
+    COMBOBOX        IDC_TVWALL_SCREEN_NUM,519,17,33,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "TvWall_端口:",IDC_STATIC,215,19,45,8
+    EDITTEXT        IDC_EDITTV_PORT,263,15,46,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_IPADDRESS,"SysIPAddress32",WS_TABSTOP,111,14,100,14
+    CONTROL         "",IDC_LIST_IPC_GROUP,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,52,365,160
+    GROUPBOX        "",IDC_STATIC_WIND,376,51,312,160
+    GROUPBOX        "TvWall分组设置",IDC_STATIC,6,6,681,37
+    LTEXT           "(双击对应IPC设备，即可绑定到选定的屏幕上)",IDC_STATIC,467,33,205,8
+    LTEXT           "TvWall屏幕序号:",IDC_STATIC,314,19,57,8
+    COMBOBOX        IDC_TVWALL_TOTLE_SCREEN,374,17,33,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "模式:",IDC_STATIC,411,19,20,8
+    COMBOBOX        IDC_TVWALL_MODE,435,17,33,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_LIST_IPC_ZOOM,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,8,232,365,115
+    PUSHBUTTON      "添加自动跟随",IDC_BTN_ADD,7,216,73,14
+    PUSHBUTTON      "保存自动跟随",IDC_BTN_SET_ZOOM,388,329,70,14
+    PUSHBUTTON      "删除自动跟随",IDC_BUTTON1,128,216,73,14
+    CONTROL         "",IDC_CHECK_FREECUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,471,238,16,10
+    LTEXT           "20-0-5-1200,20-5-13-3000,20-13-19-4100,20-19-25-5500,20-25-32-6100,30-0-5-1200,\n30-5-13-2800,30-13-19-4600,30-19-25-5100,30-25-32-6300,40-0-5-2300,40-5-13-3200,",IDC_STATIC,388,271,301,33
+    LTEXT           "没有设置的自动跟随设备采用默认值：",IDC_STATIC,388,262,137,8
+    LTEXT           "40-13-19-4200,40-19-25-5000,40-25-32-6300,45-0-5-2400,45-5-13-3100,45-13-19-4600,\n45-19-25-5700,45-25-32-6100",IDC_STATIC,388,287,398,22
+    PUSHBUTTON      "配置",IDC_BUTTON2,633,236,49,14
+    GROUPBOX        "自由切屏",IDC_STATIC,388,228,300,25
+    LTEXT           "此屏幕配置自由切屏:",IDC_STATIC,392,238,76,8
+END
+
+IDD_DLG_IPCGROUPSET DIALOGEX 0, 0, 698, 354
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LIST_IPC,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,19,455,328
+    PUSHBUTTON      "加载文件",IDC_BTN_SELECT,2,0,50,14
+    COMBOBOX        IDC_COMBO_GROUP,475,113,28,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "组:",IDC_STATIC,463,116,12,8
+    PUSHBUTTON      " 添加",IDC_BTN_SET,471,157,34,14
+    LTEXT           "(要加载的xls文件不能被打开, 双击对应IPC可以修改设备码流类型)",IDC_STATIC,349,5,235,8
+    CONTROL         "",IDC_TREE_IPC_GROUP,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,515,19,174,328
+    CONTROL         "",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,114,4,16,10
+    LTEXT           "平台",IDC_STATIC,94,5,17,8
+    PUSHBUTTON      " 移除",IDC_BTN_DEL,471,200,34,14
+END
+
+IDD_DLG_STREAM DIALOGEX 0, 0, 231, 235
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "设备配置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "设置",IDC_BUTTON1,90,206,50,14
+    COMBOBOX        IDC_COMBO1,68,178,48,38,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "stream type",IDC_STATIC,12,180,40,8
+    CTEXT           "device id",IDC_STATIC,12,20,40,8
+    CTEXT           "device name",IDC_STATIC,12,40,40,8
+    CTEXT           "port",IDC_STATIC,12,80,40,8
+    CTEXT           "ip",IDC_STATIC,12,60,40,8
+    CTEXT           "company",IDC_STATIC,12,100,40,8
+    CTEXT           "user",IDC_STATIC,12,120,40,8
+    EDITTEXT        IDC_PASSWORD,67,139,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER,67,116,85,14,ES_AUTOHSCROLL
+    CTEXT           "password",IDC_STATIC,12,140,40,8
+    CTEXT           "device type",IDC_STATIC,12,160,40,8
+    EDITTEXT        IDC_DEVICETYPE,67,156,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DEVICEID,67,14,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT,67,76,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COMPANY,67,98,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DEVICENAME,67,34,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_IP,67,56,85,14,ES_AUTOHSCROLL
+END
+
+IDD_DLG_SCREEN DIALOGEX 0, 0, 316, 183
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_DLG_ZOOM DIALOGEX 0, 0, 419, 111
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "自动跟随配置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,173,82,50,14
+    LTEXT           "设备IP:",IDC_STATIC,7,21,48,8
+    LTEXT           "设备Puid:",IDC_STATIC,119,21,34,8
+    LTEXT           "默认ZOOM值:",IDC_STATIC,236,20,48,8
+    EDITTEXT        IDC_EDIT_IP,34,15,76,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PUID,152,15,75,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DEFULT_ZOOM,284,15,52,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HEIGHT_MAX,200,48,31,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ZOOM_VALUE,310,48,40,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_TVWALL_GROUP_INDEX,53,50,48,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "尺寸Feet值:",IDC_STATIC,10,54,42,8
+    LTEXT           "高度范围值:",IDC_STATIC,108,54,45,8
+    LTEXT           "如(10-20)",IDC_STATIC,234,53,36,8
+    LTEXT           "ZOOM值:",IDC_STATIC,275,54,34,8
+    PUSHBUTTON      "添加",IDC_BTN_ADD,362,48,50,14
+    EDITTEXT        IDC_EDIT_HEIGHT_MIN,154,48,31,14,ES_AUTOHSCROLL
+    LTEXT           "---",IDC_STATIC,188,52,9,8
+    GROUPBOX        "Feet对应关系",IDC_STATIC,7,33,405,40
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "ConfigSet.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "ConfigSet.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CONFIGSET_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 592
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 335
+    END
+
+    IDD_DLG_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 578
+        VERTGUIDE, 102
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 296
+    END
+
+    IDD_DLG_GROUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 688
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 347
+    END
+
+    IDD_DLG_IPCGROUPSET, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 691
+        VERTGUIDE, 540
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 347
+    END
+
+    IDD_DLG_STREAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 224
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 228
+    END
+
+    IDD_DLG_SCREEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_DLG_ZOOM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 412
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "弹出菜单"
+    BEGIN
+        MENUITEM "清除",                          ID_CLEAN
+    END
+END
+
+IDR_MENU2 MENU 
+BEGIN
+    POPUP "菜单"
+    BEGIN
+        MENUITEM "清除",                          ID_32774
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_DEL                 BITMAP                  "res\\del.bmp"
+IDB_ADD                 BITMAP                  "res\\add.bmp"
+IDB_CHECKBOX            BITMAP                  "res\\check.bmp"
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\ConfigSet.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

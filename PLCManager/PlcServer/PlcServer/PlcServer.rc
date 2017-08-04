@@ -1,0 +1,233 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\PlcServer.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\PlcServer.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 PlcServer"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "PlcServer，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2015",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_PLCSERVER_DIALOG DIALOGEX 0, 0, 342, 201
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SiemensPLC模拟服务器"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "开启SiemensPLC服务",IDC_BUTTON1,8,9,75,16
+    LTEXT           "数据接收窗口:",IDC_STATIC,7,88,44,8
+    LISTBOX         IDC_LIST1,7,99,328,99,LBS_SORT | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LTEXT           "服务未开启",IDC_PROMT,103,13,61,8
+    LTEXT           "DB数据块:",IDC_PROMT2,10,47,36,8
+    COMBOBOX        IDC_COMBO_DB,47,43,32,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "字节序号:",IDC_PROMT3,95,47,36,8
+    EDITTEXT        IDC_EDIT_BYTE,134,41,40,14,ES_AUTOHSCROLL
+    LTEXT           "修改值:",IDC_PROMT4,187,45,25,8
+    EDITTEXT        IDC_EDIT_VALUE,219,39,40,14,ES_AUTOHSCROLL
+    GROUPBOX        "静态",IDC_STATIC,7,28,328,55
+    PUSHBUTTON      "获取对应字段信息",IDC_BTN_GETINFO,10,62,65,14
+    PUSHBUTTON      "设置对应字段信息",IDC_BTN_SETINFO,92,62,70,14
+    LTEXT           "7",IDC_STATIC_BIT7,219,56,8,8
+    LTEXT           "按位:",IDC_PROMT5,193,65,18,8
+    CONTROL         "",IDC_BIT7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,217,66,9,10
+    CONTROL         "",IDC_BIT6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,232,66,9,10
+    CONTROL         "",IDC_BIT5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,247,66,9,10
+    CONTROL         "",IDC_BIT4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,262,66,9,10
+    CONTROL         "",IDC_BIT3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,277,66,9,10
+    CONTROL         "",IDC_BIT2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,292,66,9,10
+    CONTROL         "",IDC_BIT1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,307,66,9,10
+    CONTROL         "",IDC_BIT0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,322,66,9,10
+    LTEXT           "6",IDC_STATIC_BIT8,233,56,8,8
+    LTEXT           "5",IDC_STATIC_BIT9,249,56,8,8
+    LTEXT           "4",IDC_STATIC_BIT10,264,56,8,8
+    LTEXT           "3",IDC_STATIC_BIT11,279,56,8,8
+    LTEXT           "2",IDC_STATIC_BIT12,293,56,8,8
+    LTEXT           "1",IDC_STATIC_BIT13,307,56,8,8
+    LTEXT           "0",IDC_STATIC_BIT14,323,56,8,8
+    PUSHBUTTON      "开始切屏",IDC_BTN_BEGIN,255,9,32,14
+    PUSHBUTTON      "取消切屏",IDC_BTN_CANCEL,301,9,33,14
+    LTEXT           "时间(秒):",IDC_STATIC,182,12,30,8
+    EDITTEXT        IDC_EDIT_TIME,213,9,31,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "PlcServer.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "PlcServer.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_PLCSERVER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 335
+        TOPMARGIN, 9
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 PlcServer(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\PlcServer.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,333 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\PlcText.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\PlcText.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 PlcText"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
+    LTEXT           "PlcText，1.0 版",IDC_STATIC_VERSION,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2015",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_PLCTEXT_DIALOG DIALOGEX 0, 0, 681, 346
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "MAGO Control System"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_PORT,621,332,48,15,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    CONTROL         "",IDC_IPADDRESS1,"SysIPAddress32",NOT WS_VISIBLE | WS_TABSTOP,575,332,94,15
+    PUSHBUTTON      "连接PLC",IDC_BUTTON1,299,59,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "断开连接",IDC_BTN_DIS,351,59,50,14,NOT WS_VISIBLE
+    LISTBOX         IDC_LIST_LOG,179,25,488,320,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LTEXT           "组号:",IDC_STATIC_GROUP_NUM,66,10,24,8
+    EDITTEXT        IDC_EDIT_GROUPNUM,84,7,25,15,ES_AUTOHSCROLL
+    LTEXT           "屏幕号:",IDC_STATIC_SCREEN_NUM,115,10,28,8
+    EDITTEXT        IDC_EDIT_SCREENNUM,140,7,25,15,ES_AUTOHSCROLL
+    LTEXT           "模式:",IDC_STATIC_MODE_NUM,170,10,19,8
+    EDITTEXT        IDC_EDIT_MODENUM,189,7,25,15,ES_AUTOHSCROLL
+    LTEXT           "切换:",IDC_STATIC_SWITCH_NUM,221,10,21,8
+    EDITTEXT        IDC_EDIT_SWITCHNUM,242,7,25,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "测试",IDC_BTN_TEST,274,8,43,14
+    PUSHBUTTON      "清理日志",IDC_BTN_CLEAN_LOG,327,8,41,14
+    GROUPBOX        "测试",IDC_STATIC_TEST,62,1,262,23
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,4,25,173,320
+    CONTROL         "添加开机启动",IDC_CHECK_RUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,372,10,57,10
+    PUSHBUTTON      "软件设置",IDC_BTN_SET,4,4,53,15
+    CONTROL         "暂停滚动",IDC_CHECK_LISTSTOP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,427,10,37,10
+    EDITTEXT        IDC_EDIT_FILTER,465,8,111,14,ES_AUTOHSCROLL
+    CONTROL         "字符过滤",IDC_CHECK_FILTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,580,10,53,10
+    LISTBOX         IDC_LIST_LOG_FILTER,179,25,488,320,LBS_SORT | LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "原始数据",IDC_BUTTON_DATAVIEWER,635,8,39,14,NOT WS_VISIBLE
+END
+
+IDD_DIALOG1 DIALOGEX 0, 0, 227, 249
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "设置"
+FONT 9, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "语言",IDC_STATIC_LANGUAGE,5,7,44,8
+    COMBOBOX        IDC_COMBO_LANGUAGE,52,5,75,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "定时重启",IDC_STATIC_RESTART,3,19,203,31
+    CONTROL         "启用定时重启",IDC_CHECK_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,32,58,9
+    LTEXT           "重启时间:",IDC_STATIC_RESTARTTIME,84,33,48,11
+    EDITTEXT        IDC_EDIT_TIME,134,31,66,13,ES_AUTOHSCROLL | WS_DISABLED
+    GROUPBOX        "日志管理",IDC_STATIC_LOG,3,50,203,74
+    LTEXT           "自动清除",IDC_STATIC_AUTOCLEAR,12,66,49,9
+    COMBOBOX        IDC_COMBO_CLEAR,67,65,92,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "日志类型",IDC_STATIC_LOGTYPE,72,82,57,8,NOT WS_GROUP
+    CONTROL         "PTZ",IDC_CHECK_PTZ,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,95,24,9
+    CONTROL         "ZOOM",IDC_CHECK_ZOOM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,87,95,31,9
+    CONTROL         "TVWALL",IDC_CHECK_TVWALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,108,36,9
+    CONTROL         "整组切换",IDC_CHECK_SWITCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,87,108,111,9
+    GROUPBOX        "看门狗",IDC_STATIC_WATCHDOG,3,126,203,50
+    CONTROL         "启用看门狗",IDC_CHECK_ENABLEWATCHDOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,140,85,9
+    LTEXT           "PLC心跳超时:",IDC_STATIC_PLCHEARTTIMEOUT,13,156,86,11
+    EDITTEXT        IDC_EDIT_PLCTIMEOUT,102,155,61,13,ES_AUTOHSCROLL | WS_DISABLED
+    DEFPUSHBUTTON   "确定",IDOK,124,221,48,16
+    PUSHBUTTON      "取消",IDCANCEL,178,221,48,16
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,18,86,53,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,100,86,53,1
+    PUSHBUTTON      "配置刷新",IDC_BUTTON_GROUP_REFRESH,14,182,43,14
+    PUSHBUTTON      "查看数据",IDC_BUTTON_DATAVIEWER_M,72,183,40,14
+END
+
+IDD_DIALOG_DATAVIEW DIALOGEX 0, 0, 251, 126
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "数据查看"
+FONT 9, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    CONTROL         "启用",IDC_CHECK_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,106,9,30,8
+    EDITTEXT        IDC_EDIT_OFFSET,33,24,63,14,ES_AUTOHSCROLL
+    CONTROL         "BYTE",IDC_RADIO_BYTE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,105,25,33,10
+    CONTROL         "WORD",IDC_RADIO_WORD,"Button",BS_AUTORADIOBUTTON,139,25,37,10
+    CONTROL         "DWORD",IDC_RADIO_DWORD,"Button",BS_AUTORADIOBUTTON,176,25,41,10
+    CONTROL         "BIT",IDC_CHECK_BYTEBIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,219,25,27,10
+    EDITTEXT        IDC_EDIT_DATA,33,43,211,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "地址:",IDC_STATIC,5,26,17,8
+    LTEXT           "块号:",IDC_STATIC,5,6,17,8
+    LTEXT           "内容:",IDC_STATIC,5,45,17,8
+    COMBOBOX        IDC_COMBO_BLOCKID,33,7,63,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "1",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,34,60,16,10
+    CONTROL         "1",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,58,60,16,10
+    CONTROL         "1",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,82,60,16,10
+    CONTROL         "1",IDC_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,106,60,16,10
+    CONTROL         "1",IDC_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,60,16,10
+    CONTROL         "1",IDC_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,154,60,16,10
+    CONTROL         "1",IDC_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,178,60,16,10
+    CONTROL         "1",IDC_CHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,202,60,16,10
+END
+
+IDD_DIALOG_DATA DIALOGEX 0, 0, 429, 245
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "DATA_VIEWER"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LIST_SHOW,"SysListView32",LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,2,7,278,230
+    LTEXT           "DB: ",IDC_STATIC,318,20,22,12
+    COMBOBOX        IDC_COMBO_DB,349,17,53,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Addr Start：",IDC_STATIC_START,299,55,42,8
+    LTEXT           "Addr End：",IDC_STATIC_END,299,83,38,8
+    LTEXT           "Type：",IDC_STATIC_TYPE,302,109,25,8
+    COMBOBOX        IDC_COMBO_TYPE,349,105,53,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_START,349,50,53,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_END,349,83,53,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "CLEAR",IDC_BUTTON_CLEAR,301,141,50,14
+    PUSHBUTTON      "ADD",IDC_BUTTON_ADD,365,140,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "Shanghai Mago"
+            VALUE "FileDescription", "PLC Server"
+            VALUE "FileVersion", "1.1.0.0"
+            VALUE "InternalName", "PlcText.exe"
+            VALUE "LegalCopyright", "Shanghai Mago"
+            VALUE "OriginalFilename", "PlcText.exe"
+            VALUE "ProductName", "Shanghai Mago PLC Server"
+            VALUE "ProductVersion", "1.0.1.2"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_PLCTEXT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 674
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 339
+        HORZGUIDE, 68
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 226
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+        HORZGUIDE, 18
+    END
+
+    IDD_DIALOG_DATAVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_DIALOG_DATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 422
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_HTML_DATAVIEWER     HTML                    "DataViewer.htm"
+IDR_HTML_DATAVIEWER1    HTML                    "res\\html_dat.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 PlcText(&A)..."
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\PlcText.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
