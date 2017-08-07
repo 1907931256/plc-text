@@ -85,6 +85,7 @@ public:
 	Logger *m_plog;
 	std::string m_sJjhServerIp;
 	int m_iJjhServerPort;
+	int m_lastValueEIO;
 private:
 	AX_Mutex m_Lock;
 	int m_iCurAlarmState;

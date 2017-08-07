@@ -131,6 +131,7 @@
 				AdditionalDependencies="ax_api_2008.lib TPLayer_2008.lib comsuppwd.lib"
 				OutputFile="..\..\PlcText\Release\$(ProjectName).dll"
 				AdditionalLibraryDirectories="..\lib"
+				UACExecutionLevel="2"
 				IgnoreEmbeddedIDL="true"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -169,10 +170,6 @@
 			>
 			<File
 				RelativePath=".\AxisJoyType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GetAxisJoyStickCom.h"
 				>
 			</File>
 		</Filter>
@@ -246,6 +243,10 @@
 				>
 				<File
 					RelativePath=".\Dump.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GetAxisJoyStickCom.h"
 					>
 				</File>
 				<File

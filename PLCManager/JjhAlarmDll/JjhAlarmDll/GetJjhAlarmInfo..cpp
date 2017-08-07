@@ -39,6 +39,7 @@ GetJjhAlarmInfo::GetJjhAlarmInfo()
 	m_bGetInfo = false;
 	m_nRefresh = 50;
 	m_iCurAlarmState = 0;
+	m_lastValueEIO = 0;
 	m_pGetAlarmClient = new GetJjhAlarmClient(this);
 }
 GetJjhAlarmInfo::~GetJjhAlarmInfo()
@@ -54,7 +55,7 @@ GetJjhAlarmInfo::~GetJjhAlarmInfo()
 
 void GetJjhAlarmInfo::InitData()
 {
-	CIniFile iniFile(GetCurrentPath() + "\\Config\\DataInit.ini");
+	CIniFile iniFile(GetCurrentPath() + "\\Config\\General.ini");
 
 	m_MapJjhScreen.empty();
 	std::vector<std::string> JjhScreenAddArray;
@@ -93,6 +94,16 @@ void GetJjhAlarmInfo::InitData()
 	iniFile.ReadInt("ADDR", "ServerKeyId", m_iKeyId);
 	iniFile.ReadInt("LOGLEVEl", "level", m_iLogLevel);
 
+	int eioType =0;
+	iniFile.ReadInt("JJHADDR","DeviceType",eioType);
+	if(eioType==8)
+	{
+		RequestBuf[11]= 0x08;
+	}
+	else if(eioType==4)
+	{
+		RequestBuf[11]=0x01;
+	}
 	//iniFile.ReadString("ADDR", "TvWallPromat", m_TvWallPromat);
 	m_pGetAlarmClient->SetIP(m_sJjhServerIp.c_str(), m_iJjhServerPort);
 
@@ -191,11 +202,13 @@ void GetJjhAlarmInfo::ParseRevData(const char *pData, int iLen)
 	if (iLen == RESPONSE_LEN) //不是获取的input1,2,3,4端子的数据不处理
 	{
 		int iValue = pData[RESPONSE_LEN - 1] & 0xff;//(0-15代表不同的状态)
-
-		char szlog[MAX_STR_LEN] = {0};
-		sprintf_s(szlog, MAX_STR_LEN, "EIO read  value:%d",iValue);
-		Showlog2Dlg(szlog,CONNECT_PLC_SUC);
-
+		if(iValue!=m_lastValueEIO)
+		{
+			char szlog[MAX_STR_LEN] = {0};
+			sprintf_s(szlog, MAX_STR_LEN, "EIO read  value:%d",iValue);
+			Showlog2Dlg(szlog,CONNECT_PLC_SUC);
+			m_lastValueEIO = iValue;
+		}
 		MapJjhScreen::iterator ite = m_MapJjhScreen.find(iValue);
 		if (ite != m_MapJjhScreen.end() && iValue != m_iCurAlarmState)
 		{

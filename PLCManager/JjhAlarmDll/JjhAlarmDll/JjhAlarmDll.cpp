@@ -18,11 +18,11 @@ VIXHZ_EXPORT void InitSdk(CallbackFuncRealData CallBackFun, CallbackFuncLog Call
 		GetJjhAlarmInfo::Instantialize()->StartGetJjhInfo(); //开启50ms读取plc_server数据的线程
 	}
 
-	JoystickManager::Instantialize()->m_dwDataUser = dwDataUser;
-	JoystickManager::Instantialize()->m_CallLoginfo = CallBackLogFun;
-	JoystickManager::Instantialize()->m_InfoCallFun = CallBackFun;
-	JoystickManager::Instantialize()->InitData();
-	JoystickManager::Instantialize()->StartJoyStickThread(); //获取安讯士摇杆信息
+	//JoystickManager::Instantialize()->m_dwDataUser = dwDataUser;
+	//JoystickManager::Instantialize()->m_CallLoginfo = CallBackLogFun;
+	//JoystickManager::Instantialize()->m_InfoCallFun = CallBackFun;
+	//JoystickManager::Instantialize()->InitData();
+	//JoystickManager::Instantialize()->StartJoyStickThread(); //获取安讯士摇杆信息
 	//JoystickManager::Instantialize()->Run();
 
 }
