@@ -115,7 +115,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\WinHttp;..\..\curl;..\;.;..\..\json;..\..\AX_API;..\..\ModBus;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;..\..\httpClient;..\..\httpClient\socket;..\..\httpClient\string;..\..\httpClient\http"
+				AdditionalIncludeDirectories="..\..\WinHttp;..\..\curl;..\;.;..\..\json;..\..\AX_API;..\..\ModBus;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;..\..\httpClient;..\..\httpClient\socket;..\..\httpClient\string;..\..\httpClient\http;..\..\OPCClient"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;BCCWIN;PLCHZ;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -247,6 +247,10 @@
 			</File>
 			<File
 				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
 				>
 			</File>
 		</Filter>
@@ -419,6 +423,78 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="opcClient"
+			>
+			<File
+				RelativePath="..\..\OPCClient\ConnectionPoint.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\ConnectionPoint.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\IAdvsink.CPP"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\IAdvsink.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCCOMN.H"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCCOMN.IDL"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\Opccomn_i.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCDA.H"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCDA.IDL"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\opcda_cats.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCDA_I.C"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\opcenum_clsid.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OpcError.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCProps.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\opcserver.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\OPCServer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\OPCClient\opcwrap.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

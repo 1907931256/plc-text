@@ -1,36 +1,16 @@
-
-
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
 
- /* File created by MIDL compiler version 6.00.0361 */
-/* at Thu Dec 02 08:28:02 2004
+/* File created by MIDL compiler version 3.01.75 */
+/* at Thu Oct 01 14:19:30 1998
  */
-/* Compiler settings for .\opccomn.idl:
-    Oicf, W1, Zp8, env=Win32 (32b run)
-    protocol : dce , ms_ext, c_ext
-    error checks: allocation ref bounds_check enum stub_data 
-    VC __declspec() decoration level: 
-         __declspec(uuid()), __declspec(selectany), __declspec(novtable)
-         DECLSPEC_UUID(), MIDL_INTERFACE()
+/* Compiler settings for opccomn.idl:
+    Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
+    error checks: none
 */
 //@@MIDL_FILE_HEADING(  )
-
-#pragma warning( disable: 4049 )  /* more than 64k source lines */
-
-
-/* verify that the <rpcndr.h> version is high enough to compile this file*/
-#ifndef __REQUIRED_RPCNDR_H_VERSION__
-#define __REQUIRED_RPCNDR_H_VERSION__ 440
-#endif
-
 #include "rpc.h"
 #include "rpcndr.h"
-
-#ifndef __RPCNDR_H_VERSION__
-#error this stub requires an updated version of <rpcndr.h>
-#endif // __RPCNDR_H_VERSION__
-
 #ifndef COM_NO_WINDOWS_H
 #include "windows.h"
 #include "ole2.h"
@@ -39,9 +19,9 @@
 #ifndef __opccomn_h__
 #define __opccomn_h__
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
-#pragma once
-#endif
+#ifdef __cplusplus
+extern "C"{
+#endif 
 
 /* Forward Declarations */ 
 
@@ -63,18 +43,6 @@ typedef interface IOPCServerList IOPCServerList;
 #endif 	/* __IOPCServerList_FWD_DEFINED__ */
 
 
-#ifndef __IOPCEnumGUID_FWD_DEFINED__
-#define __IOPCEnumGUID_FWD_DEFINED__
-typedef interface IOPCEnumGUID IOPCEnumGUID;
-#endif 	/* __IOPCEnumGUID_FWD_DEFINED__ */
-
-
-#ifndef __IOPCServerList2_FWD_DEFINED__
-#define __IOPCServerList2_FWD_DEFINED__
-typedef interface IOPCServerList2 IOPCServerList2;
-#endif 	/* __IOPCServerList2_FWD_DEFINED__ */
-
-
 #ifndef __IOPCCommon_FWD_DEFINED__
 #define __IOPCCommon_FWD_DEFINED__
 typedef interface IOPCCommon IOPCCommon;
@@ -93,42 +61,30 @@ typedef interface IOPCServerList IOPCServerList;
 #endif 	/* __IOPCServerList_FWD_DEFINED__ */
 
 
-#ifndef __IOPCServerList2_FWD_DEFINED__
-#define __IOPCServerList2_FWD_DEFINED__
-typedef interface IOPCServerList2 IOPCServerList2;
-#endif 	/* __IOPCServerList2_FWD_DEFINED__ */
-
-
-#ifndef __IOPCEnumGUID_FWD_DEFINED__
-#define __IOPCEnumGUID_FWD_DEFINED__
-typedef interface IOPCEnumGUID IOPCEnumGUID;
-#endif 	/* __IOPCEnumGUID_FWD_DEFINED__ */
-
-
 /* header files for imported files */
+#include "unknwn.h"
 #include "comcat.h"
-#include "oaidl.h"
-#include "ocidl.h"
 
-#ifdef __cplusplus
-extern "C"{
-#endif 
-
-void * __RPC_USER MIDL_user_allocate(size_t);
-void __RPC_USER MIDL_user_free( void * ); 
+void __RPC_FAR * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free( void __RPC_FAR * ); 
 
 #ifndef __IOPCShutdown_INTERFACE_DEFINED__
 #define __IOPCShutdown_INTERFACE_DEFINED__
 
-/* interface IOPCShutdown */
+/****************************************
+ * Generated header for interface: IOPCShutdown
+ * at Thu Oct 01 14:19:30 1998
+ * using MIDL 3.01.75
+ ****************************************/
 /* [unique][uuid][object] */ 
+
 
 
 EXTERN_C const IID IID_IOPCShutdown;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
-    MIDL_INTERFACE("F31DFDE1-07B6-11d2-B2D8-0060083BA1FB")
+    interface DECLSPEC_UUID("F31DFDE1-07B6-11d2-B2D8-0060083BA1FB")
     IOPCShutdown : public IUnknown
     {
     public:
@@ -143,19 +99,19 @@ EXTERN_C const IID IID_IOPCShutdown;
     {
         BEGIN_INTERFACE
         
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IOPCShutdown * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *QueryInterface )( 
+            IOPCShutdown __RPC_FAR * This,
             /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+            /* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
         
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IOPCShutdown * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *AddRef )( 
+            IOPCShutdown __RPC_FAR * This);
         
-        ULONG ( STDMETHODCALLTYPE *Release )( 
-            IOPCShutdown * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *Release )( 
+            IOPCShutdown __RPC_FAR * This);
         
-        HRESULT ( STDMETHODCALLTYPE *ShutdownRequest )( 
-            IOPCShutdown * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *ShutdownRequest )( 
+            IOPCShutdown __RPC_FAR * This,
             /* [string][in] */ LPCWSTR szReason);
         
         END_INTERFACE
@@ -163,7 +119,7 @@ EXTERN_C const IID IID_IOPCShutdown;
 
     interface IOPCShutdown
     {
-        CONST_VTBL struct IOPCShutdownVtbl *lpVtbl;
+        CONST_VTBL struct IOPCShutdownVtbl __RPC_FAR *lpVtbl;
     };
 
     
@@ -192,7 +148,7 @@ EXTERN_C const IID IID_IOPCShutdown;
 
 
 HRESULT STDMETHODCALLTYPE IOPCShutdown_ShutdownRequest_Proxy( 
-    IOPCShutdown * This,
+    IOPCShutdown __RPC_FAR * This,
     /* [string][in] */ LPCWSTR szReason);
 
 
@@ -210,15 +166,20 @@ void __RPC_STUB IOPCShutdown_ShutdownRequest_Stub(
 #ifndef __IOPCCommon_INTERFACE_DEFINED__
 #define __IOPCCommon_INTERFACE_DEFINED__
 
-/* interface IOPCCommon */
+/****************************************
+ * Generated header for interface: IOPCCommon
+ * at Thu Oct 01 14:19:30 1998
+ * using MIDL 3.01.75
+ ****************************************/
 /* [unique][uuid][object] */ 
+
 
 
 EXTERN_C const IID IID_IOPCCommon;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
-    MIDL_INTERFACE("F31DFDE2-07B6-11d2-B2D8-0060083BA1FB")
+    interface DECLSPEC_UUID("F31DFDE2-07B6-11d2-B2D8-0060083BA1FB")
     IOPCCommon : public IUnknown
     {
     public:
@@ -226,15 +187,15 @@ EXTERN_C const IID IID_IOPCCommon;
             /* [in] */ LCID dwLcid) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE GetLocaleID( 
-            /* [out] */ LCID *pdwLcid) = 0;
+            /* [out] */ LCID __RPC_FAR *pdwLcid) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE QueryAvailableLocaleIDs( 
-            /* [out] */ DWORD *pdwCount,
-            /* [size_is][size_is][out] */ LCID **pdwLcid) = 0;
+            /* [out] */ DWORD __RPC_FAR *pdwCount,
+            /* [size_is][size_is][out] */ LCID __RPC_FAR *__RPC_FAR *pdwLcid) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE GetErrorString( 
             /* [in] */ HRESULT dwError,
-            /* [string][out] */ LPWSTR *ppString) = 0;
+            /* [string][out] */ LPWSTR __RPC_FAR *ppString) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE SetClientName( 
             /* [string][in] */ LPCWSTR szName) = 0;
@@ -247,37 +208,37 @@ EXTERN_C const IID IID_IOPCCommon;
     {
         BEGIN_INTERFACE
         
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IOPCCommon * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *QueryInterface )( 
+            IOPCCommon __RPC_FAR * This,
             /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+            /* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
         
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IOPCCommon * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *AddRef )( 
+            IOPCCommon __RPC_FAR * This);
         
-        ULONG ( STDMETHODCALLTYPE *Release )( 
-            IOPCCommon * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *Release )( 
+            IOPCCommon __RPC_FAR * This);
         
-        HRESULT ( STDMETHODCALLTYPE *SetLocaleID )( 
-            IOPCCommon * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *SetLocaleID )( 
+            IOPCCommon __RPC_FAR * This,
             /* [in] */ LCID dwLcid);
         
-        HRESULT ( STDMETHODCALLTYPE *GetLocaleID )( 
-            IOPCCommon * This,
-            /* [out] */ LCID *pdwLcid);
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetLocaleID )( 
+            IOPCCommon __RPC_FAR * This,
+            /* [out] */ LCID __RPC_FAR *pdwLcid);
         
-        HRESULT ( STDMETHODCALLTYPE *QueryAvailableLocaleIDs )( 
-            IOPCCommon * This,
-            /* [out] */ DWORD *pdwCount,
-            /* [size_is][size_is][out] */ LCID **pdwLcid);
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *QueryAvailableLocaleIDs )( 
+            IOPCCommon __RPC_FAR * This,
+            /* [out] */ DWORD __RPC_FAR *pdwCount,
+            /* [size_is][size_is][out] */ LCID __RPC_FAR *__RPC_FAR *pdwLcid);
         
-        HRESULT ( STDMETHODCALLTYPE *GetErrorString )( 
-            IOPCCommon * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetErrorString )( 
+            IOPCCommon __RPC_FAR * This,
             /* [in] */ HRESULT dwError,
-            /* [string][out] */ LPWSTR *ppString);
+            /* [string][out] */ LPWSTR __RPC_FAR *ppString);
         
-        HRESULT ( STDMETHODCALLTYPE *SetClientName )( 
-            IOPCCommon * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *SetClientName )( 
+            IOPCCommon __RPC_FAR * This,
             /* [string][in] */ LPCWSTR szName);
         
         END_INTERFACE
@@ -285,7 +246,7 @@ EXTERN_C const IID IID_IOPCCommon;
 
     interface IOPCCommon
     {
-        CONST_VTBL struct IOPCCommonVtbl *lpVtbl;
+        CONST_VTBL struct IOPCCommonVtbl __RPC_FAR *lpVtbl;
     };
 
     
@@ -326,7 +287,7 @@ EXTERN_C const IID IID_IOPCCommon;
 
 
 HRESULT STDMETHODCALLTYPE IOPCCommon_SetLocaleID_Proxy( 
-    IOPCCommon * This,
+    IOPCCommon __RPC_FAR * This,
     /* [in] */ LCID dwLcid);
 
 
@@ -338,8 +299,8 @@ void __RPC_STUB IOPCCommon_SetLocaleID_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCCommon_GetLocaleID_Proxy( 
-    IOPCCommon * This,
-    /* [out] */ LCID *pdwLcid);
+    IOPCCommon __RPC_FAR * This,
+    /* [out] */ LCID __RPC_FAR *pdwLcid);
 
 
 void __RPC_STUB IOPCCommon_GetLocaleID_Stub(
@@ -350,9 +311,9 @@ void __RPC_STUB IOPCCommon_GetLocaleID_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCCommon_QueryAvailableLocaleIDs_Proxy( 
-    IOPCCommon * This,
-    /* [out] */ DWORD *pdwCount,
-    /* [size_is][size_is][out] */ LCID **pdwLcid);
+    IOPCCommon __RPC_FAR * This,
+    /* [out] */ DWORD __RPC_FAR *pdwCount,
+    /* [size_is][size_is][out] */ LCID __RPC_FAR *__RPC_FAR *pdwLcid);
 
 
 void __RPC_STUB IOPCCommon_QueryAvailableLocaleIDs_Stub(
@@ -363,9 +324,9 @@ void __RPC_STUB IOPCCommon_QueryAvailableLocaleIDs_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCCommon_GetErrorString_Proxy( 
-    IOPCCommon * This,
+    IOPCCommon __RPC_FAR * This,
     /* [in] */ HRESULT dwError,
-    /* [string][out] */ LPWSTR *ppString);
+    /* [string][out] */ LPWSTR __RPC_FAR *ppString);
 
 
 void __RPC_STUB IOPCCommon_GetErrorString_Stub(
@@ -376,7 +337,7 @@ void __RPC_STUB IOPCCommon_GetErrorString_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCCommon_SetClientName_Proxy( 
-    IOPCCommon * This,
+    IOPCCommon __RPC_FAR * This,
     /* [string][in] */ LPCWSTR szName);
 
 
@@ -394,29 +355,34 @@ void __RPC_STUB IOPCCommon_SetClientName_Stub(
 #ifndef __IOPCServerList_INTERFACE_DEFINED__
 #define __IOPCServerList_INTERFACE_DEFINED__
 
-/* interface IOPCServerList */
+/****************************************
+ * Generated header for interface: IOPCServerList
+ * at Thu Oct 01 14:19:30 1998
+ * using MIDL 3.01.75
+ ****************************************/
 /* [unique][uuid][object] */ 
+
 
 
 EXTERN_C const IID IID_IOPCServerList;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
-    MIDL_INTERFACE("13486D50-4821-11D2-A494-3CB306C10000")
+    interface DECLSPEC_UUID("13486D50-4821-11D2-A494-3CB306C10000")
     IOPCServerList : public IUnknown
     {
     public:
         virtual HRESULT STDMETHODCALLTYPE EnumClassesOfCategories( 
             /* [in] */ ULONG cImplemented,
-            /* [size_is][in] */ CATID rgcatidImpl[  ],
+            /* [size_is][in] */ CATID __RPC_FAR rgcatidImpl[  ],
             /* [in] */ ULONG cRequired,
-            /* [size_is][in] */ CATID rgcatidReq[  ],
-            /* [out] */ IEnumGUID **ppenumClsid) = 0;
+            /* [size_is][in] */ CATID __RPC_FAR rgcatidReq[  ],
+            /* [out] */ IEnumGUID __RPC_FAR *__RPC_FAR *ppenumClsid) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE GetClassDetails( 
             /* [in] */ REFCLSID clsid,
-            /* [out] */ LPOLESTR *ppszProgID,
-            /* [out] */ LPOLESTR *ppszUserType) = 0;
+            /* [out] */ LPOLESTR __RPC_FAR *ppszProgID,
+            /* [out] */ LPOLESTR __RPC_FAR *ppszUserType) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE CLSIDFromProgID( 
             /* [in] */ LPCOLESTR szProgId,
@@ -430,33 +396,33 @@ EXTERN_C const IID IID_IOPCServerList;
     {
         BEGIN_INTERFACE
         
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IOPCServerList * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *QueryInterface )( 
+            IOPCServerList __RPC_FAR * This,
             /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+            /* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
         
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IOPCServerList * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *AddRef )( 
+            IOPCServerList __RPC_FAR * This);
         
-        ULONG ( STDMETHODCALLTYPE *Release )( 
-            IOPCServerList * This);
+        ULONG ( STDMETHODCALLTYPE __RPC_FAR *Release )( 
+            IOPCServerList __RPC_FAR * This);
         
-        HRESULT ( STDMETHODCALLTYPE *EnumClassesOfCategories )( 
-            IOPCServerList * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *EnumClassesOfCategories )( 
+            IOPCServerList __RPC_FAR * This,
             /* [in] */ ULONG cImplemented,
-            /* [size_is][in] */ CATID rgcatidImpl[  ],
+            /* [size_is][in] */ CATID __RPC_FAR rgcatidImpl[  ],
             /* [in] */ ULONG cRequired,
-            /* [size_is][in] */ CATID rgcatidReq[  ],
-            /* [out] */ IEnumGUID **ppenumClsid);
+            /* [size_is][in] */ CATID __RPC_FAR rgcatidReq[  ],
+            /* [out] */ IEnumGUID __RPC_FAR *__RPC_FAR *ppenumClsid);
         
-        HRESULT ( STDMETHODCALLTYPE *GetClassDetails )( 
-            IOPCServerList * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetClassDetails )( 
+            IOPCServerList __RPC_FAR * This,
             /* [in] */ REFCLSID clsid,
-            /* [out] */ LPOLESTR *ppszProgID,
-            /* [out] */ LPOLESTR *ppszUserType);
+            /* [out] */ LPOLESTR __RPC_FAR *ppszProgID,
+            /* [out] */ LPOLESTR __RPC_FAR *ppszUserType);
         
-        HRESULT ( STDMETHODCALLTYPE *CLSIDFromProgID )( 
-            IOPCServerList * This,
+        HRESULT ( STDMETHODCALLTYPE __RPC_FAR *CLSIDFromProgID )( 
+            IOPCServerList __RPC_FAR * This,
             /* [in] */ LPCOLESTR szProgId,
             /* [out] */ LPCLSID clsid);
         
@@ -465,7 +431,7 @@ EXTERN_C const IID IID_IOPCServerList;
 
     interface IOPCServerList
     {
-        CONST_VTBL struct IOPCServerListVtbl *lpVtbl;
+        CONST_VTBL struct IOPCServerListVtbl __RPC_FAR *lpVtbl;
     };
 
     
@@ -500,12 +466,12 @@ EXTERN_C const IID IID_IOPCServerList;
 
 
 HRESULT STDMETHODCALLTYPE IOPCServerList_EnumClassesOfCategories_Proxy( 
-    IOPCServerList * This,
+    IOPCServerList __RPC_FAR * This,
     /* [in] */ ULONG cImplemented,
-    /* [size_is][in] */ CATID rgcatidImpl[  ],
+    /* [size_is][in] */ CATID __RPC_FAR rgcatidImpl[  ],
     /* [in] */ ULONG cRequired,
-    /* [size_is][in] */ CATID rgcatidReq[  ],
-    /* [out] */ IEnumGUID **ppenumClsid);
+    /* [size_is][in] */ CATID __RPC_FAR rgcatidReq[  ],
+    /* [out] */ IEnumGUID __RPC_FAR *__RPC_FAR *ppenumClsid);
 
 
 void __RPC_STUB IOPCServerList_EnumClassesOfCategories_Stub(
@@ -516,10 +482,10 @@ void __RPC_STUB IOPCServerList_EnumClassesOfCategories_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCServerList_GetClassDetails_Proxy( 
-    IOPCServerList * This,
+    IOPCServerList __RPC_FAR * This,
     /* [in] */ REFCLSID clsid,
-    /* [out] */ LPOLESTR *ppszProgID,
-    /* [out] */ LPOLESTR *ppszUserType);
+    /* [out] */ LPOLESTR __RPC_FAR *ppszProgID,
+    /* [out] */ LPOLESTR __RPC_FAR *ppszUserType);
 
 
 void __RPC_STUB IOPCServerList_GetClassDetails_Stub(
@@ -530,7 +496,7 @@ void __RPC_STUB IOPCServerList_GetClassDetails_Stub(
 
 
 HRESULT STDMETHODCALLTYPE IOPCServerList_CLSIDFromProgID_Proxy( 
-    IOPCServerList * This,
+    IOPCServerList __RPC_FAR * This,
     /* [in] */ LPCOLESTR szProgId,
     /* [out] */ LPCLSID clsid);
 
@@ -546,337 +512,16 @@ void __RPC_STUB IOPCServerList_CLSIDFromProgID_Stub(
 #endif 	/* __IOPCServerList_INTERFACE_DEFINED__ */
 
 
-#ifndef __IOPCEnumGUID_INTERFACE_DEFINED__
-#define __IOPCEnumGUID_INTERFACE_DEFINED__
-
-/* interface IOPCEnumGUID */
-/* [unique][uuid][object] */ 
-
-typedef /* [unique] */ IOPCEnumGUID *LPOPCENUMGUID;
-
-
-EXTERN_C const IID IID_IOPCEnumGUID;
-
-#if defined(__cplusplus) && !defined(CINTERFACE)
-    
-    MIDL_INTERFACE("55C382C8-21C7-4e88-96C1-BECFB1E3F483")
-    IOPCEnumGUID : public IUnknown
-    {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE Next( 
-            /* [in] */ ULONG celt,
-            /* [length_is][size_is][out] */ GUID *rgelt,
-            /* [out] */ ULONG *pceltFetched) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE Skip( 
-            /* [in] */ ULONG celt) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE Reset( void) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE Clone( 
-            /* [out] */ IOPCEnumGUID **ppenum) = 0;
-        
-    };
-    
-#else 	/* C style interface */
-
-    typedef struct IOPCEnumGUIDVtbl
-    {
-        BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IOPCEnumGUID * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IOPCEnumGUID * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
-            IOPCEnumGUID * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *Next )( 
-            IOPCEnumGUID * This,
-            /* [in] */ ULONG celt,
-            /* [length_is][size_is][out] */ GUID *rgelt,
-            /* [out] */ ULONG *pceltFetched);
-        
-        HRESULT ( STDMETHODCALLTYPE *Skip )( 
-            IOPCEnumGUID * This,
-            /* [in] */ ULONG celt);
-        
-        HRESULT ( STDMETHODCALLTYPE *Reset )( 
-            IOPCEnumGUID * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *Clone )( 
-            IOPCEnumGUID * This,
-            /* [out] */ IOPCEnumGUID **ppenum);
-        
-        END_INTERFACE
-    } IOPCEnumGUIDVtbl;
-
-    interface IOPCEnumGUID
-    {
-        CONST_VTBL struct IOPCEnumGUIDVtbl *lpVtbl;
-    };
-
-    
-
-#ifdef COBJMACROS
-
-
-#define IOPCEnumGUID_QueryInterface(This,riid,ppvObject)	\
-    (This)->lpVtbl -> QueryInterface(This,riid,ppvObject)
-
-#define IOPCEnumGUID_AddRef(This)	\
-    (This)->lpVtbl -> AddRef(This)
-
-#define IOPCEnumGUID_Release(This)	\
-    (This)->lpVtbl -> Release(This)
-
-
-#define IOPCEnumGUID_Next(This,celt,rgelt,pceltFetched)	\
-    (This)->lpVtbl -> Next(This,celt,rgelt,pceltFetched)
-
-#define IOPCEnumGUID_Skip(This,celt)	\
-    (This)->lpVtbl -> Skip(This,celt)
-
-#define IOPCEnumGUID_Reset(This)	\
-    (This)->lpVtbl -> Reset(This)
-
-#define IOPCEnumGUID_Clone(This,ppenum)	\
-    (This)->lpVtbl -> Clone(This,ppenum)
-
-#endif /* COBJMACROS */
-
-
-#endif 	/* C style interface */
-
-
-
-HRESULT STDMETHODCALLTYPE IOPCEnumGUID_Next_Proxy( 
-    IOPCEnumGUID * This,
-    /* [in] */ ULONG celt,
-    /* [length_is][size_is][out] */ GUID *rgelt,
-    /* [out] */ ULONG *pceltFetched);
-
-
-void __RPC_STUB IOPCEnumGUID_Next_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-HRESULT STDMETHODCALLTYPE IOPCEnumGUID_Skip_Proxy( 
-    IOPCEnumGUID * This,
-    /* [in] */ ULONG celt);
-
-
-void __RPC_STUB IOPCEnumGUID_Skip_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-HRESULT STDMETHODCALLTYPE IOPCEnumGUID_Reset_Proxy( 
-    IOPCEnumGUID * This);
-
-
-void __RPC_STUB IOPCEnumGUID_Reset_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-HRESULT STDMETHODCALLTYPE IOPCEnumGUID_Clone_Proxy( 
-    IOPCEnumGUID * This,
-    /* [out] */ IOPCEnumGUID **ppenum);
-
-
-void __RPC_STUB IOPCEnumGUID_Clone_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-
-#endif 	/* __IOPCEnumGUID_INTERFACE_DEFINED__ */
-
-
-#ifndef __IOPCServerList2_INTERFACE_DEFINED__
-#define __IOPCServerList2_INTERFACE_DEFINED__
-
-/* interface IOPCServerList2 */
-/* [unique][uuid][object] */ 
-
-
-EXTERN_C const IID IID_IOPCServerList2;
-
-#if defined(__cplusplus) && !defined(CINTERFACE)
-    
-    MIDL_INTERFACE("9DD0B56C-AD9E-43ee-8305-487F3188BF7A")
-    IOPCServerList2 : public IUnknown
-    {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE EnumClassesOfCategories( 
-            /* [in] */ ULONG cImplemented,
-            /* [size_is][in] */ CATID rgcatidImpl[  ],
-            /* [in] */ ULONG cRequired,
-            /* [size_is][in] */ CATID rgcatidReq[  ],
-            /* [out] */ IOPCEnumGUID **ppenumClsid) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetClassDetails( 
-            /* [in] */ REFCLSID clsid,
-            /* [out] */ LPOLESTR *ppszProgID,
-            /* [out] */ LPOLESTR *ppszUserType,
-            /* [out] */ LPOLESTR *ppszVerIndProgID) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE CLSIDFromProgID( 
-            /* [in] */ LPCOLESTR szProgId,
-            /* [out] */ LPCLSID clsid) = 0;
-        
-    };
-    
-#else 	/* C style interface */
-
-    typedef struct IOPCServerList2Vtbl
-    {
-        BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IOPCServerList2 * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IOPCServerList2 * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
-            IOPCServerList2 * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *EnumClassesOfCategories )( 
-            IOPCServerList2 * This,
-            /* [in] */ ULONG cImplemented,
-            /* [size_is][in] */ CATID rgcatidImpl[  ],
-            /* [in] */ ULONG cRequired,
-            /* [size_is][in] */ CATID rgcatidReq[  ],
-            /* [out] */ IOPCEnumGUID **ppenumClsid);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetClassDetails )( 
-            IOPCServerList2 * This,
-            /* [in] */ REFCLSID clsid,
-            /* [out] */ LPOLESTR *ppszProgID,
-            /* [out] */ LPOLESTR *ppszUserType,
-            /* [out] */ LPOLESTR *ppszVerIndProgID);
-        
-        HRESULT ( STDMETHODCALLTYPE *CLSIDFromProgID )( 
-            IOPCServerList2 * This,
-            /* [in] */ LPCOLESTR szProgId,
-            /* [out] */ LPCLSID clsid);
-        
-        END_INTERFACE
-    } IOPCServerList2Vtbl;
-
-    interface IOPCServerList2
-    {
-        CONST_VTBL struct IOPCServerList2Vtbl *lpVtbl;
-    };
-
-    
-
-#ifdef COBJMACROS
-
-
-#define IOPCServerList2_QueryInterface(This,riid,ppvObject)	\
-    (This)->lpVtbl -> QueryInterface(This,riid,ppvObject)
-
-#define IOPCServerList2_AddRef(This)	\
-    (This)->lpVtbl -> AddRef(This)
-
-#define IOPCServerList2_Release(This)	\
-    (This)->lpVtbl -> Release(This)
-
-
-#define IOPCServerList2_EnumClassesOfCategories(This,cImplemented,rgcatidImpl,cRequired,rgcatidReq,ppenumClsid)	\
-    (This)->lpVtbl -> EnumClassesOfCategories(This,cImplemented,rgcatidImpl,cRequired,rgcatidReq,ppenumClsid)
-
-#define IOPCServerList2_GetClassDetails(This,clsid,ppszProgID,ppszUserType,ppszVerIndProgID)	\
-    (This)->lpVtbl -> GetClassDetails(This,clsid,ppszProgID,ppszUserType,ppszVerIndProgID)
-
-#define IOPCServerList2_CLSIDFromProgID(This,szProgId,clsid)	\
-    (This)->lpVtbl -> CLSIDFromProgID(This,szProgId,clsid)
-
-#endif /* COBJMACROS */
-
-
-#endif 	/* C style interface */
-
-
-
-HRESULT STDMETHODCALLTYPE IOPCServerList2_EnumClassesOfCategories_Proxy( 
-    IOPCServerList2 * This,
-    /* [in] */ ULONG cImplemented,
-    /* [size_is][in] */ CATID rgcatidImpl[  ],
-    /* [in] */ ULONG cRequired,
-    /* [size_is][in] */ CATID rgcatidReq[  ],
-    /* [out] */ IOPCEnumGUID **ppenumClsid);
-
-
-void __RPC_STUB IOPCServerList2_EnumClassesOfCategories_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-HRESULT STDMETHODCALLTYPE IOPCServerList2_GetClassDetails_Proxy( 
-    IOPCServerList2 * This,
-    /* [in] */ REFCLSID clsid,
-    /* [out] */ LPOLESTR *ppszProgID,
-    /* [out] */ LPOLESTR *ppszUserType,
-    /* [out] */ LPOLESTR *ppszVerIndProgID);
-
-
-void __RPC_STUB IOPCServerList2_GetClassDetails_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-HRESULT STDMETHODCALLTYPE IOPCServerList2_CLSIDFromProgID_Proxy( 
-    IOPCServerList2 * This,
-    /* [in] */ LPCOLESTR szProgId,
-    /* [out] */ LPCLSID clsid);
-
-
-void __RPC_STUB IOPCServerList2_CLSIDFromProgID_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
-
-
-
-#endif 	/* __IOPCServerList2_INTERFACE_DEFINED__ */
-
-
 
 #ifndef __OPCCOMN_LIBRARY_DEFINED__
 #define __OPCCOMN_LIBRARY_DEFINED__
 
-/* library OPCCOMN */
+/****************************************
+ * Generated header for library: OPCCOMN
+ * at Thu Oct 01 14:19:30 1998
+ * using MIDL 3.01.75
+ ****************************************/
 /* [helpstring][version][uuid] */ 
-
-
-
-
-
-
 
 
 
@@ -895,5 +540,3 @@ EXTERN_C const IID LIBID_OPCCOMN;
 #endif
 
 #endif
-
-

@@ -1,5 +1,6 @@
 #pragma once
 
+#include<stdafx.h>
 #include "PlcHZ_def.h"
 
 typedef bool (CALLBACK * CallbackFuncRealData)(const char *pStr, const char *Ip, const int nPort, unsigned long dwUser);
@@ -20,5 +21,5 @@ extern "C"
 	VIXHZ_EXPORT void HeartBeet();
 	VIXHZ_EXPORT UINT64 GetPLCHeartBeat();
 	VIXHZ_EXPORT void GroupConfigureRefresh();
-
+	VIXHZ_EXPORT void ptzOperationTest(int nGroup,int ipcIndex,int ptzCmd,int type); //type 0 to tvwall;  1 to cam
 }

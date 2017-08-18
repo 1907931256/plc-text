@@ -5,6 +5,8 @@
 // CSoftSet ¶Ô»°¿ò
 #define WM_CONFIGURE_REFRESH (WM_USER+200)
 #define WM_DATAVIEWER_CLICK (WM_USER+201)
+
+#define WM_PTZTESTPANEL_CLICK (WM_USER+202)
 class CSoftSet : public CDialog
 {
 	DECLARE_DYNAMIC(CSoftSet)
@@ -39,4 +41,5 @@ public:
 	afx_msg void OnBnClickedCheckEnable();
 	afx_msg void OnBnClickedButtonGroupRefresh();
 	afx_msg void OnBnClickedButtonDataviewerM();
+	afx_msg void OnBnClickedButtonPtztest();
 };

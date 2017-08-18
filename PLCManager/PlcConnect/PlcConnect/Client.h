@@ -1,4 +1,5 @@
 #pragma once
+#include <stdafx.h>
 #include <Winsock2.h>
 #include "nodavesimple.h"
 #include "openSocket.h"
@@ -22,7 +23,13 @@
 #include "modbus.h"
 #include "curl.h"
 using namespace std::tr1;
-//===opc 2017/5/27
+//===opc 2017/8/9
+#include "opcserver.h"
+#include <algorithm>
+
+const CLSID CLSID_OPCServerList = {0x13486D51,0x4821,0x11D2,{0xA4,0x94,0x3C,0xB3,0x06,0xC1,0x00,0x00}};
+#define __GUID_DEFINED__
+#include "OPCDa_Cats.c"
 //#include "opcda.h"
 //#include "OPCClient.h"
 //#include "OPCHost.h"
@@ -450,6 +457,14 @@ typedef std::map<int, int> ModbusIPCAddrMap;
 
 typedef std::map<int, int> ModbusZoomFeet2Addr;
 typedef std::map<int,std::vector<std::string>>ZoomMualReset; //group CAM_index
+
+//==2017/8/9 OPC SET nanSha
+typedef std::map<std::string,Item*> OpcItemMap; //OPC Item (name,item)
+//typedef std::map<int,std::string>RosSwitchGroupMap; //int ROS索引 string对应的OPCITEM
+//typedef std::map<int,std::string>OpcFeetMap; //feet索引 itemName (20,2020,40,45)
+//typedef std::map<int,std::string>OpcScreenModeMap ;// 模式索引 itemName 
+typedef std::map<int,std::string>OpcValueItemNameMap; 
+
 class CClientManager
 {
 public:
@@ -555,6 +570,28 @@ public:
 	static void ModbusCloseSigint(int dummy);
 	void stopModbusServer();
 	//static void *WorkThreadModbusServerRec(void *lpParam);
+	//==2017/8/6 
+	void ptzOperationTest(int nGroup,int ipcIndex,int ptzType,int type);
+
+	//===2017/8/9  OPC nanShan
+	void opcInit(); //load opc模式下的配置
+	void readConfigIntString(CIniFile iniFile,std::string groupName,std::string valueName,OpcValueItemNameMap& valueMap);
+	void GetOpcDataInfo();
+	void RunGetOpcData();
+	void StartReConnectOpc();
+	void RunReConnectOpc();
+	void StopReConnectOpc();
+	void StartGetOpcData();
+	void StopGetOpcData();
+	void opcServerConnect();
+	static void *WorkThreadReadOpcData(void *lpParam);
+	static void *WorkThreadReConnectOpc(void *lpParam);
+	wchar_t * UTF8ToUnicode( const char* str );
+	void opcItemAdd(OpcValueItemNameMap ItemNameMap,int mode=0); //mode=0 全添加 1:添加rmg, 2:添加accs
+	void opcSingleItemAdd(Item* item,std::string name);
+    bool opcGroupConnectAlways(int nGroup);
+	//void StopGetOpcData();
+	
 
 protected:
 	CClientManager();
@@ -710,12 +747,29 @@ public:
 	std::map<int,bool>mGroupSwitchFirst;
 	//==2017/6/9 PTZ指令直接发送到相机
 	bool mPtzCommandToCam;
+
+	int ptzOperationCmdOld;
 	//===========TCP/IP Connect PLC 2017/3/27=======
 	//bool tcpConnect;
 	//SOCKADDR_IN addrSrv;
 	//SOCKET sockClient;
 	//====2017/5/3 优先级开关=====
 	//bool priorityEnable;
+	//=========2017/8/9 opc nanSha
+	std::string mOpcServerName;
+	COPCServer* mOpcServer;
+	COPCGroup* mOpcGroup;
+	OpcItemMap mOpcItemMap; //OPC Item (name,item)
+	OpcValueItemNameMap mOpcRosMap,mOpcRmgMap,mOpcFeetMap,mOpcModeMap,mOpcRccsFeetMap;  //mRosMap :ros对应的item,mOpcRmgMap
+	std::vector<int> mOpcConnetAlwaysRos;
+	//OpcFeetMap mOpcFeetMap; //feet索引 itemName (20,2020,40,45)
+    //OpcScreenModeMap mOpcModeMap;// 模式索引 itemName 
+	std::string mOpcHeight,mOpcRccsHeight;
+	bool m_bGetOpcData ; 
+	bool m_bReconnectOpc,mConnectOpc;
+	HANDLE m_ReConnectOpcThread;
+	HANDLE m_GetOpcDataThread;
+	bool mOpcFlag;
 
 private:
 	AX_Mutex m_lockClient;	
@@ -823,4 +877,10 @@ protected:
 	unsigned short m_stModbusIpcOnlineState[32][64];/*ipc croup, ipc index*/
 	unsigned short m_stModbusPtzState[32][64][7];/*ptz operation status, group,ptz,mode*/
 	int m_iServerKeyID;
+
+	//===22017/8/10 OPC
+	void ReadOpcDataProcess();
+	Item* opcItemFind(std::string name);
+	void OpcSwitchScreen(int nGroup, int mode, int iSwitchGroup);
+	void OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGroup);
 };

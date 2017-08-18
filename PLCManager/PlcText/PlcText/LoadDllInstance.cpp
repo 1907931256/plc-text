@@ -19,6 +19,7 @@ LoadInstance::LoadInstance(CString DllName)
 	heart_beet = NULL;
 	pProcPLCHeartBeat = NULL;
 	group_configure_refresh = NULL;
+	ptz_operation_test = NULL;
 }
 
 void LoadInstance::GetDllFuncAddr()
@@ -36,6 +37,7 @@ void LoadInstance::GetDllFuncAddr()
 	heart_beet = (HEARTBEET)::GetProcAddress(_hmydll, "HeartBeet");
 	pProcPLCHeartBeat = (PLCHeartBeat)::GetProcAddress(_hmydll, "GetPLCHeartBeat");
 	group_configure_refresh = (GROUP_CONFIGURE_REFRESH)::GetProcAddress(_hmydll,"GroupConfigureRefresh");
+	ptz_operation_test =  (PTZOPERATIONTEST)::GetProcAddress(_hmydll,"ptzOperationTest");
 }
 BOOL LoadInstance::GetLoadSuccess()
 {

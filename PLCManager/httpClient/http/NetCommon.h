@@ -31,6 +31,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #endif
+#include <stdafx.h>
 #include <windows.h>
 #include <string.h>
 

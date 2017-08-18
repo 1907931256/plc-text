@@ -62,6 +62,7 @@ typedef void (_cdecl *SETIPCSTATE)(const char* pIpcStatelist);
 typedef void (_cdecl *HEARTBEET)();
 typedef  UINT64 (_cdecl *PLCHeartBeat)();
 typedef void (_cdecl *GROUP_CONFIGURE_REFRESH)();
+typedef void (_cdecl *PTZOPERATIONTEST)(int nGroup,int ipcIndex,int ptzType,int type);
 
 class LoadInstance
 {
@@ -91,6 +92,7 @@ public:
 	HEARTBEET			 heart_beet;
 	PLCHeartBeat		 pProcPLCHeartBeat;
 	GROUP_CONFIGURE_REFRESH group_configure_refresh;
+	PTZOPERATIONTEST  ptz_operation_test;
 };
 
 #endif

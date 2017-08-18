@@ -4,6 +4,7 @@
 
 #ifndef _HTTP_CONFIG_H_
 #define _HTTP_CONFIG_H_
+#include <stdafx.h>
 
 #include "TPTCPClient.h"
 #include "ITPListener.h"

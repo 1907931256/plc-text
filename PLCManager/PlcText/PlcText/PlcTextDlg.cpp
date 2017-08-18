@@ -99,6 +99,8 @@ BEGIN_MESSAGE_MAP(CPlcTextDlg, CDialog)
 	ON_MESSAGE(WM_DATAVIEWER_CLOSE,&CPlcTextDlg::OnDataViewerClose)
 	ON_MESSAGE(WM_CONFIGURE_REFRESH,&CPlcTextDlg::OnGroupConfigureRefresh)
 	ON_MESSAGE(WM_DATAVIEWER_CLICK,&CPlcTextDlg::OnDataViewerClick)
+	ON_MESSAGE(WM_PTZTESTPANEL_CLICK,&CPlcTextDlg::OnPtzTestClick)
+	ON_MESSAGE(WM_PTZOPERATIONTEST,&CPlcTextDlg::OnPtzOperation)
 END_MESSAGE_MAP()
 
 // CPlcTextDlg 消息处理程序
@@ -407,6 +409,7 @@ BOOL CPlcTextDlg::OnInitDialog()
 	ScreenToClient(&m_rtLoglist);
 	SetForegroundWindow();
 	dataGet = NULL;//=====2017/03/15 dataViewer
+	mPtzTest = NULL;
 	CWnd::ShowWindow(SW_SHOWMINIMIZED);
 	CString dllNameTitle;
 	if(strDllName==_T("PlcConnect.dll"))
@@ -1576,4 +1579,24 @@ void CPlcTextDlg::getIpcStatusMysql()
 		}
 	}
 
+}
+
+LRESULT CPlcTextDlg::OnPtzTestClick(WPARAM wParam,LPARAM lParam)
+{
+	if(NULL==mPtzTest)
+	{
+		mPtzTest = new CPtzTestPanel();
+		mPtzTest->Create(IDD_DIALOG_TESTPANEL);
+		mPtzTest->fHandle = this->m_hWnd;
+	}
+	mPtzTest->ShowWindow(SW_SHOWNORMAL);
+	return 0;
+}
+
+LRESULT CPlcTextDlg::OnPtzOperation(WPARAM wParam,LPARAM lParam)
+{
+	PtzTestParam* ptzConfig;
+	ptzConfig = (PtzTestParam*)wParam;
+	LoadInstance::Instance()->ptz_operation_test(ptzConfig->nGroup,ptzConfig->nIndex,ptzConfig->cmdIndex,ptzConfig->type);
+	return 0;
 }

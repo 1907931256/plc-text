@@ -9,6 +9,8 @@
 #define IDD_PLCTEXT_DIALOG              102
 #define IDR_HTML_DATAVIEWER             103
 #define IDR_HTML_DATAVIEWER1            105
+#define IDR_HTML_PTZTESTPANEL           106
+#define IDR_HTML_PTZTESTPANEL1          108
 #define IDR_MAINFRAME                   128
 #define IDB_BITMAP1                     130
 #define IDB_BITMAP2                     133
@@ -16,6 +18,7 @@
 #define IDD_DIALOG1                     140
 #define IDD_DIALOG_DATAVIEW             141
 #define IDD_DIALOG_DATA                 142
+#define IDD_DIALOG_TESTPANEL            143
 #define IDC_BTN_CONNECT                 1000
 #define IDC_BTN_LOGOUT                  1001
 #define IDC_EDIT_PORT                   1003
@@ -38,21 +41,31 @@
 #define IDC_BUTTON2                     1017
 #define IDC_BTN_SET                     1017
 #define IDC_BUTTON_ADD                  1017
+#define IDC_BUTTON_UP_TP                1017
 #define IDC_COMBO1                      1018
 #define IDC_COMBO_CLEAR                 1018
 #define IDC_COMBO_BLOCKID               1018
+#define IDC_BUTTON_LEFTUP_TP            1018
 #define IDC_EDIT_TIME                   1019
+#define IDC_BUTTON_LEFT_TP              1019
 #define IDC_EDIT_PRESET                 1020
 #define IDC_EDIT_PLCTIMEOUT             1020
+#define IDC_BUTTON_STOP_TP              1020
 #define IDC_BUTTON3                     1021
 #define IDC_BTN_TEXT                    1021
 #define IDC_BTN_TEST                    1021
+#define IDC_BUTTON_RIGHT_TP             1021
 #define IDC_COM_IPC1                    1022
 #define IDC_BTN_CLEAN_LOG               1022
+#define IDC_BUTTON_LEFTDOWN_TP          1022
 #define IDC_COM_IPC2                    1023
+#define IDC_BUTTON_DOWN_TP              1023
 #define IDC_BTN_DIS                     1024
+#define IDC_BUTTON_RIGHTDOWN_TP         1024
 #define IDC_EDIT_SCR11                  1025
+#define IDC_BUTTON_ZOOM_OUT_TP          1025
 #define IDC_EDIT_SCR12                  1026
+#define IDC_BUTTON_ZOOM_IN_TP           1026
 #define IDC_EDIT_SCR41                  1027
 #define IDC_EDIT_SCR42                  1028
 #define IDC_EDIT_SCR71                  1029
@@ -72,6 +85,7 @@
 #define IDC_CHECK_RUN                   1041
 #define IDC_CHECK_PTZ                   1041
 #define IDC_CHECK_BYTEBIT               1041
+#define IDC_CHECK_CONNECTCAM_TP         1041
 #define IDC_EDIT_SCR21                  1042
 #define IDC_PLC_SET                     1042
 #define IDC_LIST_LOG_FILTER             1042
@@ -132,14 +146,21 @@
 #define IDC_BUTTON_GROUP_REFRESH        1083
 #define IDC_BUTTON_DATAVIEWER_M         1084
 #define IDC_LIST1                       1085
+#define IDC_EDIT_GROUP_TP               1086
+#define IDC_EDIT_IPCINDEX_TP            1087
+#define IDC_STATIC_GROUP_TESTPANEL      1088
+#define IDC_STATIC_CAMINDEX_TESTPANEL   1089
+#define IDC_BUTTON_RIGHTUP_TP           1090
+#define IDC_BTN_PTZTT                   1091
+#define IDC_BUTTON_PTZTEST              1091
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1086
-#define _APS_NEXT_SYMED_VALUE           106
+#define _APS_NEXT_CONTROL_VALUE         1092
+#define _APS_NEXT_SYMED_VALUE           109
 #endif
 #endif

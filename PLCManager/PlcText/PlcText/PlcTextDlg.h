@@ -21,6 +21,7 @@
 #include "DataViewer.h"
 #include "MySQLConnector.h"
 //#include "WndSizeManager.h"
+#include "PtzTestPanel.h"
 
 //#define DEBUG_MODE_Z
 #define LOG_MAX_LEN 2048
@@ -194,6 +195,11 @@ public:  //2017/03/15 dataViewer
 	afx_msg LRESULT OnDataViewerClick(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnDataViewerClose(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnGroupConfigureRefresh(WPARAM wParam, LPARAM lParam);//Ë¢ÐÂ·Ö×éÅäÖÃ
+
+	//2017/8/5 ptz test panel
+	afx_msg LRESULT OnPtzTestClick(WPARAM wParam,LPARAM lParam);
+	CPtzTestPanel* mPtzTest;
+	afx_msg LRESULT OnPtzOperation(WPARAM wParam,LPARAM lParam);
 
 public:
 	void InitLanguage();

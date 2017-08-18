@@ -57,6 +57,16 @@ CClientManager::CClientManager()
 	m_KeepAliveThreadModbus = NULL;
 	//m_pGetInfoThread = new CGetInfoThread(this);
 	m_ModbusServerThread = NULL;
+	ptzOperationCmdOld = 0;
+	//===2017/8/9 opc nanSha
+	mOpcServer = NULL;
+	mOpcGroup = NULL;
+	m_bGetOpcData = FALSE;
+	m_bReconnectOpc = FALSE;
+	mConnectOpc = FALSE;
+	m_ReConnectOpcThread = NULL;
+	m_GetOpcDataThread = NULL;
+	mOpcFlag = false;
 
 	CIniFile iniFile(GetCurrentPath() + "\\softset.ini");
 	int  nLevel = 0;
@@ -84,13 +94,13 @@ CClientManager::CClientManager()
 
 CClientManager::~CClientManager()
 {
-	if (!m_bBolModbus)
+	if (!m_bBolModbus&&!mOpcFlag)
 	{
 		StopReConnect();
 
 		StopGetPlcData();
 	}
-	else
+	else if(!mOpcFlag)
 	{
 		StopGetPlcDataModbus();
 
@@ -99,6 +109,12 @@ CClientManager::~CClientManager()
 		stopKeepAlive2Modbus();
 		if(mModbusServerCreateF)
 			stopModbusServer();
+	}
+	else if(mOpcFlag)
+	{
+		StopGetOpcData();
+		//Sleep(3000);
+		StopReConnectOpc();
 	}
 
 	stopKeepAlive2TvWall();
@@ -199,7 +215,7 @@ void CClientManager::InitModbusOrPlc()
 			mModbusServerCreateF = true;
 			StartModbusServer();
 		}
-			
+
 		StartReConnectModbus();//开启定时重连Modbus线程
 		StartGetModbusData(); //开启50ms读取modbus数据的线程
 		//StartKeepAlive2TvWall();//开启TVWALL心跳线程
@@ -214,10 +230,15 @@ void CClientManager::InitModbusOrPlc()
 		StartReConnect();//开启定时重连线程
 		//StartKeepAlive2TvWall();//开启TVWALL心跳线程	
 	}
-	//else if(3==nSwitch) //OPC client
-	//{
-
-	//}
+	else if(3==nSwitch) //OPC client
+	{
+		opcInit();
+		InitData();
+		mOpcFlag = TRUE;
+		//StartGetOpcData();
+		StartReConnectOpc();
+		StartGetOpcData();
+	}
 
 }
 void CClientManager::InitData()
@@ -1256,7 +1277,7 @@ void CClientManager::InitGroupData()
 						nHeightIndex = 0;
 						nValueIndex--;
 					}
-						
+
 					map<INT, ZoomPuid2ZoomPtr>::iterator itFindHeight = m_zoomPuid2FeetHeightMap.find(nHeightIndex);
 					if (itFindHeight != m_zoomPuid2FeetHeightMap.end())
 					{
@@ -1645,8 +1666,8 @@ bool CClientManager::PtzOpration2CAM(int nGroup, int nIPCIndex, bool isStart,int
 	//char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"rtilt","rtilt","rpan","rpan", "rzoom", "rzoom"};
 	//char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"up","down","left","right", "continuouszoommove", "continuouszoommove"};
 	//char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"continuouspantiltmove","continuouspantiltmove","continuouspantiltmove","continuouspantiltmove", "continuouszoommove", "continuouszoommove"};
-	PTZ_Ctrl cmdBuffer[8]={PTZ_Up,PTZ_Up,PTZ_Down,PTZ_Left,PTZ_Right,PTZ_ZoomAdd,PTZ_ZoomDec};
-	if(cmdIndex>0&&cmdIndex<7)
+	PTZ_Ctrl cmdBuffer[12]={PTZ_Up,PTZ_Up,PTZ_Down,PTZ_Left,PTZ_Right,PTZ_ZoomAdd,PTZ_ZoomDec,PTZ_LeftUp,PTZ_LeftDown,PTZ_RightUp,PTZ_RightDown};
+	if(cmdIndex>=0&&cmdIndex<=12)
 	{
 		LoginDevInfo ipcDevice;
 		ipcDevice.userName="root";
@@ -1690,7 +1711,7 @@ bool CClientManager::PtzOpration2CAM(int nGroup, int nIPCIndex, bool isStart,int
 		//		commandStr = "http://"+strIP+"/axis-cgi/com/ptz.cgi?"+commandStr+"="+step;
 		//	}
 		//}
-	 //  sendCgiCommad(commandStr,nGroup); 
+		//  sendCgiCommad(commandStr,nGroup); 
 	}
 	return false;
 }
@@ -1960,7 +1981,7 @@ bool CClientManager::PtzCmdCtrl(LoginDevInfo logDevice, PTZ_Ctrl lConfigType, Vi
 		return false;
 	}
 	return lRet;
-	 
+
 }
 
 //=============2016/12/18 锁头跟随===================================//
@@ -2080,7 +2101,7 @@ int CClientManager::sendCgiCommadZoom(std::string sPuid, int nZoomValue, int nGr
 	ipcDevice.password = "pass";
 	Vix_PtzCfgParam ptzParam;
 	ptzParam.lParam2 = nZoomValue;
-    return 	PtzCmdCtrl(ipcDevice,PTZ_ZoomSet,ptzParam);
+	return 	PtzCmdCtrl(ipcDevice,PTZ_ZoomSet,ptzParam);
 
 }
 //===============================================================================//
@@ -3045,6 +3066,480 @@ int CClientManager::textBarModeLoad(std::string& RetVec,int id)
 	return 0;
 }
 
+void CClientManager::ptzOperationTest(int nGroup,int ipcIndex,int ptzType,int type)
+{
+	int iGroupIpcId = (nGroup<<8)|ipcIndex;
+	CClientManager* pInstance = CClientManager::GetInstance();
+	GroupIPCIDMap::iterator iteGroupIPCID = CClientManager::GetInstance()->m_GroupIpcId.find(iGroupIpcId);
+	if (iteGroupIPCID == CClientManager::GetInstance()->m_GroupIpcId.end())
+	{   
+		TCHAR szText[1024] = {0};
+		_stprintf(szText,"the camera can not find,group:%d index:%d",nGroup,ipcIndex);
+		pInstance->Showlog2Dlg(szText);
+		return;
+	} //获取ipc的puid
+	char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"UP","DOWN","LEFT","RIGHT", "ZOOM_ADD", "ZOOM_REDUCE","LEFT_UP","LEFT_DOWN","RIGHT_UP","RIGHT_DOWN","STOP"};
+	std::string strPTZCmd;
+	strPTZCmd = strPtzBuffer[ptzType];
+	bool bStartPtz = true;
+	if(strPTZCmd=="STOP")
+	{
+		bStartPtz = false;
+		ptzType = ptzOperationCmdOld;
+		strPTZCmd = strPtzBuffer[ptzType];
+	}
+	ptzOperationCmdOld = ptzType;
+	if(type==1) //send to cam
+	{
+		bool rect = false;
+		TCHAR szText[1024] = {0};
+		_stprintf(szText,"ptz operation test: group:%d ipcIndex:%d ptzCmd:%s status:%s.",nGroup,ipcIndex,strPTZCmd.c_str(),bStartPtz?"start":"stop");
+		pInstance->Showlog2Dlg(szText);
+		rect = pInstance->PtzOpration2CAM(nGroup, ipcIndex,bStartPtz,ptzType, 0);	
+	}
+	else if(type==0)//send to cctv
+	{
+		TCHAR szText[1024] = {0};
+		_stprintf(szText,"ptz operation test: group:%d ipcIndex:%d ptzCmd:%s status:%s.",nGroup,ipcIndex,strPTZCmd.c_str(),bStartPtz?"start":"stop");
+		pInstance->Showlog2Dlg(szText);
+		pInstance->PtzOpration2TVALL(nGroup, ipcIndex,strPTZCmd,bStartPtz, 0);	
+	}
+}
+
+void CClientManager::opcInit()
+{
+	CIniFile iniFile(GetCurrentPath() + "\\config\\General.ini");
+	iniFile.ReadString("OPCGROUOPSET","OPC_SERVER",mOpcServerName);
+	//READ ROS SET
+	readConfigIntString(iniFile,"OPCGROUPSET","ROS_SET",mOpcRosMap);
+	//READ RMG SET
+	readConfigIntString(iniFile,"OPCGROUPSET","RMG_SET",mOpcRmgMap);
+	//READ MODE SET
+	readConfigIntString(iniFile,"OPCSWITCHGROUP","MODE_SET",mOpcModeMap);
+	//READ FEET SET
+	readConfigIntString(iniFile,"OPCZOOMFEETSET","FEET",mOpcFeetMap);
+	//READ HEIGHT SET
+	iniFile.ReadString("OPCZOOMHEIGHTSET","HEIGHT",mOpcHeight);
+	//READ RCCS FEET SET
+	readConfigIntString(iniFile,"OPCZOOMFEETSET","RCCSFEET",mOpcRccsFeetMap);
+	//READ RCCS HEIGHT SET
+	iniFile.ReadString("OPCZOOMHEIGHTSET","RCCSHEIGHT",mOpcRccsHeight);
+
+	//READ CONNECT ROS
+	std::string connectStr;
+	iniFile.ReadString("OPCGROUPSET","CONNECT_ROS",connectStr);
+	std::vector<std::string> connectStrVec;
+	StringSplit(connectStr,",",connectStrVec);
+	for(int i=0;i<connectStrVec.size();i++)
+	{
+		mOpcConnetAlwaysRos.push_back(std::atoi(connectStrVec[i].c_str()));
+	}
+
+}
+
+void CClientManager::readConfigIntString(CIniFile iniFile,std::string groupName,std::string valueName,OpcValueItemNameMap& valueMap)
+{
+	std::string setStr;
+	iniFile.ReadString(groupName.c_str(),valueName.c_str(),setStr);
+	if(setStr.length())
+	{
+		std::vector<std::string> setVec;
+		StringSplit(setStr,",",setVec);
+		for(int i=0;i<setVec.size();i++)
+		{
+			std::vector<std::string>valueVec;
+			StringSplit(setVec[i],":",valueVec);
+			int id = std::atoi(valueVec[0].c_str());
+			valueMap.insert(std::make_pair(id,valueVec[1]));
+		}
+	}
+}
+
+void CClientManager::StartGetOpcData()
+{
+	m_bGetOpcData = TRUE;
+	AX_Thread::spawn(CClientManager::WorkThreadReadOpcData, this, 0, 0, &m_GetOpcDataThread, 0, 0, 0);
+}
+
+void CClientManager::StopGetOpcData()
+{
+	if(m_GetOpcDataThread)
+	{
+		m_bGetOpcData = FALSE;
+		if(WAIT_OBJECT_0!=WaitForSingleObject(m_GetOpcDataThread,1000))
+		{
+			TerminateThread(m_GetOpcDataThread,-1);
+			m_GetOpcDataThread = NULL;
+		}
+	}
+}
+void * CClientManager::WorkThreadReadOpcData(void *lpParam)
+{
+	CClientManager* pThis = (CClientManager*)lpParam;
+	pThis->RunGetOpcData();
+	return 0;
+}
+
+void CClientManager::RunGetOpcData()
+{
+	//m_nPLCHeartBeat = GetSysTimeMicros()/1000;
+	while(m_bGetOpcData)
+	{
+		GetOpcDataInfo();
+		Sleep(m_nRefresh);
+	}
+}
+
+void CClientManager::GetOpcDataInfo()
+{
+	m_lockClient.acquire();
+	for( Clientmap::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++)
+	{
+		iter->second->ReadOpcDataProcess();
+	}
+	m_lockClient.release();
+
+}
+
+void CClientManager::StartReConnectOpc()
+{
+	m_bReconnectOpc = TRUE;
+	mOpcServer = new COPCServer();
+	PLCADDRDataInfo info;
+	CClientManager::GetInstance()->createClient("127.0.0.1", 0, info, 0, 2,505, 1);
+	AX_Thread::spawn(CClientManager::WorkThreadReConnectOpc, this, 0, 0, &m_ReConnectOpcThread, 0, 0, 0);
+}
+
+void * CClientManager::WorkThreadReConnectOpc(void *lpParam)
+{
+	CClientManager* pThis = (CClientManager*)lpParam;
+	pThis->RunReConnectOpc();
+	return 0;
+
+}
+void CClientManager::RunReConnectOpc()
+{
+	while(m_bReconnectOpc)
+	{
+		if(!mConnectOpc)
+		{
+			opcServerConnect();
+		}
+		Sleep(3000);
+	}
+}
+
+void CClientManager::StopReConnectOpc()
+{
+	if(m_ReConnectOpcThread)
+	{
+		m_bReconnectOpc = FALSE;
+		mConnectOpc = FALSE;
+		if(WAIT_OBJECT_0!=WaitForSingleObject(m_ReConnectOpcThread,1000))
+		{
+			TerminateThread(m_ReConnectOpcThread,-1);
+			m_ReConnectOpcThread = NULL;
+		}
+	}
+	//释放内存
+	{
+
+		//if(mOpcGroup)
+		//{
+		//	delete mOpcGroup;
+		//	mOpcGroup = NULL;
+		//}	
+
+
+	
+		if(mOpcServer)
+		{
+			delete mOpcServer;
+			mOpcServer = NULL;
+			mOpcGroup = NULL;
+		}
+		for(OpcItemMap::iterator iterItem = mOpcItemMap.begin();iterItem!=mOpcItemMap.end();iterItem++)
+		{
+			if(iterItem->second)
+			{
+				iterItem->second = NULL;
+			}
+		}
+		mOpcItemMap.clear();
+	}
+}
+
+void CClientManager::opcServerConnect()
+{
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	OPCServerInfo info ;
+	//info.m_Description = _T("ZPMC OPCServer");
+	//info.m_ProgID = _T("ZPMC.OPCServer.2");
+	wchar_t* p = UTF8ToUnicode(mOpcServerName.c_str());
+	CString serverNameInfo(p);
+	info.m_ProgID = serverNameInfo;
+	info.m_Description = serverNameInfo;
+	free(p);
+
+	CString	m_strNodeName;
+
+	OPCServerInfo*		server_info;
+	ServerInfoList		server_infos;
+	CLSID			cat_id;
+	CLSID			clsid;
+	cat_id = CATID_OPCDAServer20;
+
+	unsigned long const NEXT_COUNT = 100;
+
+	IOPCServerList*	server_list = 0;
+	COSERVERINFO	si;
+	MULTI_QI	qi;
+
+	si.dwReserved1 = 0;
+	si.dwReserved2 = 0;
+	si.pwszName = L"127.0.0.1";
+	si.pAuthInfo = NULL;
+
+	qi.pIID = &IID_IOPCServerList;
+	qi.pItf = NULL;
+	qi.hr = 0;
+
+	char connectLog[MAX_STR_LEN];
+	sprintf_s(connectLog,MAX_STR_LEN-1,"opc server %s connecting......!",mOpcServerName.c_str());
+	CClientManager::GetInstance()->Showlog2Dlg(connectLog,CONNECT_PLC_ERR);
+
+	HRESULT hr = CoCreateInstanceEx(
+		CLSID_OPCServerList,
+		NULL,
+		CLSCTX_ALL,
+		&si,
+		1,
+		&qi);
+	if(FAILED(hr) || FAILED(qi.hr)){
+		CString msg(_T("Error connecting to OPC 2.0 Server Browser."));
+		if( !m_strNodeName.IsEmpty() )
+			msg.Format(_T("Error connecting to OPC 2.0 Server Browser on %s."), (LPCTSTR)m_strNodeName);
+
+		if( hr == REGDB_E_CLASSNOTREG )
+		{
+			CString msg(_T("Please install the OPC 2.0 Components."));
+			if( !m_strNodeName.IsEmpty() )
+				msg.Format(_T("Please install the OPC 2.0 Components on %s."), (LPCTSTR)m_strNodeName);
+		}
+		//if( FAILED(hr) )
+		//	theDoc->ReportError(msg, hr);
+		//else
+		//	theDoc->ReportError(msg, qi.hr);
+	}
+	else{
+		server_list = (IOPCServerList*)qi.pItf;
+		IEnumGUID* enum_guid = NULL;
+		hr = server_list->EnumClassesOfCategories(
+			1,
+			&cat_id,
+			1,
+			&cat_id,
+			&enum_guid);
+		if(SUCCEEDED(hr)){
+			unsigned long count = 0;
+			CLSID cls_id[NEXT_COUNT];
+
+			do{
+				hr = enum_guid->Next(NEXT_COUNT, cls_id, &count);
+				for(unsigned int index = 0; index < count; index ++){
+					LPOLESTR prog_id;
+					LPOLESTR user_type;
+					HRESULT hr2 = server_list->GetClassDetails(cls_id[index], &prog_id, &user_type);
+					if(SUCCEEDED(hr2)){
+						OPCServerInfo* info = new OPCServerInfo(prog_id, user_type, cls_id[index]);
+						if(info){
+							//info->m_NodeName = sz_node;
+							server_infos.AddTail(info);
+							server_info = info;
+						}
+
+						CString name;
+						name.Format(_T("%s"),(LPCTSTR)info->m_ProgID);
+
+						CoTaskMemFree(prog_id);
+						CoTaskMemFree(user_type);
+					}
+				}
+			}while(hr == S_OK);
+			enum_guid->Release();
+			server_list->Release();
+		}
+		else{
+			CString msg(_T("EnumClassesOfCategories failed:"));
+		}
+	}
+	mOpcServer->SetServerInfo(server_info);
+	if(mOpcServer->connect())
+	{
+		//mConnectOpc = true;
+		char connectLog[MAX_STR_LEN];
+		sprintf_s(connectLog,MAX_STR_LEN-1,"opc server %s connect success!",server_info->m_ProgID);
+		CClientManager::GetInstance()->m_plog->TraceInfo(connectLog);
+		CClientManager::GetInstance()->Showlog2Dlg(connectLog,CONNECT_PLC_SUC);
+
+	}
+	else
+	{
+		mConnectOpc = false;
+		char connectLog[MAX_STR_LEN];
+		sprintf_s(connectLog,MAX_STR_LEN-1,"opc server %s connect failed!",server_info->m_ProgID);
+		CClientManager::GetInstance()->m_plog->TraceInfo(connectLog);
+		CClientManager::GetInstance()->Showlog2Dlg(connectLog,CONNECT_PLC_ERR);
+		return;
+	}
+	//add opc item
+	opcItemAdd(mOpcFeetMap,1);//feet
+	opcItemAdd(mOpcModeMap,0);//mode
+	opcItemAdd(mOpcRccsFeetMap,2);//rccs feet
+	//height
+	for(OpcValueItemNameMap::iterator iterRmg = mOpcRmgMap.begin();iterRmg!=mOpcRmgMap.end();iterRmg++)
+	{
+		Item* item = new Item;
+		ASSERT(item);
+		std::string nameStr;
+		if(opcGroupConnectAlways(iterRmg->first))
+			nameStr = iterRmg->second+"."+mOpcRccsHeight;
+		else
+			nameStr = iterRmg->second+"."+mOpcHeight;
+		
+		wchar_t* p = UTF8ToUnicode(nameStr.c_str());
+		CString itemName(p);
+		item->name = itemName;
+		free(p);
+		item->access_path = "";
+		item->native_type = 0;
+		item->quality = OPC_QUALITY_GOOD;
+		item->active = true;
+		opcSingleItemAdd(item,nameStr);
+	}
+	//add rosSet
+	for(OpcValueItemNameMap::iterator iterRos = mOpcRosMap.begin();iterRos!=mOpcRosMap.end();iterRos++)
+	{
+		Item* item = new Item;
+		ASSERT(item);
+		std::string nameStr = iterRos->second;
+		wchar_t* p = UTF8ToUnicode(nameStr.c_str());
+		CString itemName(p);
+		item->name = itemName;
+		free(p);
+		item->access_path = "";
+		item->native_type = 0;
+		item->quality = OPC_QUALITY_GOOD;
+		item->active = true;
+		opcSingleItemAdd(item,nameStr);
+	}
+		mConnectOpc = true;
+
+
+}
+bool CClientManager::opcGroupConnectAlways(int nGroup)
+{
+	bool isConnect= false;
+	for(int i=0;i<mOpcConnetAlwaysRos.size();i++)
+	{
+		if(mOpcConnetAlwaysRos[i]==nGroup)
+		{
+			isConnect = true;
+			break;
+		}
+	}
+	return isConnect;
+}
+
+wchar_t * CClientManager::UTF8ToUnicode(const char* str)
+{
+	int textlen ;
+	wchar_t * result;
+	textlen = MultiByteToWideChar( CP_ACP, 0, str,-1, NULL,0 ); 
+	result = (wchar_t *)malloc((textlen+1)*sizeof(wchar_t)); 
+	memset(result,0,(textlen+1)*sizeof(wchar_t)); 
+	MultiByteToWideChar(CP_ACP, 0,str,-1,(LPWSTR)result,textlen ); 
+	return result; 
+
+}
+void CClientManager::opcItemAdd(OpcValueItemNameMap ItemNameMap,int mode)
+{
+	if(mOpcGroup==NULL)
+	{
+		mOpcGroup = new COPCGroup(mOpcServer);
+		if(mOpcGroup){
+			mOpcGroup->set_name("group");
+			mOpcGroup->set_update_rate(100);
+			mOpcGroup->set_dead_band(0);
+			mOpcGroup->set_time_bias(0);
+			mOpcGroup->set_local_id(0);
+			mOpcGroup->set_active(true);
+
+			mOpcGroup->parent = mOpcServer;
+			mOpcServer->add_group(mOpcGroup);
+		}
+	}
+	//===add item
+	for(OpcValueItemNameMap::iterator iterRmg = mOpcRmgMap.begin();iterRmg!=mOpcRmgMap.end();iterRmg++)
+	{
+		if(mode==1)
+		{
+			if(opcGroupConnectAlways(iterRmg->first))
+				continue;
+		}
+		else if(mode==2)
+		{
+			if(!opcGroupConnectAlways(iterRmg->first))
+				continue;
+		}
+		for(OpcValueItemNameMap::iterator itemIter = ItemNameMap.begin(); itemIter!=ItemNameMap.end();itemIter++)
+		{
+			Item* item = new Item;
+			ASSERT(item);
+			std::string nameStr = iterRmg->second+"."+itemIter->second;
+			wchar_t* p = UTF8ToUnicode(nameStr.c_str());
+			CString itemName(p);
+			item->name = itemName;
+			free(p);
+			item->access_path = "";
+			item->native_type = 0;
+			item->quality = OPC_QUALITY_GOOD;
+			item->active = true;
+			opcSingleItemAdd(item,nameStr);
+		}
+	}
+}
+
+void CClientManager::opcSingleItemAdd(Item* item,std::string name)
+{
+	if(mOpcServer != NULL)
+	{
+		COPCGroup* group = mOpcServer->get_current_group();
+		if(group != NULL)
+		{
+			if(group->add_item(item))
+			{
+				mOpcItemMap.insert(std::make_pair(name,item));
+				char connectLog[MAX_STR_LEN];
+				sprintf_s(connectLog,MAX_STR_LEN-1,"add item %s success!",name.c_str());
+				CClientManager::GetInstance()->m_plog->TraceInfo(connectLog);
+				CClientManager::GetInstance()->SendLog2Dlg(connectLog);
+
+			}
+			else
+			{
+				char connectLog[MAX_STR_LEN];
+				sprintf_s(connectLog,MAX_STR_LEN-1,"add item %s failured!",name.c_str());
+				CClientManager::GetInstance()->m_plog->TraceInfo(connectLog);
+				CClientManager::GetInstance()->SendLog2Dlg(connectLog);
+			}
+				//if(item)
+			//	theDoc->UpdateAllViews(NULL, UPDATE_GROUP, (CObject*)group);
+		}
+	}
+}
+
+
 CClient::CClient(CClientManager *pClientMgr, PLCADDRDataInfo info)
 {
 
@@ -3407,7 +3902,7 @@ void CClient::CheckWriteIpcState(int iGroup, int iIndex, int iState)
 			std::string str =  iState == 2 ? "online" : "offline";
 			char szlog[MAX_STR_LEN] = {0};
 			_snprintf(szlog, MAX_STR_LEN-1, "write group:%d, ipcIndex:%d, state: %s", iGroup, iIndex, str.c_str());
-		pInstance->SendLog2Dlg(szlog);
+			pInstance->SendLog2Dlg(szlog);
 			pInstance->m_plog->TraceError(szlog);
 			//pInstance->m_plog->TraceInfo(szlog);
 		}
@@ -3524,7 +4019,7 @@ void CClient::ReadPLCDataProcess() //连接成功的话就定时获取信息
 						memset(iteState->second, 0, 32*32);
 					}
 				}
-			
+
 
 				if(!FreeModeSwitch(iGroup,pBuff,usSwitchOver))//2017/5/5 如果特殊模式点置位，屏蔽常规切屏
 					SwitchScreen(iGroup, pBuff, usSwitchOver);//屏幕切换上墙
@@ -3543,7 +4038,7 @@ void CClient::ReadPLCDataProcess() //连接成功的话就定时获取信息
 				PresetPointCall(iGroup,pBuff,usSwitchOver);
 				/////////////////////自由切屏///////////////////////////////////////////
 				FreeCutScreen(iGroup, pBuff, usSwitchOver);	//自由切屏
-			
+
 			}
 			else
 			{
@@ -4393,7 +4888,7 @@ void CClient::SwitchScreen(int nGroup, const unsigned char *pBuf, int iSwitchGro
 }
 void CClient::IpcPtzOperation(int nGroup, const unsigned char *pBuf, int iSwitchGroup)
 {
-	char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"UP","DOWN","LEFT","RIGHT", "ZOOM_ADD", "ZOOM_REDUCE"};
+	char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"UP","DOWN","LEFT","RIGHT", "ZOOM_ADD", "ZOOM_REDUCE","LEFT_UP","LEFT_DOWN","RIGHT_UP","RIGHT_DOWN","STOP"};
 	int iPtzOld = 0;
 	int iPtzNew = 0;
 	CClientManager* pInstance = CClientManager::GetInstance();
@@ -4778,7 +5273,7 @@ void CClient::IpcZoomOperation(int nGroup ,const unsigned char *pBuf, int iSwitc
 								{
 									itt->second = iValue;
 									int rect =pInstance->sendCgiCommadZoom(sPuid,iValue,nGroup);
-										//zoom操作日志
+									//zoom操作日志
 									char szlog[MAX_STR_LEN] = {0};
 									//_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeightArray[i], nFeet);
 									if(rect)
@@ -4813,7 +5308,7 @@ void CClient::IpcZoomOperation(int nGroup ,const unsigned char *pBuf, int iSwitc
 									pInstance->IpcZoom2TVWALL(sPuid, iValue, iSwitchGroup);
 									//zoom操作日志
 									char szlog[MAX_STR_LEN] = {0};
-								//	_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeightArray[i], nFeet);
+									//	_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeightArray[i], nFeet);
 									_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s value:%d success\n group:%d; height:%d; feet:%d",sPuid.c_str(),iValue,nGroup, pHeightArray[i], nFeet);
 									pInstance->m_plog->TraceZOOMInfo(szlog);
 									pInstance->Showlog2Dlg(szlog);
@@ -5510,7 +6005,7 @@ void CClient::PresetPointCall(int nGroup,const unsigned char*pBuff,int iSwitchGr
 						iterPresetPointCall->second[i].pointStatuse = false;
 					else	
 						continue;
-						sprintf_s(logInfo,sizeof(logInfo)-1,"Preset point call failure group:%d,ip:%s,preset point name:%s",nGroup,ipcDevice.pchDVRIP.c_str(),ptzParam.presetpointName.c_str());
+					sprintf_s(logInfo,sizeof(logInfo)-1,"Preset point call failure group:%d,ip:%s,preset point name:%s",nGroup,ipcDevice.pchDVRIP.c_str(),ptzParam.presetpointName.c_str());
 				}
 				pInstance->m_plog->TraceInfo(logInfo);
 				pInstance->SendLog2Dlg(logInfo);
@@ -5587,6 +6082,351 @@ void CClient::IpcZoomOperationOnlyModbus(int nGroup ,int height, int feet, int i
 					_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d; zoom value:%d",nGroup, nHeight, nFeet,iValue);
 					pInstance->m_plog->TraceZOOMInfo(szlog);
 					pInstance->Showlog2Dlg(szlog);
+				}
+			}
+		}
+	}
+}
+
+void CClient::ReadOpcDataProcess()
+{
+	CClientManager* pInstance = CClientManager::GetInstance();
+	if(pInstance->mConnectOpc)
+	{
+		for(OpcValueItemNameMap::iterator iterRos = pInstance->mOpcRosMap.begin();iterRos!=pInstance->mOpcRosMap.end();iterRos++)
+		{
+			unsigned int iGroup = iterRos->first;
+			//unsigned int usSwitchOver = iterRos->first;
+			Item* itemRos = opcItemFind(iterRos->second);
+			if(itemRos==NULL)
+			{
+				char rosItemError[MAX_STR_LEN];
+				sprintf_s(rosItemError,MAX_STR_LEN-1,"can not find ros set %s",iterRos->second.c_str());
+				pInstance->SendLog2Dlg(rosItemError);
+				continue;
+			}
+			//---读要绑定的操作台 如果为直连不进行切换 直接赋值
+			unsigned int usSwitchOver=0;
+			if(pInstance->opcGroupConnectAlways(iGroup))
+				usSwitchOver = iGroup;
+			else
+				usSwitchOver = pInstance->mOpcGroup->read_item(itemRos);
+			//unsigned int usSwitchOver = 1;
+			//unsigned int iGroup = pInstance->mOpcGroup->read_item(iterRos);
+			if (m_stGroupSwitchState[iGroup]==0&&0 == usSwitchOver )		
+				continue;
+			if (m_stGroupSwitchState[iGroup] != usSwitchOver)  //对应的组号和切换位不相等，查看是否有变化
+			{
+				if (0 == usSwitchOver)
+				{
+					CloseAllIpcInGroup(m_stGroupSwitchState[iGroup], 2);//组号设成0关闭分组 2017/4/13
+					m_stGroupSwitchState[iGroup] = usSwitchOver;
+					//=======2017/6/2 首次不进行状态切换
+					//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
+					//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+					//{
+					//	if(iteFirst->second)
+					//	{
+					//		iteFirst->second = false;
+					//		m_stGroupSwitchState[iGroup]= usSwitchOver;
+					//	}
+					//}
+					//continue;
+				}
+				//=======2017/6/2 首次不进行状态切换
+				//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
+				//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+				//{
+				//	if(iteFirst->second)
+				//	{
+				//		m_stGroupSwitchState[iGroup]= usSwitchOver;
+				//		continue;
+				//	}
+				//}
+				ClearPriority(iGroup);
+				std::map<int, unsigned short *>::iterator ite = m_MapScreenState.find(m_stGroupSwitchState[iGroup]);//初始化一下切屏对方的old值
+				if (ite != m_MapScreenState.end())
+				{
+					memset(ite->second, 0, 32*32);
+				}
+				else
+				{
+					unsigned short *num = new  unsigned short[32*32];
+					memset(num, 0, 32*32);
+					m_MapScreenState.insert(std::make_pair(m_stGroupSwitchState[iGroup], num));
+				}
+
+				m_stGroupSwitchState[iGroup] = usSwitchOver;
+				std::map<int, unsigned short *>::iterator iteState = m_MapScreenState.find(iGroup);//初始化一下切屏的old值
+				if (iteState != m_MapScreenState.end())
+				{
+					memset(iteState->second, 0, 32*32);
+				}
+				else
+				{
+					unsigned short *num = new  unsigned short[32*32];
+					memset(num, 0, 32*32);
+					m_MapScreenState.insert(std::make_pair(iGroup, num));
+				}
+			}
+
+			//=====读取 模式
+			//step 1.  先找当前ARMG  usSwitchOver
+			//step 2.  再找此ARMG 所在的OPC Server分组
+			OpcValueItemNameMap::iterator iterArmg = pInstance->mOpcRmgMap.find(usSwitchOver);
+			if(iterArmg==pInstance->mOpcRmgMap.end())
+			{
+				char armgError[MAX_STR_LEN];
+				sprintf_s(armgError,MAX_STR_LEN-1,"Can not find armg: %d",usSwitchOver);
+				pInstance->SendLog2Dlg(armgError);
+				continue;
+			}
+			//step 3.  找当前的mode
+			int mode = 0;
+			for(OpcValueItemNameMap::iterator iterMode = pInstance->mOpcModeMap.begin();iterMode != pInstance->mOpcModeMap.end();iterMode++)
+			{
+				std::string modeStr = iterArmg->second+"."+iterMode->second;
+				OpcItemMap::iterator iterModeResult = pInstance->mOpcItemMap.find(modeStr);
+				if(iterModeResult==pInstance->mOpcItemMap.end())
+					continue;
+				if(pInstance->mOpcGroup->read_item(iterModeResult->second))
+				{
+					mode = iterMode->first;
+					break;
+				}
+			}
+			//mode = 1;
+			OpcSwitchScreen(iGroup, mode, usSwitchOver);
+
+			//======读取height和feet 调整zoom值
+			//--step1:读取feet
+			int feet = 0;
+			OpcValueItemNameMap currentFeetMap;
+			if(pInstance->opcGroupConnectAlways(iGroup))
+				currentFeetMap = pInstance->mOpcRccsFeetMap;
+			else
+				currentFeetMap = pInstance->mOpcFeetMap;
+			for(OpcValueItemNameMap::iterator iterFeet = currentFeetMap.begin();iterFeet !=currentFeetMap.end();iterFeet++)
+			{
+				std::string feetStr = iterArmg->second+"."+iterFeet->second;
+				OpcItemMap::iterator iterFeetResult = pInstance->mOpcItemMap.find(feetStr);
+				if(iterFeetResult==pInstance->mOpcItemMap.end())
+					continue;
+				if(pInstance->mOpcGroup->read_item(iterFeetResult->second))
+				{
+					feet = iterFeet->first;
+					break;
+				}
+			}
+			//--step2：读height
+			int height =0;
+			std::string heightStr;
+			if(pInstance->opcGroupConnectAlways(iGroup)) //直连 为 rccs
+				heightStr = iterArmg->second+"."+pInstance->mOpcRccsHeight;
+			else
+			    heightStr = iterArmg->second+"."+pInstance->mOpcHeight;
+			OpcItemMap::iterator iterHeight = pInstance->mOpcItemMap.find(heightStr);
+			if(iterHeight!=pInstance->mOpcItemMap.end())
+			{
+				height = pInstance->mOpcGroup->read_item(iterHeight->second);
+			}
+			//对高度进行缩放 到mm->m
+			height = height/100;
+			OpcIpcZoomOperation(iGroup,height,feet,usSwitchOver);
+			//IpcZoomOperation(iGroup,pBuff, usSwitchOver); //zoom值变
+		} //ros
+	}//connect 
+}
+
+
+
+Item* CClient::opcItemFind(std::string name)
+{
+	OpcItemMap::iterator iterResult = CClientManager::GetInstance()->mOpcItemMap.find(name);
+	if(iterResult!=CClientManager::GetInstance()->mOpcItemMap.end())
+	{
+		return iterResult->second;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+void CClient::OpcSwitchScreen(int nGroup, int mode, int iSwitchGroup)
+{
+	CClientManager* pInstance = CClientManager::GetInstance();
+	int iScreenNum = pInstance->m_PLCFormatInfo.nScreenNum;
+	int iScreenModeMax = pInstance->m_PLCFormatInfo.nModeMax;
+	int iModeValue = 0;
+
+	//=======2017/6/2 首次不进行状态切换
+	bool firstSwitch = false;
+	//bool firstSwitch;
+	//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(nGroup);
+	//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+	//{
+	//	if(iteFirst->second)
+	//	{
+	//		iteFirst->second = false;
+	//		firstSwitch = true;
+	//	}
+	//	else
+	//	{
+	//		firstSwitch = false;
+	//	}
+	//}
+	for(int iScreenId = 1; iScreenId <= iScreenNum; iScreenId++)
+	{
+		int iBeforeVal = 0;
+		bool bBol = false;
+		int iState = 0; //同一个屏幕两种及以上的模式都被置位或者该屏幕没有模式被置位
+		int iMode = 0;
+		std::map<int, unsigned short *>::iterator iteState =  m_MapScreenState.find(nGroup);
+		if (iteState == m_MapScreenState.end())
+		{
+			char szlog[MAX_STR_LEN] = {0};
+			_snprintf(szlog, MAX_STR_LEN-1, "not save group_%d old state", nGroup);
+			pInstance->m_plog->TraceSWITCHInfo(szlog);
+			return;
+		}
+		for(int iScreenMode = 1; iScreenMode <= iScreenModeMax; iScreenMode++)
+		{
+			if (iScreenMode==mode)
+				iModeValue = 1;
+			else
+				iModeValue = 0;
+			if(iModeValue == 1)
+			{
+				iState++;
+				iMode = iScreenMode;
+			}
+			if(iModeValue == iteState->second[iScreenId*32 + iScreenMode])//没有变化
+			{
+				continue;
+			}
+			bBol = true;
+			iBeforeVal = iteState->second[iScreenId*32 + iScreenMode];
+			iteState->second[iScreenId*32 + iScreenMode] = iModeValue;
+		}
+		//char szlog[MAX_STR_LEN] = {0};
+		//_snprintf(szlog, MAX_STR_LEN-1, "group-%d;  screen_id-%d; mode-%d",nGroup, iScreenId, iMode);
+		//pInstance->Showlog2Dlg(szlog);
+		//日志
+		if (bBol)/*switch mode*/
+		{
+			char szlog[MAX_STR_LEN] = {0};
+			_snprintf(szlog, MAX_STR_LEN-1, "group-%d; iSwitchGroup-%d； screen_id-%d; mode-%d",nGroup, iSwitchGroup,iScreenId, iMode);
+			pInstance->m_plog->TraceSWITCHInfo(szlog);
+			pInstance->Showlog2Dlg(szlog);
+			iteState->second[iScreenId*32 + 0] = 0;
+			//=======2017/6/2 首次不进行状态切换
+			if(!firstSwitch)
+				pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId,iScreenMode,iSwitchGroup*/nGroup,iScreenId,iMode,iSwitchGroup);//屏幕切换上墙 与之前的切换方式usSwitchOver 与 iGroup 相反
+		}
+		//相应屏幕的初始状态和和异常切屏数据，都切回到初始状态
+		if ( (iState == 0 && iteState->second[iScreenId*32 + 0] == 0 ))
+		{
+			char szlog[MAX_STR_LEN] = {0};
+			_snprintf(szlog, MAX_STR_LEN-1, "Back to the initial state ,iSwitchGroup-%d , group-%d, screen_id-%d", iSwitchGroup, nGroup, iScreenId);
+			pInstance->m_plog->TraceSWITCHInfo(szlog);
+			pInstance->Showlog2Dlg(szlog);
+			iteState->second[iScreenId*32 + 0] = 1;
+			//=======2017/6/2 首次不进行状态切换
+			if(!firstSwitch)
+				pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId, 0,iSwitchGroup*/nGroup,iScreenId,0,iSwitchGroup);//屏幕切换上墙 与之前的切换方式usSwitchOver 与 iGroup 相反
+			//pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId, 0,iSwitchGroup*/iSwitchGroup,iScreenId,0,nGroup);
+		}	
+	}
+}
+
+void CClient::OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGroup)
+{
+	CClientManager* pInstance = CClientManager::GetInstance();
+	//if(ZoomAutoManual(nGroup, pBuf))//判断对应的zoom摄像机是auto_manual, manual下该工能失效
+	if(1)
+	{
+		int nFeet = feet;//当前组只有一个feet会被选中
+		int pHeight = height;
+		ZoomIpc2GroupMap::iterator ite =  pInstance->m_ZoomIpc2GroupMap.find(nGroup);
+		if (ite !=  pInstance->m_ZoomIpc2GroupMap.end())
+		{
+			for (ZoomIpcVec::iterator it = ite->second.begin(); it != ite->second.end(); it++)
+			{
+				std::string sPuid = *it;
+				if (AutoZoom(nGroup, sPuid))
+				{
+					//zoom操作日志
+					//char szlog[MAX_STR_LEN] = {0};
+					//_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s continue",sPuid.c_str());
+					//pInstance->Showlog2Dlg(szlog);
+					continue;
+				}
+				int iValue = GetValueFromZoomMap(sPuid, nFeet,0, pHeight,0);//ivaue为-1,该zoom_ipc没有配置feet_height
+				if (iValue != -1)
+				{
+					Puid2ZoomVaule::iterator itt = m_GroupZoomState.find(sPuid);
+					if(pInstance->mPtzCommandToCam) //send to cam  
+					{
+						if (itt != m_GroupZoomState.end())
+						{
+							if (itt->second != iValue)
+							{
+								itt->second = iValue;
+								int rect =pInstance->sendCgiCommadZoom(sPuid,iValue,nGroup);
+								//zoom操作日志
+								char szlog[MAX_STR_LEN] = {0};
+								//_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeight, nFeet);
+								if(rect)
+									_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM  ipc_id:%s value:%d group:%d; height:%d; feet:%d success",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+								else
+									_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM  ipc_id:%s value:%d group:%d; height:%d; feet:%d failure",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+								pInstance->m_plog->TraceZOOMInfo(szlog);
+								pInstance->Showlog2Dlg(szlog);
+							}
+						}
+						else
+						{
+							m_GroupZoomState.insert(std::make_pair(sPuid,iValue));
+							//zoom操作日志
+							int rect = pInstance->sendCgiCommadZoom(sPuid,iValue,nGroup);
+							char szlog[MAX_STR_LEN] = {0};
+							if(rect)
+								_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s value:%d success\n group:%d; height:%d; feet:%d",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+							else
+								_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s value:%d failure\n group:%d; height:%d; feet:%d",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+							pInstance->m_plog->TraceZOOMInfo(szlog);
+							pInstance->Showlog2Dlg(szlog);
+						}
+					}
+					else  // send to tvwall
+					{
+						if (itt != m_GroupZoomState.end())
+						{
+							if (itt->second != iValue)
+							{
+								itt->second = iValue;
+								pInstance->IpcZoom2TVWALL(sPuid, iValue, iSwitchGroup);
+								//zoom操作日志
+								char szlog[MAX_STR_LEN] = {0};
+								//	_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeight, nFeet);
+								_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s value:%d success\n group:%d; height:%d; feet:%d",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+								pInstance->m_plog->TraceZOOMInfo(szlog);
+								pInstance->Showlog2Dlg(szlog);
+							}
+						}
+						else
+						{
+							m_GroupZoomState.insert(std::make_pair(sPuid, iValue));
+							pInstance->IpcZoom2TVWALL(sPuid, iValue, iSwitchGroup);
+							//zoom操作日志
+							char szlog[MAX_STR_LEN] = {0};
+							//_snprintf(szlog, MAX_STR_LEN-1, "group:%d; height:%d; feet:%d",nGroup, pHeight, nFeet);
+							_snprintf(szlog, MAX_STR_LEN-1, " PTZ SETZOOM ipc_id:%s value:%d success\n group:%d; height:%d; feet:%d",sPuid.c_str(),iValue,nGroup, pHeight, nFeet);
+							pInstance->m_plog->TraceZOOMInfo(szlog);
+							pInstance->Showlog2Dlg(szlog);
+						}
+					}
 				}
 			}
 		}

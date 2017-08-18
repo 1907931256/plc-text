@@ -1,6 +1,6 @@
 #ifndef STRING_UTIL_H
 #define STRING_UTIL_H
-
+#include<stdafx.h>
 #include <windows.h>
 #include <vector>
 #include "basic_types.h"

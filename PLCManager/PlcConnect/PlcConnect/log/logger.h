@@ -1,5 +1,6 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
+#include <stdafx.h>
 #include <Windows.h>
 #include <stdio.h>
 #include "CommandDefine.h"

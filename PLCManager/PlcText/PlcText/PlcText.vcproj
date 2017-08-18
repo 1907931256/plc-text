@@ -216,6 +216,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PtzTestPanel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SoftSet.cpp"
 				>
 			</File>
@@ -279,6 +283,10 @@
 			</File>
 			<File
 				RelativePath=".\PlcTextDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PtzTestPanel.h"
 				>
 			</File>
 			<File
@@ -387,6 +395,16 @@
 		</File>
 		<File
 			RelativePath=".\res\html_dat.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
+			RelativePath=".\res\html_ptz.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
+			RelativePath=".\PtzTestPanel.htm"
 			DeploymentContent="true"
 			>
 		</File>

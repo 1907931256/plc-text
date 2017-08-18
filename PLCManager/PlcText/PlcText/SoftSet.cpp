@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CSoftSet, CDialog)
 	ON_BN_CLICKED(IDC_CHECK_ENABLE, &CSoftSet::OnBnClickedCheckEnable)
 	ON_BN_CLICKED(IDC_BUTTON_GROUP_REFRESH, &CSoftSet::OnBnClickedButtonGroupRefresh)
 	ON_BN_CLICKED(IDC_BUTTON_DATAVIEWER_M, &CSoftSet::OnBnClickedButtonDataviewerM)
+	ON_BN_CLICKED(IDC_BUTTON_PTZTEST, &CSoftSet::OnBnClickedButtonPtztest)
 END_MESSAGE_MAP()
 
 
@@ -129,6 +130,8 @@ BOOL CSoftSet::OnInitDialog()
 
 	SetDlgItemInt(IDC_EDIT_PLCTIMEOUT,m_nPlCHeartbeatTimeout);
 
+	SetDlgItemText(IDC_BUTTON_PTZTEST,_CS("PtzTest"));
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -185,4 +188,10 @@ void CSoftSet::OnBnClickedButtonDataviewerM()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	::SendMessage(fHandle,WM_DATAVIEWER_CLICK,NULL,NULL);
+}
+
+void CSoftSet::OnBnClickedButtonPtztest()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	::SendMessage(fHandle,WM_PTZTESTPANEL_CLICK,NULL,NULL);
 }

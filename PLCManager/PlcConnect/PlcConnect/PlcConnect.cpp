@@ -1,7 +1,7 @@
 
+#include "PlcConnect.h"
 #include <Winsock2.h>
 #include "Client.h"
-#include "PlcConnect.h"
 #include "Dump.h"
 
 VIXHZ_EXPORT void InitSdk(CallbackFuncRealData CallBackFun, CallbackFuncLog CallBackLogFun, int nRefresh, unsigned long dwDataUser)
@@ -101,7 +101,7 @@ VIXHZ_EXPORT void SetGroupsWitch(int iGroupNum, int iScreenNum, int iModeNum, in
 VIXHZ_EXPORT void SetIpcState(const char* pIpcStatelist)
 {
 	CClientManager::GetInstance()->SetIpcState(pIpcStatelist);
-}
+} 
 
 VIXHZ_EXPORT void HeartBeet()
 {
@@ -115,4 +115,9 @@ VIXHZ_EXPORT UINT64 GetPLCHeartBeat()
 VIXHZ_EXPORT void GroupConfigureRefresh()
 {
 	return CClientManager::GetInstance()->groupConfigureRefreshCall();
+}
+
+VIXHZ_EXPORT void ptzOperationTest(int nGroup,int ipcIndex,int ptzCmd,int type)
+{
+	return CClientManager::GetInstance()->ptzOperationTest(nGroup,ipcIndex,ptzCmd,type);
 }
