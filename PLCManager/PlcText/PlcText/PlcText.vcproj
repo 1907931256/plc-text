@@ -125,7 +125,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\;..\..\AX_API;..\..\json;..\..\MySQL\include.x86"
+				AdditionalIncludeDirectories="..\..\;..\..\AX_API;..\..\json;..\..\MySQL\include.x86;..\..\BugTrap"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_STD_SMARTPTR;_STL_SMARTPTR"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ax_api_2008.lib libHTTP_2008.lib TPLayer_2008.lib json_vc71_libmt.lib"
+				AdditionalDependencies="ax_api_2008.lib libHTTP_2008.lib TPLayer_2008.lib json_vc71_libmt.lib BugTrap.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				UACExecutionLevel="2"

@@ -13,6 +13,7 @@
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
+
 class CAboutDlg : public CDialog
 {
 public:
@@ -262,13 +263,15 @@ BOOL CPlcTextDlg::OnInitDialog()
 	iniRestartFile.ReadInt(_T("RESTART"), _T("enable"), iRestart);
 	iniRestartFile.ReadString(_T("RESTART"), _T("time"), m_csRestartTime);
 
-	// 判断是否启用PLC看门狗
+	// 判断是否启用PLC看门
 	/*需要在SOFTSET.INI文件加下以入设置,Enable=1,则启用, 否则禁用
 	Timeout为超时值,即超过这个时间没收到PLC数据就认为PLC网络故障,重起PLC
 	[PLCWatchdog]
 	Enable=1
 	Timeout=3000
 	*/
+
+
 	int nEnableWatchdog = 0;
 
 	iniRestartFile.ReadInt(_T("PLCWatchdog"),_T("Enable"),nEnableWatchdog);
@@ -331,7 +334,7 @@ BOOL CPlcTextDlg::OnInitDialog()
 					WStrToMStr(GroupIPCId[2],ipcIdStr);
 					ipcGet.ipcId = ipcIdStr;
 					ipcGet.ipcStatus = 0;
-					mIpcInfoMap.insert(std::make_pair(ipcIdStr.substr(0,ipcIdStr.length()-2),ipcGet));//AS300 IPCID 比配置少两位
+					mIpcInfoMap.insert(std::make_pair(ipcIdStr.substr(0,ipcIdStr.length()),ipcGet));//AS300 IPCID 比配置少两位
 				}
 				m_nGroup++;
 			}

@@ -37,7 +37,7 @@
 			Name="Release|Win32"
 			>
 			<DebugSettings
-				Command="F:\Mago\code\PLCManager6-19\PLCManager\PlcText\Release\PlcText.exe"
+				Command="D:\code\PLC-text\PLCManager\PlcText\Release\PlcText.exe"
 				WorkingDirectory=""
 				CommandArguments=""
 				Attach="false"

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _JogStick
+#define _JogStick
 
 #include <string>
 #include <math.h>
@@ -9,6 +11,7 @@
 #include "IniFile.h"
 #include "JjhAlarmDll.h"
 #include "AxisJoyType.h"
+
 
 #define _ATL_ATTRIBUTES 1
 
@@ -24,6 +27,21 @@
 #include <atlbase.h>
 #include <atlstr.h>
 #include <atlcom.h>
+
+//==========2017/1/4摇杆配合EIO使用=========
+#include "GetJjhAlarmInfo.h"
+
+//#ifndef _JjhJogStick
+//#define _JjhJogStick
+//extern JjhInputItem JoyStickUse;
+//extern CRITICAL_SECTION g_cs;
+//extern JoyStickUse;
+//extern  g_cs;
+//#endif
+//#include "GetJjhAlarmInfo..cpp"
+//extern std::vector<std::string>puidfEIO;
+//extern CRITICAL_SECTION g_cs;  //锁
+//============================================
 
 
 #ifdef WIN64
@@ -46,8 +64,10 @@ private:
 		m_iBtnCount = 1;
 		m_iScreenTotal = 0;
 		m_iIpcSelect = 1;
+		m_ipcAutoChoose = false;
 		memset(m_OldCmdState, 0, sizeof(m_OldCmdState));
 		m_StartJoyStickThread = NULL;
+		ptzStatus = "stop";
 	}
 
 	~JoystickManager()
@@ -58,11 +78,12 @@ private:
 	}
 
 public:
+	std::string ptzStatus;
 	void InitData()
 	{
 
 		std::string strPath = GetCurrentPath();
-		CIniFile iniFile(strPath + "\\DataInit.ini");
+		CIniFile iniFile(strPath + "\\config\\General.ini");
 
 		std::vector<std::string> BtnArray, ScreenArray;
 		iniFile.ReadSectionString("AXISJOYSTICK_J", BtnArray);
@@ -110,6 +131,13 @@ public:
 		iniFile.ReadInt("ADDR", "ServerKeyId", m_iKeyId);
 		iniFile.ReadInt("LOGLEVEl", "level", m_iLogLevel);
 		m_plog = new Logger(strPath.c_str(), (EnumLogLevel)m_iLogLevel);//修改日志等级
+
+		//==================2017/1/4==============================
+		int ipcChooseSate=0;
+		iniFile.ReadInt("JOYSTICKWITHEIO","enable",ipcChooseSate);
+		if(ipcChooseSate==1)
+			m_ipcAutoChoose = true; 
+		//===========================================================
 
 		//注册com组件
 		HINSTANCE h;  
@@ -176,12 +204,85 @@ public:
 		{
 			DealScreenSplit(theJoystickId, theButtonNbr);
 		}
+		//==== for 沙特
+		//if (theButtonNbr == 0 || theButtonNbr == 1 || theButtonNbr == 2 || theButtonNbr == 3 ||theButtonNbr == 4||theButtonNbr == 5) //ipc选中
+		//{
+		//	DealScreenSplitN(theJoystickId, theButtonNbr);
+		//	DealIpcSelect(theJoystickId, theButtonNbr);
+		//}
+
+
+		//else if(theButtonNbr == 3)
+		//{
+		//	DealScreenSplit(theJoystickId, theButtonNbr);
+		//	m_iIpcSelect = -1;
+		//}
 	}
 
 	void DealIpcSelect(long theJoystickId, long theButtonNbr)
 	{
 		m_iIpcSelect = theButtonNbr + 1;//暂时不在TV_WALL上显示选中
 	}
+
+	void DealScreenSplitN(long theJoystickId, long theButtonNbr)
+	{
+		if (theButtonNbr == 4)//屏幕往前翻页
+		{
+			if (m_iBtnCount <= 1)
+			{
+				m_iBtnCount = m_iScreenTotal;
+			}
+			else
+			{
+				m_iBtnCount--;
+			}
+		}
+		else if (theButtonNbr == 5)//屏幕往后翻页
+		{
+			if (m_iBtnCount >= m_iScreenTotal)
+			{
+				m_iBtnCount = 1;
+			}
+			else
+			{
+				m_iBtnCount++;
+			}
+		}
+		//m_iBtnCount = theButtonNbr+1;
+
+		MapAxisScreen::iterator ite = m_AxisScreenMap.find(m_iBtnCount);
+		if (ite != m_AxisScreenMap.end())
+		{
+			std::string sRet;
+			sRet.append("{");
+			SetValue(sRet, "key_id", m_iKeyId);
+			SetValue(sRet, "command", "SCREEN_CUT", FALSE);
+			SetValue(sRet, "reset", 1, FALSE);
+			SetValue(sRet, "screen_id", ite->second._iScreen);
+			SetValue(sRet, "number", ite->second._iSplit);
+			SetValue(sRet, "mode", ite->second._iMode);
+			SetjsonEnd(sRet);
+			SendJoyStickInf2Tvwall(sRet, ite->second._sIp, ite->second._iPort);//分割
+
+			std::string sRetVec;
+			sRetVec.append("{");
+			SetValue(sRetVec, "key_id", m_iKeyId);
+			SetValue(sRetVec, "command", "MAP_IPC", FALSE);
+			sRetVec.append("\"maps\":[");			
+			for (IpcVec::iterator ite_win = ite->second._VecIpc.begin(); 
+				ite_win != ite->second._VecIpc.end(); ite_win++)
+			{
+				sRetVec.append("{");
+				SetValue(sRetVec, "ipc_id", ite_win->strIpcId.c_str(), FALSE);
+				SetValue(sRetVec, "monitor_id", ite_win->iMonitorId + 64*(ite->second._iScreen-1), TRUE);//edit by jeckean,64 nocheck
+				sRetVec.append("},");
+			}
+			sRetVec = sRetVec.substr(0, sRetVec.length() - 1);
+			sRetVec.append("]}");
+			SendJoyStickInf2Tvwall(sRetVec, ite->second._sIp, ite->second._iPort);	
+		}
+	}
+
 
 	void DealScreenSplit(long theJoystickId, long theButtonNbr)
 	{
@@ -207,6 +308,17 @@ public:
 				m_iBtnCount++;
 			}
 		}
+		//if (theButtonNbr == 5)//屏幕往后翻页
+		//{
+		//	if (m_iBtnCount >= m_iScreenTotal)
+		//	{
+		//		m_iBtnCount = 1;
+		//	}
+		//	else
+		//	{
+		//		m_iBtnCount++;
+		//	}
+		//}
 		MapAxisScreen::iterator ite = m_AxisScreenMap.find(m_iBtnCount);
 		if (ite != m_AxisScreenMap.end())
 		{
@@ -279,9 +391,26 @@ public:
 			SetValue(sRet, "command", "PTZ");
 			std::string str = zValue != 0 ? "start" : "stop";
 			std::string SubCmd = zValue > 0 ? "ZOOM_ADD" : "ZOOM_REDUCE";
+			if(ptzStatus==str)
+				return;
+			ptzStatus = str;
 			SetValue(sRet, "sub_cmd", SubCmd.c_str(), FALSE);
 			SetValue(sRet, "state", str.c_str(), false);
-			SetValue(sRet, "ipc_id", ite->second.strIpcPuid.c_str(), FALSE);
+			//=====2017/1/5与EIO配合控制=================
+			if(m_ipcAutoChoose)
+			{
+				std::string puid;
+				int rect = PuidGet(puid, m_iIpcSelect);
+				if(rect)
+					puid = ite->second.strIpcPuid;
+				SetValue(sRet,"ipc_id",puid.c_str(),FALSE);
+			}
+			else
+			{
+			 SetValue(sRet, "ipc_id", ite->second.strIpcPuid.c_str(), FALSE);
+			}
+			//============================================
+
 			//SetValue(sRet, "monitor_id", ""/*strPUID.c_str()*/, FALSE);
 			SetValue(sRet, "stepX", abs(ivalue), FALSE);
 			SetValue(sRet, "stepY", 4, FALSE);
@@ -297,7 +426,11 @@ public:
 		{
 			int iPort = ite->second.TvWallPort;
 			std::string sIp = ite->second.strTvWallIp;
-			std::string sPuid = ite->second.strIpcPuid;
+			//std::string sPuid = ite->second.strIpcPuid;
+			std::string sPuid;// = PuidGet(ite,m_iIpcSelect);//获取puid与EIO配合
+			int rect = PuidGet(sPuid,m_iIpcSelect);
+			if(rect)
+				sPuid = ite->second.strIpcPuid;
 
 			long ivalue_x = (STEP_LEN_MAX*xValue)/AXIS_ZOOM_MAX;
 			if (ivalue_x == 0)//stop
@@ -395,6 +528,32 @@ public:
 			}
 		}
 	}
+	int PuidGet(std::string& sPuid,int select)
+	{
+		//GetJjhAlarmInfo::Instantialize()->m_nRefresh = 1;
+		//std::string str;
+		//return str;
+		int rect = 1;
+		EnterCriticalSection(&GetJjhAlarmInfo::Instantialize()->g_cs);
+		if(m_ipcAutoChoose&&GetJjhAlarmInfo::Instantialize()->puidfEIO.size()>=1)
+		{
+			if(select>GetJjhAlarmInfo::Instantialize()->puidfEIO.size())
+				sPuid = GetJjhAlarmInfo::Instantialize()->puidfEIO[0];
+			else
+			{
+				if(m_iIpcSelect>=1)
+					sPuid = GetJjhAlarmInfo::Instantialize()->puidfEIO[select-1];
+				else
+					sPuid = GetJjhAlarmInfo::Instantialize()->puidfEIO[0];
+			}
+			rect = 0;
+		}
+		else
+			rect = 1;
+
+		LeaveCriticalSection(&GetJjhAlarmInfo::Instantialize()->g_cs);
+		return rect;
+	}
 
 	void OperatePtz(std::string sIp, int iPort, int iStep, std::string sPuid, std::string sState, std::string sCmd)
 	{
@@ -405,6 +564,9 @@ public:
 
 		SetValue(sRet, "sub_cmd", sCmd.c_str(), FALSE);
 		SetValue(sRet, "state", sState.c_str(), false);
+		if(ptzStatus==sState)
+			return;
+		ptzStatus = sState;
 		SetValue(sRet, "ipc_id", sPuid.c_str(), FALSE);
 		//SetValue(sRet, "monitor_id", "1000000000004"/*strPUID.c_str()*/, FALSE);
 		SetValue(sRet, "stepX", iStep, FALSE);
@@ -424,6 +586,7 @@ public:
 		//通过回调函数实现,链接不存在时容易卡死
 		char szlog[MAX_STR_LEN] = {0};
 		sprintf_s(szlog, MAX_STR_LEN, "TvwallIp:%s，TvwallIp:%d, info:%s",ip.c_str(), nPort, sRet.c_str());
+		Showlog2Dlg(szlog);
 		bool bRet = m_InfoCallFun(sRet.c_str(),ip.c_str(), nPort, m_dwDataUser);
 		return bRet;	
 	}
@@ -549,6 +712,7 @@ public:
 	CmdState m_OldCmdState[4];  //SAVE UP DOWN LEFT RIGHT STATE
 	Index2Ipc m_Index2IpcMap;
 	MapAxisScreen m_AxisScreenMap;
+	bool m_ipcAutoChoose;//是否自动获取绑定的IP（根据EIO）2017/1/4
 
 private:
     //com
@@ -558,3 +722,4 @@ private:
 
 }; 
 JoystickManager* JoystickManager::pInstance = 0;  
+#endif

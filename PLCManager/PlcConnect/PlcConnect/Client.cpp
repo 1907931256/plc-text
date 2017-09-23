@@ -218,7 +218,7 @@ void CClientManager::InitModbusOrPlc()
 
 		StartReConnectModbus();//¿ªÆô¶¨Ê±ÖØÁ¬ModbusÏß³Ì
 		StartGetModbusData(); //¿ªÆô50ms¶ÁÈ¡modbusÊý¾ÝµÄÏß³Ì
-		//StartKeepAlive2TvWall();//¿ªÆôTVWALLÐÄÌøÏß³Ì
+		StartKeepAlive2TvWall();//¿ªÆôTVWALLÐÄÌøÏß³Ì
 		StartKeepAlive2Modbus();//¿ªÆôMODBUSÐÄÌøÏß³Ì
 	}
 	else if(1==nSwitch)
@@ -228,7 +228,7 @@ void CClientManager::InitModbusOrPlc()
 		InitData();
 		StartGetPlcData(); //¿ªÆô50ms¶ÁÈ¡plc_serverÊý¾ÝµÄÏß³Ì
 		StartReConnect();//¿ªÆô¶¨Ê±ÖØÁ¬Ïß³Ì
-		//StartKeepAlive2TvWall();//¿ªÆôTVWALLÐÄÌøÏß³Ì	
+		StartKeepAlive2TvWall();//¿ªÆôTVWALLÐÄÌøÏß³Ì	
 	}
 	else if(3==nSwitch) //OPC client
 	{
@@ -238,6 +238,7 @@ void CClientManager::InitModbusOrPlc()
 		//StartGetOpcData();
 		StartReConnectOpc();
 		StartGetOpcData();
+		StartKeepAlive2TvWall();//¿ªÆôTVWALLÐÄÌøÏß³Ì
 	}
 
 }
@@ -561,6 +562,7 @@ void CClientManager::InitData()
 	else
 		mPtzCommandToCam = false;
 
+
 	//=======»ñÈ¡ÊÇ·ñÍ¨¹ýTCP »ñÈ¡PLCÊý¾Ý=============
 	//int tcpEnable=0;
 	//if(iniFile.ReadInt("TCPCONNECTPLC", "Enable", tcpEnable))
@@ -820,6 +822,8 @@ void CClientManager::InitGroupData()
 	//==2017/5/24 preset point call
 	mIpcPresetPointMsgMap.clear();
 
+	mModeNoZoomMap.clear();
+
 	for(PtzPuid2Ptz::iterator iter =m_ptzPuid2FeetHeightPresentPMap.begin(); iter!=m_ptzPuid2FeetHeightPresentPMap.end();)
 	{
 		delete[] iter->second;
@@ -852,6 +856,42 @@ void CClientManager::InitGroupData()
 				/////GROUP,SCREENID,IP,PORT,TVSSCREENID/////////*/
 
 				/* Group<<8|SCREENID,´ËÎªÎ¨Ò»ÐÔ*/
+				//===2017/9/2ÌØ¶¨Ä£Ê½ÏÂ²»±ä½¹
+				std::string noZoomStr;
+				iniFile.ReadString("MODENOZOOM","NoZoom",noZoomStr);
+				std::vector<std::string> noZoomStrVec;
+				StringSplit(noZoomStr,",",noZoomStrVec);
+				if(noZoomStrVec.size()==2)
+				{
+					int groupG = std::atoi(noZoomStrVec[0].c_str());
+					std::vector<std::string> modeVec;
+					StringSplit(noZoomStrVec[1],"-",modeVec);
+					std::vector<int> modeValueVec;
+					for (int i=0;i<modeVec.size();i++)
+					{
+						int modeG = std::atoi(modeVec[i].c_str());
+						modeValueVec.push_back(modeG);
+					}
+					mModeNoZoomMap.insert(std::make_pair(groupG,modeValueVec)); //ÔÚ´ËÄ£Ê½ÏÂ²»½øÐÐ±ä½¹
+				}
+					//===2017/9/21ÌØ¶¨Ä£Ê½ÏÂÖ´ÐÐZOOM2
+				std::string specialZoomStr;
+				iniFile.ReadString("OPCZOOMSPECIALMODE","Mode",specialZoomStr);
+				std::vector<std::string> specialZoomStrVec;
+				StringSplit(specialZoomStr,",",specialZoomStrVec);
+				if(specialZoomStrVec.size()==2)
+				{
+					int groupG = std::atoi(specialZoomStrVec[0].c_str());
+					std::vector<std::string> modeVec;
+					StringSplit(specialZoomStrVec[1],"-",modeVec);
+					std::vector<int> modeValueVec;
+					for (int i=0;i<modeVec.size();i++)
+					{
+						int modeG = std::atoi(modeVec[i].c_str());
+						modeValueVec.push_back(modeG);
+					}
+					mSpecialModeZoomMap.insert(std::make_pair(groupG,modeValueVec)); //ÔÚ´ËÄ£Ê½ÏÂÖ´ÐÐzoom2
+				}
 
 
 				for(std::vector<std::string>::iterator ite = GroupArray.begin(); ite != GroupArray.end(); ite++)
@@ -1515,6 +1555,22 @@ void CClientManager::ScreenSwitch2TVWALL(int nGroup,int nScreenId, int nMode ,in
 		return;
 	}
 
+	//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
+	bool firstSwitch;
+	std::map<int,bool>::iterator iteFirst = mGroupSwitchFirst.find(nGroup);
+	if(iteFirst!=mGroupSwitchFirst.end())
+	{
+		if(iteFirst->second)
+		{
+			firstSwitch = true;
+		}
+		else
+		{
+			firstSwitch = false;
+		}
+	}
+
+
 	/* ´Ó£ç£ò£ï£õ£ð£¬screenºÅÕÒ£ð£ãµÄ£ô£ö£óµÄ£é£ð£¬£ð£ï£ò£ôºÍÆÁÄ»ºÅ*/
 	std::string strIP = iteGroup2PC->second.Ip;
 	int iPort = iteGroup2PC->second.Port;
@@ -1551,7 +1607,8 @@ void CClientManager::ScreenSwitch2TVWALL(int nGroup,int nScreenId, int nMode ,in
 	SetValue(sRet, "number", iWindowNum);
 	SetValue(sRet, "mode", iWindowIndex);
 	SetjsonEnd(sRet);
-	SendInfo2TVWALLServer(sRet, strIP, iPort);
+	if(!firstSwitch)
+		SendInfo2TVWALLServer(sRet, strIP, iPort);
 
 	/*×é£¬£ð£ãÉÏµÄ£ô£ö£ó£¬ÔÙ½øÐÐ»­ÃæÇÐ»»£»*/
 	std::string sRetVec;
@@ -1575,7 +1632,8 @@ void CClientManager::ScreenSwitch2TVWALL(int nGroup,int nScreenId, int nMode ,in
 	}
 	sRetVec = sRetVec.substr(0, sRetVec.length() - 1);
 	sRetVec.append("]}");
-	SendInfo2TVWALLServer(sRetVec, strIP, iPort);
+	if(!firstSwitch)
+		SendInfo2TVWALLServer(sRetVec, strIP, iPort);
 
 	//±£´æ×îºóÒ»´ÎµÄ·Ö¸îºÍÉÏÇ½×´Ì¬
 	stringstream ss;
@@ -1676,8 +1734,8 @@ bool CClientManager::PtzOpration2CAM(int nGroup, int nIPCIndex, bool isStart,int
 		ipcDevice.pchDVRIP = strIP;
 		Vix_PtzCfgParam ptzParam;
 		ptzParam.bStop = !isStart;
-		ptzParam.lParam1=2;
-		ptzParam.lParam2=2;
+		ptzParam.lParam1=1;
+		ptzParam.lParam2=1;  //2
 		return PtzCmdCtrl(ipcDevice,cmdBuffer[cmdIndex],ptzParam);
 		//commandStr = strPtzBuffer[cmdIndex];
 		//if(cmdIndex<=4)
@@ -2604,6 +2662,7 @@ void CClientManager::RunKeepAliveModbus()
 			iter->second->HeartBeetModbus();
 		}
 		m_lockClient.release();
+
 		Sleep(1000);
 	}
 }
@@ -2612,7 +2671,9 @@ void CClientManager::RunKeepAlive()
 	while(m_bKeepAlive)
 	{
 		//m_lockClient.acquire();
+		groupDataLock.acquire();
 		DealKeepAlive();
+		groupDataLock.release();
 		//m_lockClient.release();
 		Sleep(5000);
 		//MySleep(5000);
@@ -2623,7 +2684,6 @@ void CClientManager::DealKeepAlive()
 { 
 	int iIndex = 1;
 	CClientManager* pInstance = CClientManager::GetInstance();
-	pInstance->groupDataLock.acquire();
 	for (IpPort2CutMapInfo::iterator ite = m_TvWallIp2CutMapInfo.begin(); ite != m_TvWallIp2CutMapInfo.end(); ite++)
 	{
 		std::vector<std::string> IpPortVec;
@@ -2642,8 +2702,10 @@ void CClientManager::DealKeepAlive()
 		HttpKeepAlive->SetChn(0, 0);
 		HttpKeepAlive->SetJsonBody(strGetList.c_str());
 
-		std::string json_reponse;
-		if(HttpKeepAlive->Start(json_reponse))
+		std::string json_reponse;	
+		bool rect = HttpKeepAlive->StartHeartBeat(json_reponse);
+		m_lockClient.acquire(); //Ëø
+		if(rect)
 		{
 			if (0 != json_reponse.length() && -1 != json_reponse.find("\"HeartBeat\""))
 			{
@@ -2664,10 +2726,42 @@ void CClientManager::DealKeepAlive()
 						{
 							char szlog[MAX_STR_LEN] = {0};
 
-							_snprintf(szlog, MAX_STR_LEN-1, "KeepAlive connect to TVWALL Success ,tvwall_ip-%s, port-%d", IpPortVec[0].c_str(), atoi(IpPortVec[1].c_str()));
-							pInstance->m_plog->TraceInfo(szlog);
-							pInstance->Showlog2Dlg(szlog);
+							//_snprintf(szlog, MAX_STR_LEN-1, "KeepAlive connect to TVWALL Success ,tvwall_ip-%s, port-%d", IpPortVec[0].c_str(), atoi(IpPortVec[1].c_str()));
+							//pInstance->m_plog->TraceInfo(szlog);
+							//pInstance->Showlog2Dlg(szlog);
 
+						
+							//=====²éÕÒµ½µ±Ç°µÄ×éºÅ È»ºó×´Ì¬ÖÃ³É³õÊ¼×´Ì¬
+							//{
+							//	//int groupFind =0;
+							//	//for(Group2PcMap::iterator iteGroup2PC =m_Group2PcMap.begin();iteGroup2PC!=m_Group2PcMap.end();iteGroup2PC++)
+							//	//{
+							//	//	if(iteGroup2PC->second.Ip==IpPortVec[0])
+							//	//	{
+							//	//		groupFind = iteGroup2PC->first;
+							//	//		groupFind=groupFind>>8;
+							//	//		break;
+							//	//	}										
+							//	//}
+							//	for( Clientmap::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++)
+							//	{
+							//		std::string sIpPort = IpPortVec[0]  + "," + IpPortVec[1];
+							//		IpPort2CutMapInfo::iterator ite = m_TvWallIp2CutMapInfo.find(sIpPort);
+							//		if (ite != m_TvWallIp2CutMapInfo.end())
+							//		{
+							//			for(int iTVScreenID=0;iTVScreenID<12;iTVScreenID++)
+							//			{
+							//				ScreenId2Cut::iterator it = ite->second.ScreenId2CutMap.find(iTVScreenID);
+							//				if (it != ite->second.ScreenId2CutMap.end())
+							//				{
+							//					SendInfo2TVWALLServer(it->second.sCutInfo, IpPortVec[0], std::atoi(IpPortVec[1].c_str()));
+							//					SendInfo2TVWALLServer(it->second.sIpcMap,IpPortVec[0], std::atoi(IpPortVec[1].c_str()));
+							//				}
+							//			}
+							//		}
+							//		//iter->second->closeAllMode(groupFind);
+							//	}
+							//}
 							SendOldScreeninfo(ite->first, ite->second.ScreenId2CutMap);
 							SendOldFreeCutScreeninfo(ite->first);
 
@@ -2677,10 +2771,11 @@ void CClientManager::DealKeepAlive()
 						if (0 == ite->second.iTvState)		//µÚÒ»´Î
 						{
 							ite->second.iTvState = State;
+							SendOldScreeninfo(ite->first, ite->second.ScreenId2CutMap);
+							SendOldFreeCutScreeninfo(ite->first);
 						}
 					}
 				}
-
 				if (bNormal == false)
 				{
 					CCuHttpConfigClient* HttpKeep = new CCuHttpConfigClient;
@@ -2688,7 +2783,6 @@ void CClientManager::DealKeepAlive()
 					HttpKeep->SetQueryStr("/api/v1/netkbd");
 					HttpKeep->SetChn(0, 0);
 					HttpKeep->SetJsonBody("{\"okokok\"}");
-
 
 					HttpKeep->Start(json_reponse);
 
@@ -2711,7 +2805,7 @@ void CClientManager::DealKeepAlive()
 		}//if(HttpKeepAlive->Start(json_reponse))
 		else
 		{
-			if (GetTickCount() - m_lHeartBeetTime[iIndex] >= 30000)
+			if (GetTickCount() - m_lHeartBeetTime[iIndex] >= 6000)
 			{
 				m_lHeartBeetTime[iIndex] = GetTickCount();
 
@@ -2722,9 +2816,9 @@ void CClientManager::DealKeepAlive()
 			}
 		}
 		iIndex++;
+		m_lockClient.release();
 		delete HttpKeepAlive;
 	}
-	pInstance->groupDataLock.release();
 }
 
 ////µ±TVWALL¶ÏÏßÖØÁ¬Ê±·¢ËÍ×îÐÂµÄ×ÔÓÉÇÐÆÁÐÅÏ¢
@@ -3124,6 +3218,8 @@ void CClientManager::opcInit()
 	readConfigIntString(iniFile,"OPCZOOMFEETSET","RCCSFEET",mOpcRccsFeetMap);
 	//READ RCCS HEIGHT SET
 	iniFile.ReadString("OPCZOOMHEIGHTSET","RCCSHEIGHT",mOpcRccsHeight);
+	//READ PTZ MANUAL SET
+	readConfigIntStringVec(iniFile,"OPCIPCITEM",mOpcPtzManualMap);
 
 	//READ CONNECT ROS
 	std::string connectStr;
@@ -3134,9 +3230,67 @@ void CClientManager::opcInit()
 	{
 		mOpcConnetAlwaysRos.push_back(std::atoi(connectStrVec[i].c_str()));
 	}
+	//====audio configure
+	readAudioConfigure();
 
 }
-
+void CClientManager::readAudioConfigure()
+{
+	CIniFile iniFile(GetCurrentPath() + "\\config\\General.ini");
+	int enableInt=0;
+	iniFile.ReadInt("AUDIOSET","Enable",enableInt);
+	if(enableInt==1)
+		mAudioEnable = true;
+	else 
+	{
+		mAudioEnable = false;
+		return;
+	}
+		
+	iniFile.ReadString("AUDIOSET","ServerIP",mAudioServerIp);
+	std::string serverPortStr;
+	iniFile.ReadString("AUDIOSET","ServerPort",serverPortStr);
+	mAudioServerPort = std::atoi(serverPortStr.c_str());
+	std::string statusPortStr;
+	iniFile.ReadString("AUDIOSET","StatusPort",statusPortStr);
+	mAudioServerStatusPort = std::atoi(statusPortStr.c_str());
+	//READ OPC ITEM NAME
+	readConfigIntString(iniFile,"AUDIOSET","AudioOpcName",mAudioIdItemMap);
+	//read ros id
+	std::string rosIdStr;
+	iniFile.ReadString("AUDIOSET","AudioRosId",rosIdStr);
+	std::vector<std::string>rosIdStrVec;
+	StringSplit(rosIdStr,",",rosIdStrVec);
+	for(std::vector<std::string>::iterator iterDevice = rosIdStrVec.begin();iterDevice!=rosIdStrVec.end();iterDevice++)
+	{
+		std::vector<std::string>idStrVec;
+		StringSplit(*iterDevice,":",idStrVec);
+		if(idStrVec.size()==2)
+		{
+			int rosId = std::atoi(idStrVec[0].c_str());
+			int deviceId = std::atoi(idStrVec[1].c_str());
+			mAudioRosIdMap.insert(std::make_pair(rosId,deviceId));
+		}
+	}
+	//read device id
+	std::string deviceIdStr;
+	iniFile.ReadString("AUDIOSET","AudioDeviceId",deviceIdStr);
+	std::vector<std::string>deviceIdStrVec;
+	StringSplit(deviceIdStr,",",deviceIdStrVec);
+	for(std::vector<std::string>::iterator iterDevice = deviceIdStrVec.begin();iterDevice!=deviceIdStrVec.end();iterDevice++)
+	{
+		std::vector<std::string>idStrVec;
+		StringSplit(*iterDevice,":",idStrVec);
+		if(idStrVec.size()==2)
+		{
+			int rosId = std::atoi(idStrVec[0].c_str());
+			int deviceId = std::atoi(idStrVec[1].c_str());
+			mAudioDeviceIdMap.insert(std::make_pair(rosId,deviceId));
+		}
+	}
+	IPNBSSDK_SetStatusCallBack((DWORD)OnStatusCallBack, (DWORD)this);	// »Øµ÷º¯Êý·½Ê½½ÓÊÕ×´Ì¬
+	AudioServerSet();
+}
 void CClientManager::readConfigIntString(CIniFile iniFile,std::string groupName,std::string valueName,OpcValueItemNameMap& valueMap)
 {
 	std::string setStr;
@@ -3155,6 +3309,21 @@ void CClientManager::readConfigIntString(CIniFile iniFile,std::string groupName,
 	}
 }
 
+void CClientManager::readConfigIntStringVec(CIniFile iniFile,std::string groupName,OpcValueItemNameMap& valueMap)
+{
+	std::vector<std::string> setStrVec;
+	iniFile.ReadSectionString(groupName.c_str(),setStrVec);
+	for(std::vector<std::string>::iterator ite = setStrVec.begin();ite!=setStrVec.end();ite++)
+	{
+		std::vector<std::string>setVec;
+		StringSplit(*ite,",",setVec);
+		if(setVec.size()==2)
+		{
+			int id = std::atoi(setVec[0].c_str());
+			valueMap.insert(std::make_pair(id,setVec[1]));
+		}
+	}
+}
 void CClientManager::StartGetOpcData()
 {
 	m_bGetOpcData = TRUE;
@@ -3249,9 +3418,6 @@ void CClientManager::StopReConnectOpc()
 		//	delete mOpcGroup;
 		//	mOpcGroup = NULL;
 		//}	
-
-
-	
 		if(mOpcServer)
 		{
 			delete mOpcServer;
@@ -3396,6 +3562,8 @@ void CClientManager::opcServerConnect()
 	opcItemAdd(mOpcFeetMap,1);//feet
 	opcItemAdd(mOpcModeMap,0);//mode
 	opcItemAdd(mOpcRccsFeetMap,2);//rccs feet
+	opcItemAdd(mOpcPtzManualMap,0);//ipc addr
+	// add audio opc item
 	//height
 	for(OpcValueItemNameMap::iterator iterRmg = mOpcRmgMap.begin();iterRmg!=mOpcRmgMap.end();iterRmg++)
 	{
@@ -3406,13 +3574,12 @@ void CClientManager::opcServerConnect()
 			nameStr = iterRmg->second+"."+mOpcRccsHeight;
 		else
 			nameStr = iterRmg->second+"."+mOpcHeight;
-		
 		wchar_t* p = UTF8ToUnicode(nameStr.c_str());
 		CString itemName(p);
 		item->name = itemName;
 		free(p);
 		item->access_path = "";
-		item->native_type = 0;
+		item->native_type = VT_I2;
 		item->quality = OPC_QUALITY_GOOD;
 		item->active = true;
 		opcSingleItemAdd(item,nameStr);
@@ -3432,6 +3599,24 @@ void CClientManager::opcServerConnect()
 		item->quality = OPC_QUALITY_GOOD;
 		item->active = true;
 		opcSingleItemAdd(item,nameStr);
+	}
+	//aduioID SET
+	for(OpcValueItemNameMap::iterator iterName= mAudioIdItemMap.begin();iterName!=mAudioIdItemMap.end();iterName++)
+	{
+		//audio id set 
+		Item* itemAudio = new Item;
+		ASSERT(itemAudio);
+		std::string nameAudio;
+		nameAudio = iterName->second;
+		wchar_t* pAudio = UTF8ToUnicode(nameAudio.c_str());
+		CString itemNameAudio(pAudio);
+		itemAudio->name = itemNameAudio;
+		free(pAudio);
+		itemAudio->access_path = "";
+		itemAudio->native_type = 0;
+		itemAudio->quality = OPC_QUALITY_GOOD;
+		itemAudio->active = true;
+		opcSingleItemAdd(itemAudio,nameAudio);
 	}
 		mConnectOpc = true;
 
@@ -3536,6 +3721,169 @@ void CClientManager::opcSingleItemAdd(Item* item,std::string name)
 				//if(item)
 			//	theDoc->UpdateAllViews(NULL, UPDATE_GROUP, (CObject*)group);
 		}
+	}
+}
+void CALLBACK CClientManager::OnStatusCallBack(DWORD dwInstance, WPARAM wParam, LPARAM lParam)
+{
+	CClientManager	*pDlg = (CClientManager *)dwInstance;
+	if (pDlg != NULL)
+		pDlg->OnRecvStatus(wParam, lParam);
+}
+
+LRESULT CClientManager::OnRecvStatus(WPARAM wParam, LPARAM lParam)
+{
+	IPNBSSDK_STATE			state = (IPNBSSDK_STATE)wParam;
+	LPDGRAMHEADER_STATUS	lpDgramHeader = (LPDGRAMHEADER_STATUS)lParam;
+	CString					strState, strTemp;
+	WORD					wDialogFromID = 0,
+		wDialogToID = 0,
+		wTermFromID = lpDgramHeader->ucParam.ucParam1 | (lpDgramHeader->ucParam.ucParam2 << 8),
+		wTaskNo = lpDgramHeader->ucParam.ucParam3 | (lpDgramHeader->ucParam.ucParam4 << 8);
+
+	if (lpDgramHeader->ucFunction == 0xD1)
+	{
+		// V2.2(2011-5-9)Ö®Ç°µÄ·þÎñÆ÷°æ±¾
+		//		wDialogFromID = lpDgramHeader->ucParam.ucParam3;
+		//		wDialogToID = lpDgramHeader->ucParam.ucParam4;
+
+		// V2.2(2011-5-9)¼°Ö®ºóµÄ·þÎñÆ÷°æ±¾
+		PBYTE		pID = &lpDgramHeader->ucAttachData2[49] + 1;
+		wDialogFromID = pID[0] | (pID[1] << 8);
+		wDialogToID = pID[2] | (pID[3] << 8);
+	}
+
+	switch (state)
+	{
+	case IPNBSSDK_STATE_TERMINAL_NULL:
+		strState.Format(_T("ÖÕ¶Ë%d ¿ÕÏÐ"), wTermFromID);
+		if (lpDgramHeader->ucParam.ucParam3 == 0)
+			strState += _T(" Î´µÇÂ¼\r\n");
+		else
+			strState += _T(" µÇÂ¼\r\n");
+		break;
+	case IPNBSSDK_STATE_TERMINAL_LIVE_PLAY:
+		strState.Format(_T("ÖÕ¶Ë%d ÊµÊ±²É²¥\r\n"), wTermFromID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_TERMER_RING:
+		strState.Format(_T("ÖÕ¶Ë%d ¶¨Ê±´òÁå\r\n"), wTermFromID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_TERMER_PROGRAMS:
+		strState.Format(_T("ÖÕ¶Ë%d ¶¨Ê±½ÚÄ¿\r\n"), wTermFromID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_SERVER_FIRE_ALARM:
+		strState.Format(_T("ÖÕ¶Ë%d ·þÎñÆ÷Ïû·À±¨¾¯\r\n"), wTermFromID);
+		break;
+	case IPNBSSDK_STATE_DIALOG_CALL:
+		strState.Format(_T("ÖÕ¶Ë%d(Ãæ°åÐòºÅ%d) ºô½Ð ÖÕ¶Ë%d\r\n"), wDialogFromID, lpDgramHeader->ucParam.ucParam5 + 1, wDialogToID);
+		break;
+	case IPNBSSDK_STATE_DIALOG_BEGIN:
+		strState.Format(_T("ÖÕ¶Ë%d Óë ÖÕ¶Ë%d ¿ªÊ¼¶Ô½²\r\n"), wDialogFromID, wDialogToID);
+		break;
+	case IPNBSSDK_STATE_DIALOG_END:
+		strState.Format(_T("ÖÕ¶Ë%d Óë ÖÕ¶Ë%d Í£Ö¹¶Ô½²\r\n"), wDialogFromID, wDialogToID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_ALARM1:
+		strState.Format(_T("ÖÕ¶Ë%d ¶Ë¿Ú1±¨¾¯\r\n"), wDialogFromID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_ALARM2:
+		strState.Format(_T("ÖÕ¶Ë%d ¶Ë¿Ú2±¨¾¯\r\n"), wDialogFromID);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_ALARM_EX:
+		strState.Format(_T("ÖÕ¶Ë%d À©Õ¹¶Ë¿Ú%d±¨¾¯\r\n"), wDialogFromID, lpDgramHeader->ucParam.ucParam3);
+		break;
+	case IPNBSSDK_STATE_TASK_NULL:
+		strState.Format(_T("%dºÅÈÎÎñ : ¿ÕÏÐ \r\n"), wTaskNo);
+		break;
+	case IPNBSSDK_STATE_TASK_TERMER_RING_BEGIN:
+		strState.Format(_T("%dºÅÈÎÎñ : ¶¨Ê±´òÁå : Ö´ÐÐ \r\n"), wTaskNo);
+		break;
+	case IPNBSSDK_STATE_TASK_TERMER_RING_END:
+		strState.Format(_T("%dºÅÈÎÎñ : ¶¨Ê±´òÁå : Í£Ö¹ \r\n"), wTaskNo);
+		break;
+	case IPNBSSDK_STATE_TASK_FIRE_ALARM_BEGIN:
+		strState.Format(_T("%dºÅÈÎÎñ : Ïû·À±¨¾¯ : Ö´ÐÐ \r\n"), wTaskNo);
+		break;
+	case IPNBSSDK_STATE_TASK_FIRE_ALARM_END:
+		strState.Format(_T("%dºÅÈÎÎñ : Ïû·À±¨¾¯ : Í£Ö¹ \r\n"), wTaskNo);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_IP:
+		if (lpDgramHeader->ucParam.ucParam1 == 0)
+			strState.Format(_T("²éÑ¯IP½á¹û : Ê§°Ü \r\n"));
+		else
+			strState.Format(_T("²éÑ¯IP½á¹û : ³É¹¦ %d.%d.%d.%d \r\n"), lpDgramHeader->ucParam.ucParam2, \
+			lpDgramHeader->ucParam.ucParam3, lpDgramHeader->ucParam.ucParam4, lpDgramHeader->ucParam.ucParam5);
+		break;
+	case IPNBSSDK_STATE_TERMINAL_ID:
+		if (lpDgramHeader->ucParam.ucParam1 == 0)
+			strState.Format(_T("²éÑ¯ID½á¹û : Ê§°Ü \r\n"));
+		else
+			strState.Format(_T("²éÑ¯ID½á¹û : ³É¹¦ %d \r\n"), \
+			lpDgramHeader->ucParam.ucParam2 | (lpDgramHeader->ucParam.ucParam3 << 8));
+		break;
+	case IPNBSSDK_STATE_TERMINAL_COUNT:
+		strState.Format(_T("²éÑ¯ÖÕ¶ËÊýÁ¿½á¹û : %d\r\n"), \
+			lpDgramHeader->ucParam.ucParam2 | (lpDgramHeader->ucParam.ucParam3 << 8));
+		break;
+	case IPNBSSDK_STATE_PORT_STATE:
+		strState.Format(_T("²éÑ¯ÖÕ¶Ë %d %s¶Ë¿Ú %d ×´Ì¬ : %s\r\n"), \
+			lpDgramHeader->ucParam.ucParam2 | (lpDgramHeader->ucParam.ucParam3 << 8), \
+			(lpDgramHeader->ucParam.ucParam1 & 0x80) == 0 ? _T("ÊäÈë") : _T("Êä³ö"), \
+			lpDgramHeader->ucParam.ucParam1 & 0x7F, \
+			lpDgramHeader->ucParam.ucParam4 == 0 ? _T("¶Ï¿ª") : _T("±ÕºÏ"));
+		break;
+	case IPNBSSDK_STATE_SD_PLAY_STATE:
+		strState.Format(_T("ÖÕ¶Ë %d SD¿¨%s\r\n"), \
+			lpDgramHeader->ucParam.ucParam2 | (lpDgramHeader->ucParam.ucParam3 << 8), \
+			lpDgramHeader->ucParam.ucParam1 == 0 ? _T("Í£Ö¹") : _T("²¥·Å"));
+		break;
+	}
+	if (lpDgramHeader->ucFunction == 0xD2 && lpDgramHeader->ucAttachData1[0] != '\0')
+	{
+		strTemp.Format(_T("ÖÕ¶ËÃû³Æ : %s\r\n"), &lpDgramHeader->ucAttachData1[0]);
+		strState += strTemp;
+		strTemp.Format(_T("\t\tIPµØÖ· : %d.%d.%d.%d\r\n"), lpDgramHeader->ucAttachData2[0], \
+			lpDgramHeader->ucAttachData2[1], lpDgramHeader->ucAttachData2[2], lpDgramHeader->ucAttachData2[3]);
+		strState += strTemp;
+		strTemp.Format(_T("\t\tÒôÁ¿ : %d\r\n"), lpDgramHeader->ucAttachData2[4]);
+		strState += strTemp;
+	}
+	const char *audioLog = (LPCTSTR)strTemp;
+	m_plog->TraceInfo(audioLog);
+	SendLog2Dlg(audioLog);
+	//PushMsg((LPCSTR)(LPCTSTR)strState);
+
+	return 0;
+}
+char* CClientManager::UnicodeToUtf8(const wchar_t* buf)
+{
+	int len = ::WideCharToMultiByte(CP_UTF8, 0, buf, -1, NULL, 0, NULL, NULL);
+	if (len == 0) return "";
+
+	std::vector<char> utf8(len);
+	::WideCharToMultiByte(CP_UTF8, 0, buf, -1, &utf8[0], len, NULL, NULL);
+
+	return &utf8[0];
+}
+
+void CClientManager::AudioServerSet()
+{
+	wchar_t* p = UTF8ToUnicode(mAudioServerIp.c_str());
+	CString serverIp(p);
+	free(p);
+	char audioServerLog[MAX_STR_LEN]={0};
+	if (IPNBSSDK_SetServerIP(serverIp.GetBuffer(0)) \
+		&& IPNBSSDK_SetServerPort(mAudioServerPort) \
+		&& IPNBSSDK_SetStatePort(mAudioServerStatusPort))
+	{
+		sprintf_s(audioServerLog,MAX_STR_LEN-1,"audio server set success");
+		m_plog->TraceInfo(audioServerLog);
+		SendLog2Dlg(audioServerLog);
+	}
+	else
+	{
+		sprintf_s(audioServerLog,MAX_STR_LEN-1,"audio server set failed,please check audio server ip,port!");
+		m_plog->TraceError(audioServerLog);
+		SendLog2Dlg(audioServerLog);
 	}
 }
 
@@ -3951,7 +4299,7 @@ void CClient::ReadPLCDataProcess() //Á¬½Ó³É¹¦µÄ»°¾Í¶¨Ê±»ñÈ¡ÐÅÏ¢
 #ifdef  _showData // 2017/03/15 add dataViewer
 				char dataBuffer[BLOCK_SIZE_COPY]={0};
 				memcpy(dataBuffer,buffer,sizeof(dataBuffer));
-				dataBuffer[255]= nDB-500;
+				dataBuffer[255]= nDB-600;
 				CClientManager::GetInstance()->Showlog2Dlg(dataBuffer,CONNECT_PLC_DATA);
 #endif
 
@@ -3973,8 +4321,9 @@ void CClient::ReadPLCDataProcess() //Á¬½Ó³É¹¦µÄ»°¾Í¶¨Ê±»ñÈ¡ÐÅÏ¢
 
 				// Î´°ó¶¨ÈÎºÎÌ¨ºÅ£¬²»×÷´¦Àí 
 				// by xionggao.lee @2017.01.02
-				if (m_stGroupSwitchState[iGroup]==0&&0 == usSwitchOver )		
+				if (m_stGroupSwitchState[iGroup]==0&&0 == usSwitchOver )
 					continue;
+			
 				if (m_stGroupSwitchState[iGroup] != usSwitchOver)  //¶ÔÓ¦µÄ×éºÅºÍÇÐ»»Î»²»ÏàµÈ£¬²é¿´ÊÇ·ñÓÐ±ä»¯
 				{
 					if (0 == usSwitchOver)
@@ -3982,28 +4331,28 @@ void CClient::ReadPLCDataProcess() //Á¬½Ó³É¹¦µÄ»°¾Í¶¨Ê±»ñÈ¡ÐÅÏ¢
 						CloseAllIpcInGroup(m_stGroupSwitchState[iGroup], 2);//×éºÅÉè³É0¹Ø±Õ·Ö×é 2017/4/13
 						m_stGroupSwitchState[iGroup] = usSwitchOver;
 						//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
-						std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
-						if(iteFirst!=pInstance->mGroupSwitchFirst.end())
-						{
-							if(iteFirst->second)
-							{
-								iteFirst->second = false;
-								m_stGroupSwitchState[iGroup]= usSwitchOver;
-							}
-						}
-						continue;
+						//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
+						//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+						//{
+						//	if(iteFirst->second)
+						//	{
+						//		iteFirst->second = false;
+						//		m_stGroupSwitchState[iGroup]= usSwitchOver;
+						//	}
+						//}
+						//continue;
 					}
 					//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
-					std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
-					if(iteFirst!=pInstance->mGroupSwitchFirst.end())
-					{
-						if(iteFirst->second)
-						{
-							//iteFirst->second = false;
-							m_stGroupSwitchState[iGroup]= usSwitchOver;
-							continue;
-						}
-					}
+					//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
+					//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+					//{
+					//	if(iteFirst->second)
+					//	{
+					//		//iteFirst->second = false;
+					//		m_stGroupSwitchState[iGroup]= usSwitchOver;
+					//		continue;
+					//	}
+					//}
 					ClearPriority(iGroup);
 					//CloseAllIpcInGroup(m_stGroupSwitchState[iGroup], 2);
 					std::map<int, unsigned short *>::iterator ite = m_MapScreenState.find(m_stGroupSwitchState[iGroup]);//³õÊ¼»¯Ò»ÏÂÇÐÆÁ¶Ô·½µÄoldÖµ
@@ -4730,21 +5079,21 @@ void CClient::SwitchScreen(int nGroup, const unsigned char *pBuf, int iSwitchGro
 	int iBit = 0;
 	int iModeValue = 0;
 
-	//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
-	bool firstSwitch;
-	std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(nGroup);
-	if(iteFirst!=pInstance->mGroupSwitchFirst.end())
-	{
-		if(iteFirst->second)
-		{
-			iteFirst->second = false;
-			firstSwitch = true;
-		}
-		else
-		{
-			firstSwitch = false;
-		}
-	}
+	////=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
+	//bool firstSwitch;
+	//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(nGroup);
+	//if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+	//{
+	//	if(iteFirst->second)
+	//	{
+	//		iteFirst->second = false;
+	//		firstSwitch = true;
+	//	}
+	//	else
+	//	{
+	//		firstSwitch = false;
+	//	}
+	//}
 
 	for(int iScreenId = 1; iScreenId <= iScreenNum; iScreenId++)
 	{
@@ -4864,7 +5213,7 @@ void CClient::SwitchScreen(int nGroup, const unsigned char *pBuf, int iSwitchGro
 				pInstance->Showlog2Dlg(szlog);
 				iteState->second[iScreenId*32 + 0] = 0;
 				//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
-				if(!firstSwitch)
+				//if(!firstSwitch)
 					pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId,iScreenMode,iSwitchGroup*/iSwitchGroup,iScreenId,sInfo.iMode,nGroup);
 			}
 		}
@@ -4880,10 +5229,19 @@ void CClient::SwitchScreen(int nGroup, const unsigned char *pBuf, int iSwitchGro
 
 			iteState->second[iScreenId*32 + 0] = 1;
 			//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
-			if(!firstSwitch)
+			//if(!firstSwitch)
 				pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId, 0,iSwitchGroup*/iSwitchGroup,iScreenId,0,nGroup);
 			//pInstance->ScreenSwitch2TVWALL(/*nGroup,iScreenId, 0,iSwitchGroup*/iSwitchGroup,iScreenId,0,nGroup);
 		}	
+	}
+
+	std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(nGroup);
+	if(iteFirst!=pInstance->mGroupSwitchFirst.end())
+	{
+		if(iteFirst->second)
+		{
+			iteFirst->second = false;
+		}
 	}
 }
 void CClient::IpcPtzOperation(int nGroup, const unsigned char *pBuf, int iSwitchGroup)
@@ -5586,7 +5944,7 @@ void CClient::CloseAllIpcInGroup(int iGroup, int iMode)//mode 0:Òþ²ØÌáÊ¾¿ò 1:¹Ø±
 	for(Group2PcMap::iterator ite = pInstance->m_Group2PcMap.begin();
 		ite != pInstance->m_Group2PcMap.end(); ite++)
 	{
-		if(iGroup == ite->first>>8)
+		if(iGroup == (ite->first>>8))
 		{
 			TvWallInfo Tmp;
 			Tmp.iTVSSCREENID = ite->second.iTVSSCREENID;
@@ -6102,6 +6460,7 @@ void CClient::ReadOpcDataProcess()
 			{
 				char rosItemError[MAX_STR_LEN];
 				sprintf_s(rosItemError,MAX_STR_LEN-1,"can not find ros set %s",iterRos->second.c_str());
+				pInstance->m_plog->TraceInfo(rosItemError);
 				pInstance->SendLog2Dlg(rosItemError);
 				continue;
 			}
@@ -6114,12 +6473,16 @@ void CClient::ReadOpcDataProcess()
 			//unsigned int usSwitchOver = 1;
 			//unsigned int iGroup = pInstance->mOpcGroup->read_item(iterRos);
 			if (m_stGroupSwitchState[iGroup]==0&&0 == usSwitchOver )		
+			{
+				OpcSwitchScreen(iGroup, 0, iGroup); //·¢ËÍ0Ä£Ê½
 				continue;
+			}
 			if (m_stGroupSwitchState[iGroup] != usSwitchOver)  //¶ÔÓ¦µÄ×éºÅºÍÇÐ»»Î»²»ÏàµÈ£¬²é¿´ÊÇ·ñÓÐ±ä»¯
 			{
 				if (0 == usSwitchOver)
 				{
-					CloseAllIpcInGroup(m_stGroupSwitchState[iGroup], 2);//×éºÅÉè³É0¹Ø±Õ·Ö×é 2017/4/13
+					//CloseAllIpcInGroup(m_stGroupSwitchState[iGroup], 2);//×éºÅÉè³É0¹Ø±Õ·Ö×é 2017/4/13
+					OpcSwitchScreen(iGroup, 0, iGroup); //·¢ËÍ0Ä£Ê½
 					m_stGroupSwitchState[iGroup] = usSwitchOver;
 					//=======2017/6/2 Ê×´Î²»½øÐÐ×´Ì¬ÇÐ»»
 					//std::map<int,bool>::iterator iteFirst = pInstance->mGroupSwitchFirst.find(iGroup);
@@ -6169,7 +6532,7 @@ void CClient::ReadOpcDataProcess()
 					m_MapScreenState.insert(std::make_pair(iGroup, num));
 				}
 			}
-
+//*************************************** ÊÓÆµÄ£Ê½ÇÐ»» ***********************************************************//
 			//=====¶ÁÈ¡ Ä£Ê½
 			//step 1.  ÏÈÕÒµ±Ç°ARMG  usSwitchOver
 			//step 2.  ÔÙÕÒ´ËARMG ËùÔÚµÄOPC Server·Ö×é
@@ -6197,43 +6560,100 @@ void CClient::ReadOpcDataProcess()
 			}
 			//mode = 1;
 			OpcSwitchScreen(iGroup, mode, usSwitchOver);
-
+//*************************************************×Ô¶¯±ä½¹******************************************************************//
 			//======¶ÁÈ¡heightºÍfeet µ÷ÕûzoomÖµ
-			//--step1:¶ÁÈ¡feet
-			int feet = 0;
-			OpcValueItemNameMap currentFeetMap;
-			if(pInstance->opcGroupConnectAlways(iGroup))
-				currentFeetMap = pInstance->mOpcRccsFeetMap;
-			else
-				currentFeetMap = pInstance->mOpcFeetMap;
-			for(OpcValueItemNameMap::iterator iterFeet = currentFeetMap.begin();iterFeet !=currentFeetMap.end();iterFeet++)
+			// ÅÐ¶ÏÊÇ·ñ´¦ÓÚÌØÊâÄ£Ê½µã
+			bool noZoom = false;
+			std::map<int,std::vector<int>>::iterator nozoomIter = pInstance->mModeNoZoomMap.find(iGroup);
+			if(nozoomIter!=pInstance->mModeNoZoomMap.end())
 			{
-				std::string feetStr = iterArmg->second+"."+iterFeet->second;
-				OpcItemMap::iterator iterFeetResult = pInstance->mOpcItemMap.find(feetStr);
-				if(iterFeetResult==pInstance->mOpcItemMap.end())
-					continue;
-				if(pInstance->mOpcGroup->read_item(iterFeetResult->second))
+				std::vector<int>::iterator modeIter = std::find((nozoomIter->second).begin(),(nozoomIter->second).end(),mode);
+				if(modeIter!=(nozoomIter->second).end())
 				{
-					feet = iterFeet->first;
-					break;
+					noZoom  = true;
 				}
 			}
-			//--step2£º¶Áheight
-			int height =0;
-			std::string heightStr;
-			if(pInstance->opcGroupConnectAlways(iGroup)) //Ö±Á¬ Îª rccs
-				heightStr = iterArmg->second+"."+pInstance->mOpcRccsHeight;
-			else
-			    heightStr = iterArmg->second+"."+pInstance->mOpcHeight;
-			OpcItemMap::iterator iterHeight = pInstance->mOpcItemMap.find(heightStr);
-			if(iterHeight!=pInstance->mOpcItemMap.end())
+			//--step1:¶ÁÈ¡feet
+			if(!noZoom)
 			{
-				height = pInstance->mOpcGroup->read_item(iterHeight->second);
+				int feet = 0;
+				OpcValueItemNameMap currentFeetMap;
+				if(pInstance->opcGroupConnectAlways(iGroup))
+					currentFeetMap = pInstance->mOpcRccsFeetMap;
+				else
+					currentFeetMap = pInstance->mOpcFeetMap;
+				for(OpcValueItemNameMap::iterator iterFeet = currentFeetMap.begin();iterFeet !=currentFeetMap.end();iterFeet++)
+				{
+					std::string feetStr = iterArmg->second+"."+iterFeet->second;
+					OpcItemMap::iterator iterFeetResult = pInstance->mOpcItemMap.find(feetStr);
+					if(iterFeetResult==pInstance->mOpcItemMap.end())
+						continue;
+					if(pInstance->mOpcGroup->read_item(iterFeetResult->second))
+					{
+						feet = iterFeet->first;
+						break;
+					}
+				}
+				//--step2£º¶Áheight
+				short height =0;
+				std::string heightStr;
+				if(pInstance->opcGroupConnectAlways(iGroup)) //Ö±Á¬ Îª rccs
+					heightStr = iterArmg->second+"."+pInstance->mOpcRccsHeight;
+				else
+					heightStr = iterArmg->second+"."+pInstance->mOpcHeight;
+				OpcItemMap::iterator iterHeight = pInstance->mOpcItemMap.find(heightStr);
+				if(iterHeight!=pInstance->mOpcItemMap.end())
+				{
+					height = pInstance->mOpcGroup->read_item(iterHeight->second);
+					//char heightStr[MAX_STR_LEN]={0};
+					//sprintf_s(heightStr,MAX_STR_LEN-1,"group:%d height read: %d",iGroup,height);
+					//pInstance->SendLog2Dlg(heightStr);
+				}
+				//¶Ô¸ß¶È½øÐÐËõ·Å µ½cm->m
+				height = height/100;
+				OpcIpcZoomOperation(iGroup,height,feet,mode,usSwitchOver);
 			}
-			//¶Ô¸ß¶È½øÐÐËõ·Å µ½mm->m
-			height = height/100;
-			OpcIpcZoomOperation(iGroup,height,feet,usSwitchOver);
-			//IpcZoomOperation(iGroup,pBuff, usSwitchOver); //zoomÖµ±ä
+
+//*************************************************ÓïÒôÉè±¸******************************************************************//
+			if(pInstance->mAudioEnable)
+			{
+				//====step1: ¶Á°´Å¥×´Ì¬
+				OpcValueItemNameMap::iterator iterAudioItemName = pInstance->mAudioIdItemMap.find(iGroup);
+				if(iterAudioItemName==pInstance->mAudioIdItemMap.end())
+				{
+					//char audioItemError[MAX_STR_LEN];
+					//sprintf_s(audioItemError,MAX_STR_LEN-1,"can not find the audio with ros id: %d",iGroup);
+					//pInstance->m_plog->TraceInfo(audioItemError);
+					//pInstance->SendLog2Dlg(audioItemError);
+				}
+				else
+				{
+					std::string audioStr;
+					audioStr = iterAudioItemName->second;
+					OpcItemMap::iterator iterAudio = pInstance->mOpcItemMap.find(audioStr);
+					int audioRect=0;
+					if(iterAudio!=pInstance->mOpcItemMap.end())
+					{
+						audioRect = pInstance->mOpcGroup->read_item(iterAudio->second);
+						bool audioStart= false;
+						if (audioRect ==1)
+							audioStart = true;
+						//===step2: ·¢ËÍ¸øÓïÒôÉè±¸¹ÜÀí
+						Broadcast(iGroup,usSwitchOver,audioStart);
+					}
+				}
+			}
+//************************************************PTZ OPERATION *************************************************//
+			int cameraOperation = 0;
+			for(OpcValueItemNameMap::iterator iterPtz = pInstance->mOpcPtzManualMap.begin();iterPtz != pInstance->mOpcPtzManualMap.end();iterPtz++)
+			{
+				std::string modeStr = iterArmg->second+"."+iterPtz->second;
+				OpcItemMap::iterator iterPtzResult = pInstance->mOpcItemMap.find(modeStr);
+				if(iterPtzResult==pInstance->mOpcItemMap.end())
+					continue;
+				cameraOperation = pInstance->mOpcGroup->read_item(iterPtzResult->second);
+				IpcPtzOperationOpc(iGroup, iterPtz->first, cameraOperation,usSwitchOver);
+			}
 		} //ros
 	}//connect 
 }
@@ -6340,7 +6760,7 @@ void CClient::OpcSwitchScreen(int nGroup, int mode, int iSwitchGroup)
 	}
 }
 
-void CClient::OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGroup)
+void CClient::OpcIpcZoomOperation(int nGroup ,int height, int feet,int mode,int iSwitchGroup)
 {
 	CClientManager* pInstance = CClientManager::GetInstance();
 	//if(ZoomAutoManual(nGroup, pBuf))//ÅÐ¶Ï¶ÔÓ¦µÄzoomÉãÏñ»úÊÇauto_manual, manualÏÂ¸Ã¹¤ÄÜÊ§Ð§
@@ -6362,7 +6782,16 @@ void CClient::OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGr
 					//pInstance->Showlog2Dlg(szlog);
 					continue;
 				}
-				int iValue = GetValueFromZoomMap(sPuid, nFeet,0, pHeight,0);//ivaueÎª-1,¸Ãzoom_ipcÃ»ÓÐÅäÖÃfeet_height
+				//==ÅÐ¶ÏÊÇ·ñÎªÌØÊâÄ£Ê½
+				int zoomFindSelect =0;
+				std::map<int,std::vector<int>>::iterator iteSzGroupFind = pInstance->mSpecialModeZoomMap.find(nGroup);
+				if(iteSzGroupFind!=pInstance->mSpecialModeZoomMap.end())
+				{
+					std::vector<int>::iterator iteSpecialModeFind = std::find(iteSzGroupFind->second.begin(),iteSzGroupFind->second.end(),mode);
+					if(iteSpecialModeFind!=iteSzGroupFind->second.end())
+						zoomFindSelect=1;
+				}
+				int iValue = GetValueFromZoomMap(sPuid, nFeet,0, pHeight,zoomFindSelect);//ivaueÎª-1,¸Ãzoom_ipcÃ»ÓÐÅäÖÃfeet_height
 				if (iValue != -1)
 				{
 					Puid2ZoomVaule::iterator itt = m_GroupZoomState.find(sPuid);
@@ -6428,6 +6857,210 @@ void CClient::OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGr
 						}
 					}
 				}
+			}
+		}
+	}
+}
+
+void CClient::closeAllMode(int nGroup)
+{
+	std::map<int, unsigned short *>::iterator iteState = m_MapScreenState.find(nGroup);//³õÊ¼»¯Ò»ÏÂÇÐÆÁµÄoldÖµ
+	if (iteState != m_MapScreenState.end())
+	{
+		memset(iteState->second, 0, 32*32);
+	}
+}
+
+void CClient::Broadcast(int nGroup,int iSwitchGroup,bool bStart)
+{
+	//===±È½ÏºÍÉÏ´Î×´Ì¬ÊÇ·ñÒ»ÖÂ
+	std::map<int,bool>::iterator iterRosLastStatus = mAudioStatusMap.find(nGroup);
+	if(iterRosLastStatus==mAudioStatusMap.end()) 
+	{
+		mAudioStatusMap.insert(std::make_pair(nGroup,bStart));
+	}
+	else  //¶Ô±È×´Ì¬
+	{
+		if(iterRosLastStatus->second == bStart)
+			return;
+		else
+			iterRosLastStatus->second = bStart;
+	}
+
+
+	BYTE		lpBuf[BROADCAST_TO_ID_LEN_EX];
+	BYTE		lpID[10];
+	int			nBufPos = 0, nIDPos = 0;
+	int			nID;
+	TCHAR		chID;
+	CString		strOut, strID;
+	BOOL		bBroadcastEx = FALSE;
+	BOOL		bSucceed = FALSE;
+	char		szID[16] = {0};
+
+	CClientManager* pInstance = CClientManager::GetInstance();
+	char broadCastLog[MAX_STR_LEN]={0};
+	char szOutput[MAX_STR_LEN]={0};
+	int m_wBCFromID,m_wBCToID;
+	std::map<int,int>::iterator iterIdFind =  pInstance->mAudioRosIdMap.find(nGroup);
+	if(iterIdFind==pInstance->mAudioRosIdMap.end())
+	{
+		sprintf_s(broadCastLog,sizeof(broadCastLog)-1,"audio broadcast can not find ros£º%d audio device id",nGroup);
+		pInstance->m_plog->TraceError(broadCastLog);
+		pInstance->SendLog2Dlg(broadCastLog);
+		return;
+	}
+	else
+		m_wBCFromID = iterIdFind->second;
+	iterIdFind =  pInstance->mAudioDeviceIdMap.find(iSwitchGroup);
+	if(iterIdFind==pInstance->mAudioDeviceIdMap.end())
+	{
+		sprintf_s(broadCastLog,sizeof(broadCastLog)-1,"audio broadcast can not find device£º%d audio device id",iSwitchGroup);
+		pInstance->m_plog->TraceError(broadCastLog);
+		pInstance->SendLog2Dlg(broadCastLog);
+		return;
+	}
+	else
+		m_wBCToID = iterIdFind->second;
+
+	if (bStart)
+		sprintf_s(szOutput,sizeof(szOutput)-1,"audio device id£º%d begin to connect audio device id:",m_wBCFromID);
+	else
+		sprintf_s(szOutput,sizeof(szOutput)-1,"audio device id£º%d stop to connect audio device id:",m_wBCFromID);
+	ZeroMemory(lpBuf, BROADCAST_TO_ID_LEN_EX);
+
+	if (m_wBCToID >= 0 && m_wBCToID < 1000)
+	{
+		nID = m_wBCToID - 1;
+		if (nID >= 128)
+			bBroadcastEx = TRUE;
+		lpBuf[nID / 8] |= 1 << (nID % 8);
+		sprintf(szID,"%d,",m_wBCToID);
+		strcat(szOutput,szID);
+	}
+
+	if (bBroadcastEx)
+		bSucceed = IPNBSSDK_CtrlBroadcastEx(m_wBCFromID, lpBuf, bStart);
+	else
+		bSucceed = IPNBSSDK_CtrlBroadcast(m_wBCFromID, lpBuf, bStart);
+	if (bSucceed)
+		strcat(szOutput,"success");
+	else
+		strcat(szOutput,"failed");
+	pInstance->m_plog->TraceInfo(szOutput);
+	pInstance->SendLog2Dlg(szOutput);
+}
+
+void CClient::IpcPtzOperationOpc(int nGroup, int ipcIndex,int nCaramOperation, int iSwitchGroup)
+{
+	char* strPtzBuffer[16]={"WIPER"/*, "ZOOM"*/,"UP","DOWN","LEFT","RIGHT", "ZOOM_ADD", "ZOOM_REDUCE","LEFT_UP","LEFT_DOWN","RIGHT_UP","RIGHT_DOWN","STOP"};
+	int iPtzOld = 0;
+	int iPtzNew = 0;
+	CClientManager* pInstance = CClientManager::GetInstance();
+	int iIPCIndex = ipcIndex;
+	nCaramOperation&=0x00ff;
+	std::string strPTZCmd = "STOP";
+
+	/*select and data change
+	15 ----  14 ----  13 ---- 12 ---  11---  10 --- 9 lenwiper--- 8	Ready	
+	7Select- 6Zoomin---5Zoomout--4panccw--3pancw- 2tiltdown- 1tiltup- 0autozoommode
+
+	---->
+	Select
+	Wiper-Zoomin--ZoomOut--PanCCW--PanCW--TiltDown--TiltUp--AZoom
+	*/		
+	bool bStartPtz = false;
+	bool bAuto = (1 == ((nCaramOperation)&0x01))?true:false;
+	//========================Ê×´ÎÑ¡ÖÐZOOMÖÃ0===================
+	if((m_bZoomAuto[nGroup-1][iIPCIndex][0]!=bAuto)&&bAuto)
+	{
+		int iGroupIpcId = (nGroup<<8)|iIPCIndex;
+
+		GroupIPCIDMap::iterator iteGroupIPCID = CClientManager::GetInstance()->m_GroupIpcId.find(iGroupIpcId);
+		if (iteGroupIPCID == CClientManager::GetInstance()->m_GroupIpcId.end())
+		{   
+			return;
+		} //»ñÈ¡ipcµÄpuid
+		std::string strPUID = iteGroupIPCID->second.strPUID;
+		ZoomMualReset::iterator iteReset = pInstance->mZoomMualReset.find(nGroup);//²éÕÒÊÇ·ñÖÃ0
+		if(iteReset!=pInstance->mZoomMualReset.end())
+		{
+			std::vector<std::string>::iterator iterPuid = std::find((iteReset->second).begin(),
+				(iteReset->second).end(),strPUID);
+			if(iterPuid!=(iteReset->second).end())
+			{
+				if(pInstance->mPtzCommandToCam)
+					pInstance->sendCgiCommadZoom(strPUID,0,nGroup);
+				else
+					pInstance->IpcZoom2TVWALL(strPUID, 0, nGroup);
+			}
+		}
+		Puid2ZoomVaule::iterator itt = m_GroupZoomState.find(strPUID);
+		if(itt!=m_GroupZoomState.end())
+			itt->second = -1;
+	}
+	//=====================================================
+	m_bZoomAuto[nGroup-1][iIPCIndex][0] = bAuto;
+	//iPtzNew  = /*(nCaramOperation & 0x7f) | ((nCaramExt>>1 & 0x01) << 7)*/(nCaramOperation & 0x7E) | (nCaramExt>>1 & 0x01);
+	iPtzNew = nCaramOperation&0x7F;
+	iPtzOld = m_stPtzState[nGroup-1][iIPCIndex];
+
+	if (bAuto)/*select AUTO*/
+	{
+		if(iPtzOld!=iPtzNew)
+		{
+			int iMaskPtz = 1;//ÓêË¢ÔÝÊ±Ã»ÓÐ
+			for (iMaskPtz= 1; iMaskPtz < 8; iMaskPtz++)
+			{
+				if ( 1 == ((iPtzNew>>iMaskPtz)& 0x01))/*start*/
+				{
+					strPTZCmd = strPtzBuffer[iMaskPtz];
+					bStartPtz = true;
+					break;					
+				}
+				if ( 1 == ((iPtzOld>>iMaskPtz)& 0x01))
+				{
+					strPTZCmd = strPtzBuffer[iMaskPtz];
+					bStartPtz = false;
+					break;
+				}
+			}
+			if(pInstance->mPtzCommandToCam) //send to cam
+			{
+				bool rect = false;
+				if (iMaskPtz != 8)//
+				{
+					TCHAR szText[1024] = {0};
+					_stprintf(szText,"group[%d]-iSwithGroup[%d]-Camera[%d]-bit[%d]=1,bit[0] = %d.",nGroup,iSwitchGroup,iIPCIndex,iMaskPtz,((nCaramOperation)&0x01));
+					pInstance->Showlog2Dlg(szText);
+					rect = pInstance->PtzOpration2CAM(nGroup, iIPCIndex,bStartPtz,iMaskPtz, iSwitchGroup);	
+					//ptz²Ù×÷ÈÕÖ¾
+					m_stPtzState[nGroup-1][iIPCIndex] = /*((iMaskPtz == 8) && (bStartPtz==false)) ? 0 :*/iPtzNew;
+					char szlog[MAX_STR_LEN] = {0};
+					if(rect)
+						_snprintf(szlog, MAX_STR_LEN-1, " groupNum-%d; ipcIndex-%d; cmd-%s iPtzOld:%d iPtzNew:%d success", nGroup, iIPCIndex, strPTZCmd.c_str(),iPtzOld,iPtzNew);
+					else
+						_snprintf(szlog, MAX_STR_LEN-1, " groupNum-%d; ipcIndex-%d; cmd-%s iPtzOld:%d iPtzNew:%d failure", nGroup, iIPCIndex, strPTZCmd.c_str(),iPtzOld,iPtzNew);
+					pInstance->m_plog->TracePTZInfo(szlog);
+					pInstance->SendLog2Dlg(szlog);
+				}
+			}
+			else //send to cctv
+			{
+				if (iMaskPtz != 8)//
+				{
+					TCHAR szText[1024] = {0};
+					_stprintf(szText,"group[%d]-iSwithGroup[%d]-Camera[%d]-bit[%d]=1,bit[0] = %d.",nGroup,iSwitchGroup,iIPCIndex,iMaskPtz,((nCaramOperation)&0x01));
+					pInstance->Showlog2Dlg(szText);
+					pInstance->PtzOpration2TVALL(nGroup, iIPCIndex,strPTZCmd,bStartPtz, iSwitchGroup);	
+					m_stPtzState[nGroup-1][iIPCIndex] = /*((iMaskPtz == 8) && (bStartPtz==false)) ? 0 :*/iPtzNew; 
+					//ptz²Ù×÷ÈÕÖ¾
+					char szlog[MAX_STR_LEN] = {0};
+					_snprintf(szlog, MAX_STR_LEN-1, "groupNum-%d; ipcIndex-%d; cmd-%s iPtzOld:%d iPtzNew:%d", nGroup, iIPCIndex, strPTZCmd.c_str(),iPtzOld,iPtzNew);
+					pInstance->m_plog->TracePTZInfo(szlog);
+				}
+				//pInstance->m_plog->WriteFile(pBuf, szlog);//Ð´¶ÁÈ¡µ½µÄÊý¾Ý
+				//}
 			}
 		}
 	}

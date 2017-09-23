@@ -115,7 +115,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\WinHttp;..\..\curl;..\;.;..\..\json;..\..\AX_API;..\..\ModBus;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;..\..\httpClient;..\..\httpClient\socket;..\..\httpClient\string;..\..\httpClient\http;..\..\OPCClient"
+				AdditionalIncludeDirectories="..\..\WinHttp;..\..\curl;..\;.;..\..\json;..\..\AX_API;..\..\ModBus;D:\Qt\4.7.0\include;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;D:\QT\4.7.0\include\QtCore;D:\QT\4.7.0\include\QtGui;..\..\httpClient;..\..\httpClient\socket;..\..\httpClient\string;..\..\httpClient\http;..\..\OPCClient"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;BCCWIN;PLCHZ;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"

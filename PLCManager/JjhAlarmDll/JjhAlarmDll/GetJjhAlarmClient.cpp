@@ -41,6 +41,7 @@ bool GetJjhAlarmClient::Connect(/* std::string& output*/)
 		sprintf_s(szlog, MAX_STR_LEN, "connect EIO-4 failed£¬ip: %s, port: %d", m_ip.c_str(), m_port);
 		m_pParent->m_plog->TraceError(szlog);
 		m_pParent->Showlog2Dlg("connect EIO-4 falied", CONNECT_PLC_ERR);
+
 		return false;
 	}
 	char szlog[MAX_STR_LEN] = {0};

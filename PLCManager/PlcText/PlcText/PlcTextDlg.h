@@ -22,6 +22,7 @@
 #include "MySQLConnector.h"
 //#include "WndSizeManager.h"
 #include "PtzTestPanel.h"
+#include "BugTrap.h"
 
 //#define DEBUG_MODE_Z
 #define LOG_MAX_LEN 2048

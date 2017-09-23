@@ -11,18 +11,15 @@ VIXHZ_EXPORT void InitSdk(CallbackFuncRealData CallBackFun, CallbackFuncLog Call
 	GetJjhAlarmInfo::Instantialize()->m_CallLoginfo = CallBackLogFun;
 	GetJjhAlarmInfo::Instantialize()->m_dwDataUser = dwDataUser;
 	GetJjhAlarmInfo::Instantialize()->m_nRefresh = nRefresh;
-	GetJjhAlarmInfo::Instantialize()->InitData();
-	if (GetJjhAlarmInfo::Instantialize()->m_sJjhServerIp != "0.0.0.0")
-	{
-		GetJjhAlarmInfo::Instantialize()->StartReConnect();//开启定时重连线程
-		GetJjhAlarmInfo::Instantialize()->StartGetJjhInfo(); //开启50ms读取plc_server数据的线程
-	}
+	//GetJjhAlarmInfo::Instantialize()->InitData();
+	//GetJjhAlarmInfo::Instantialize()->StartReConnect();//开启定时重连线程
+	//GetJjhAlarmInfo::Instantialize()->StartGetJjhInfo(); //开启50ms读取plc_server数据的线程
 
-	//JoystickManager::Instantialize()->m_dwDataUser = dwDataUser;
-	//JoystickManager::Instantialize()->m_CallLoginfo = CallBackLogFun;
-	//JoystickManager::Instantialize()->m_InfoCallFun = CallBackFun;
-	//JoystickManager::Instantialize()->InitData();
-	//JoystickManager::Instantialize()->StartJoyStickThread(); //获取安讯士摇杆信息
+	JoystickManager::Instantialize()->m_dwDataUser = dwDataUser;
+	JoystickManager::Instantialize()->m_CallLoginfo = CallBackLogFun;
+	JoystickManager::Instantialize()->m_InfoCallFun = CallBackFun;
+	JoystickManager::Instantialize()->InitData();
+	JoystickManager::Instantialize()->StartJoyStickThread(); //获取安讯士摇杆信息
 	//JoystickManager::Instantialize()->Run();
 
 }

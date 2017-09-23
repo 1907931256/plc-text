@@ -45,6 +45,11 @@ const CLSID CLSID_OPCServerList = {0x13486D51,0x4821,0x11D2,{0xA4,0x94,0x3C,0xB3
 #pragma comment(lib,"ws2_32.lib")
 
 
+
+#include "..\IPNBSSDK\IPNBSSDK_Face.h"
+#pragma comment (lib, "..//IPNBSSDK//IPNBSSDK.lib")
+#pragma warning(disable:4018)
+
 static modbus_t *mModbusServer;
 static modbus_mapping_t *mbMapping;
 static bool mModbusServerListen;
@@ -55,7 +60,7 @@ class CClient;
 typedef std::map<long, CClient*> Clientmap;
 
 #define BLOCK_SIZE_COPY 256  //=====2017/03/15 显示数据时 copy数据的长度
-//#define _showData 1
+#define _showData 1
 //#define GET_READPLC_TIME
 #define MODBUS_NB_CONNECTION 5 //modbus server
 
@@ -576,6 +581,7 @@ public:
 	//===2017/8/9  OPC nanShan
 	void opcInit(); //load opc模式下的配置
 	void readConfigIntString(CIniFile iniFile,std::string groupName,std::string valueName,OpcValueItemNameMap& valueMap);
+	void readConfigIntStringVec(CIniFile iniFile,std::string groupName,OpcValueItemNameMap& valueMap);
 	void GetOpcDataInfo();
 	void RunGetOpcData();
 	void StartReConnectOpc();
@@ -591,7 +597,21 @@ public:
 	void opcSingleItemAdd(Item* item,std::string name);
     bool opcGroupConnectAlways(int nGroup);
 	//void StopGetOpcData();
-	
+
+	//===2017/8/18 音频切换
+	std::string mAudioServerIp;
+	uint mAudioServerPort,mAudioServerStatusPort;
+	//std::string mOpcAudio; //音频切换的OPC itemName
+	std::map<int,int>mAudioRosIdMap;//语音设备ID映射 <ROS,AUDIO>
+	std::map<int,int>mAudioDeviceIdMap;//<DEVICE,AUDIO>
+	BOOL mAudioEnable;
+	OpcValueItemNameMap mAudioIdItemMap;
+	void readAudioConfigure();
+	void AudioServerSet();
+	char* UnicodeToUtf8(const wchar_t* buf);
+	LRESULT OnRecvStatus(WPARAM wParam, LPARAM lParam);
+	static void CALLBACK OnStatusCallBack(DWORD dwInstance, WPARAM wParam, LPARAM lParam);
+
 
 protected:
 	CClientManager();
@@ -760,7 +780,7 @@ public:
 	COPCServer* mOpcServer;
 	COPCGroup* mOpcGroup;
 	OpcItemMap mOpcItemMap; //OPC Item (name,item)
-	OpcValueItemNameMap mOpcRosMap,mOpcRmgMap,mOpcFeetMap,mOpcModeMap,mOpcRccsFeetMap;  //mRosMap :ros对应的item,mOpcRmgMap
+	OpcValueItemNameMap mOpcRosMap,mOpcRmgMap,mOpcFeetMap,mOpcModeMap,mOpcRccsFeetMap,mOpcPtzManualMap;  //mRosMap :ros对应的item,mOpcRmgMap
 	std::vector<int> mOpcConnetAlwaysRos;
 	//OpcFeetMap mOpcFeetMap; //feet索引 itemName (20,2020,40,45)
     //OpcScreenModeMap mOpcModeMap;// 模式索引 itemName 
@@ -770,6 +790,8 @@ public:
 	HANDLE m_ReConnectOpcThread;
 	HANDLE m_GetOpcDataThread;
 	bool mOpcFlag;
+	std::map<int,std::vector<int>> mModeNoZoomMap; //在此模式下不进行变焦
+	std::map<int,std::vector<int>> mSpecialModeZoomMap; //此模式下执行ZOOM2
 
 private:
 	AX_Mutex m_lockClient;	
@@ -882,5 +904,14 @@ protected:
 	void ReadOpcDataProcess();
 	Item* opcItemFind(std::string name);
 	void OpcSwitchScreen(int nGroup, int mode, int iSwitchGroup);
-	void OpcIpcZoomOperation(int nGroup ,int height, int feet,int iSwitchGroup);
+	void OpcIpcZoomOperation(int nGroup ,int height, int feet,int mode,int iSwitchGroup);
+
+	//===2017-8-21
+	void closeAllMode(int nGroup);
+
+	//==2017/8/22 audio 
+	std::map<int,bool>mAudioStatusMap;//记录每个操作台的语音设备状态
+	void Broadcast(int nGroup,int iSwitchGroup,bool bStart);
+	//==2017-9-2 opc ptz manual
+	void IpcPtzOperationOpc(int nGroup, int ipcIndex, int nCaramOperation, int iSwitchGroup);
 };

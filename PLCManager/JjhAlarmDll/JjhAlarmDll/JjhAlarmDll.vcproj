@@ -172,6 +172,10 @@
 				RelativePath=".\AxisJoyType.h"
 				>
 			</File>
+			<File
+				RelativePath=".\GetAxisJoyStickCom.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="资源文件"
@@ -243,10 +247,6 @@
 				>
 				<File
 					RelativePath=".\Dump.h"
-					>
-				</File>
-				<File
-					RelativePath=".\GetAxisJoyStickCom.h"
 					>
 				</File>
 				<File

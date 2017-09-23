@@ -14,6 +14,8 @@
 
 static char RequestBuf[12] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x01, 0x01, 0x00, 0x0A, 0x00, 0x01};
 
+
+
 typedef struct IpcId2Monitorid
 {
 	std::string sIpcId;
@@ -83,9 +85,10 @@ public:
 	CallbackFuncRealData m_InfoCallFun;
 	CallbackFuncLog m_CallLoginfo;
 	Logger *m_plog;
-	std::string m_sJjhServerIp;
-	int m_iJjhServerPort;
-	int m_lastValueEIO;
+	//======2017/1/5===============
+	std::vector<std::string>puidfEIO;
+	CRITICAL_SECTION g_cs;  //Ëø
+
 private:
 	AX_Mutex m_Lock;
 	int m_iCurAlarmState;
@@ -95,7 +98,9 @@ private:
 	bool m_bReConnect;
 	bool m_bGetInfo;
 	MapJjhScreen m_MapJjhScreen;
-	
+	std::string m_sJjhServerIp;
+	int m_iJjhServerPort;
 	int m_iKeyId;
 	int m_iLogLevel;
+
 };  

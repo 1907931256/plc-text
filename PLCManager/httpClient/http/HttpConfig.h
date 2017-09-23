@@ -16,6 +16,8 @@
 #include <map>
 #include <vector>
 
+#define HTTPRESPONCE_TIME 1500
+
 typedef struct
 {
 	std::string user;
@@ -42,6 +44,8 @@ public:
 	bool SetJsonBody(const char* body);
 
 	bool Start(std::string& output);
+
+	bool StartHeartBeat( std::string& output);
 public: //!ITPListener
 	virtual int onData(int engineId, int connId, const char* data, int len);
 	virtual int onClose(int engineId, int connId);

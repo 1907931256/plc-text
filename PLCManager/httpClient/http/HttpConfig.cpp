@@ -275,6 +275,87 @@ DIGIST:
 	return false;
 }
 
+bool CCuHttpConfigClient::StartHeartBeat( std::string& output)
+{
+	DWORD dwTick = GetTickCount();
+	_connection->SetSelectTimeout(1, 0);
+	int ret = _connection->Connect(m_ip.c_str(), m_port);
+	_connection->SetSelectTimeout(0, 0);
+	DWORD dwSpan = GetTickCount() - dwTick;
+	if (ret <= 0 )
+	{
+		return false;
+	}
+
+	//!组包
+	HTTPRequest http_request;
+	http_request.method = M_POST;
+	if (m_chn_num != 0 )
+	{
+		sprintf(http_request.url,  "%s?chstart=%d&chnum=%d", 
+			m_query_str.c_str(), m_chn_start, m_chn_num);
+	}
+	else
+	{
+		sprintf(http_request.url,  "%s", m_query_str.c_str());
+	}
+
+	http_request.contentType = CONTENT_TYPE_JSON;
+
+	if (m_json_body.length() > 0 )
+	{
+		http_request.setBody(m_json_body.c_str(), m_json_body.length());
+	}
+
+	//std::string tmp,tmp1;
+	//tmp = m_username + ":" + m_passwd;
+	//base::Base64Encode(tmp,&tmp1);
+	//base::snprintf(http_request.Authorization, sizeof(http_request.Authorization), "Basic %s", tmp1.c_str());
+	sprintf(http_request.host,  "%s:%d", m_ip.c_str(), m_port);
+	sprintf(http_request.connection, "%s", "keep-alive");
+
+	char* requst_c_str = http_request.toStream();
+	_connection->Send(0, requst_c_str, strlen(requst_c_str));
+
+	unsigned long time_begin = GetTickCount();
+
+	while(!m_bResponse)
+	{
+		int ret = _connection->Heartbeat();
+		if ( ret < TP_NORMAL_RET )
+		{
+			break;
+		}
+		else if(ret > TP_NORMAL_RET )
+		{
+			if (GetTickCount() - time_begin > HTTPRESPONCE_TIME)
+			{
+				return false;
+			}
+#ifdef WIN32
+			Sleep(1);
+#else
+			usleep(10000);
+#endif
+		}
+	}
+	_connection->Close();
+
+	if (m_httpReponse && m_httpReponse->result == 200 )
+	{
+		//!分析应答包
+		//if (m_chn_num != 0 )
+		{
+			//!查询配置包,要把查询到的配置导出来
+			output = m_httpReponse->getBody();
+		}
+		return true;
+	}
+
+	return false;
+}
+
+
 int CCuHttpConfigClient::onData( int engineId, int connId, const char* data, int len )
 {
 	m_recv_buf.append(data, len);

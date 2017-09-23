@@ -2,8 +2,16 @@
 
 #include "GetJjhAlarmInfo.h"
 
+//#include "GetAxisJoyStickCom.h"
 
-GetJjhAlarmInfo* GetJjhAlarmInfo::pInstance = 0;  
+ 
+
+//#ifndef _JjhJogStick
+//#define _JjhJogStick
+GetJjhAlarmInfo* GetJjhAlarmInfo::pInstance = 0; 
+
+//#endif
+
 
 GetJjhAlarmInfo* GetJjhAlarmInfo::Instantialize()  
 { 
@@ -16,6 +24,7 @@ GetJjhAlarmInfo* GetJjhAlarmInfo::Instantialize()
 			pInstance = new GetJjhAlarmInfo();  
 		}  
 	}  
+
 	return pInstance;  
 }  
 
@@ -39,7 +48,7 @@ GetJjhAlarmInfo::GetJjhAlarmInfo()
 	m_bGetInfo = false;
 	m_nRefresh = 50;
 	m_iCurAlarmState = 0;
-	m_lastValueEIO = 0;
+	InitializeCriticalSection(&g_cs); //初始化锁_2017/1/4
 	m_pGetAlarmClient = new GetJjhAlarmClient(this);
 }
 GetJjhAlarmInfo::~GetJjhAlarmInfo()
@@ -55,7 +64,7 @@ GetJjhAlarmInfo::~GetJjhAlarmInfo()
 
 void GetJjhAlarmInfo::InitData()
 {
-	CIniFile iniFile(GetCurrentPath() + "\\Config\\General.ini");
+	CIniFile iniFile(GetCurrentPath() + "\\config\\General.ini");
 
 	m_MapJjhScreen.empty();
 	std::vector<std::string> JjhScreenAddArray;
@@ -94,16 +103,6 @@ void GetJjhAlarmInfo::InitData()
 	iniFile.ReadInt("ADDR", "ServerKeyId", m_iKeyId);
 	iniFile.ReadInt("LOGLEVEl", "level", m_iLogLevel);
 
-	int eioType =0;
-	iniFile.ReadInt("JJHADDR","DeviceType",eioType);
-	if(eioType==8)
-	{
-		RequestBuf[11]= 0x08;
-	}
-	else if(eioType==4)
-	{
-		RequestBuf[11]=0x01;
-	}
 	//iniFile.ReadString("ADDR", "TvWallPromat", m_TvWallPromat);
 	m_pGetAlarmClient->SetIP(m_sJjhServerIp.c_str(), m_iJjhServerPort);
 
@@ -127,7 +126,6 @@ void GetJjhAlarmInfo::StartReConnect()
 {
 	DWORD dwThreadID;
 	m_bReConnect = true;
-
 	m_ReConnectThread = CreateThread( 0 , 0 , (LPTHREAD_START_ROUTINE)WorkThreadReConnect , this , 0 , &dwThreadID);
 }
 
@@ -202,16 +200,26 @@ void GetJjhAlarmInfo::ParseRevData(const char *pData, int iLen)
 	if (iLen == RESPONSE_LEN) //不是获取的input1,2,3,4端子的数据不处理
 	{
 		int iValue = pData[RESPONSE_LEN - 1] & 0xff;//(0-15代表不同的状态)
-		if(iValue!=m_lastValueEIO)
-		{
-			char szlog[MAX_STR_LEN] = {0};
-			sprintf_s(szlog, MAX_STR_LEN, "EIO read  value:%d",iValue);
-			Showlog2Dlg(szlog,CONNECT_PLC_SUC);
-			m_lastValueEIO = iValue;
-		}
+//============打印端口号======================================
+		//char valueOut[50];
+		//sprintf_s(valueOut,"EIO-4 value %d",iValue);
+		//Showlog2Dlg(valueOut, CONNECT_PLC_SUC);
+		//=====================================================================
+
 		MapJjhScreen::iterator ite = m_MapJjhScreen.find(iValue);
 		if (ite != m_MapJjhScreen.end() && iValue != m_iCurAlarmState)
 		{
+			//==========传给摇杆使用 2017/1/4========
+			EnterCriticalSection(&g_cs);
+			puidfEIO.clear();
+			for (VecIpc::iterator ite_win = ite->second._VecIpc.begin(); 
+				ite_win != ite->second._VecIpc.end(); ite_win++)
+			{
+				puidfEIO.push_back(ite_win->sIpcId);
+			}
+			LeaveCriticalSection(&g_cs);
+			//=======================================
+
 			m_iCurAlarmState = iValue;
 			std::string sRet;
 			sRet.append("{");
