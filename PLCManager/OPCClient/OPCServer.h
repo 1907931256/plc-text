@@ -189,6 +189,7 @@ public:
 	DWORD add_items(DWORD item_count, Item* items);
 	void write_item(BOOL async, CString value, Item* item = NULL);
 	//void read_item(Item* item = NULL);
+	int read_item(bool& readStatus,Item* item = NULL);
 	int read_item(Item* item = NULL);
 	void remove_item();
 	

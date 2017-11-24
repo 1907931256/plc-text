@@ -1,0 +1,74 @@
+10:46:24 INFO: openSocket failed
+10:46:24 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:46:25 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:46:26 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:46:32 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:46:33 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:46:34 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:46:40 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:46:41 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:46:42 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:46:43 INFO: openSocket successful
+10:46:43 INFO: daveNewConnection: 67186296, Mpi=2, nrack=0, slot=2
+10:46:44 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+10:46:44 INFO: screen switch error: can not find data group:1,screen id:3 mode:0
+10:46:44 INFO: screen switch error: can not find data group:1,screen id:4
+10:46:44 INFO: screen switch error: can not find data group:1,screen id:5
+10:46:44 INFO: screen switch error: can not find data group:1,screen id:6
+10:46:48 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:46:49 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:46:50 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:46:56 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:46:57 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:46:58 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:04 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:05 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:06 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:12 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:13 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:14 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:20 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:21 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:22 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:28 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:29 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:30 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:36 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:37 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:38 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:44 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:45 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:46 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:47:52 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:47:53 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:47:54 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:00 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:01 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:02 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:09 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:10 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:11 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:17 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:18 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:19 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:25 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:26 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:27 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:33 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:34 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:35 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:41 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:42 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:43 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:49 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:50 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:51 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:48:57 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:48:58 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:48:59 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:49:05 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:49:06 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:49:07 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:49:13 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:49:14 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:49:15 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445

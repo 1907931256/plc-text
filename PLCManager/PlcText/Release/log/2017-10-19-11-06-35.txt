@@ -1,0 +1,6 @@
+11:06:35 INFO: audio server set success
+11:06:36 INFO: opc server ZPMC.OPCServer.2 connect success!
+11:06:36 INFO: opc server и[§0бUоюоюоюою/Эіс connect success!
+11:06:41 INFO: add item LocalPLC_RMG.RMG1.SPR20 success!
+11:06:43 INFO: add item LocalPLC_RMG.RMG1.SPR40 success!
+11:06:43 INFO: add item LocalPLC_RMG.RMG1.SPR45 success!

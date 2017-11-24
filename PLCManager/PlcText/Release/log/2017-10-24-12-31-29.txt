@@ -1,0 +1,90 @@
+12:31:29 INFO: audio server set success
+12:31:30 INFO: opc server Ø› connect success!
+12:31:30 INFO: opc server ZPMC.OPCServer.2 connect success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.SPR20 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.SPR40 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.SPR45 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.SPR2020 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.SPR20 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.SPR40 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.SPR45 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.SPR2020 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode1 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode2 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode3 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode4 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode5 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode6 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode7 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode8 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode9 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode1 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode2 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode3 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode4 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode5 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode6 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode7 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode8 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode9 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode1 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode2 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode3 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode4 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode5 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode6 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode7 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode8 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTV_Mode9 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.ROS_SPR_20CMD success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.ROS_SPR_40CMD success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.ROS_SPR_45CMD success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.ROS_SPR_2020_FEET success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTVM1 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTVM2 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTVM4 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTVM3 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.CCTVM5 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTVM1 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTVM2 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTVM4 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTVM3 failured!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.CCTVM5 failured!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTVM1 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTVM2 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTVM4 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTVM3 success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.CCTVM5 success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG1.TPOS success!
+12:31:30 INFO: add item LocalPLC_RMG.RMG2.TPOS success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.ROS_HPOS success!
+12:31:30 INFO: add item RemotePLC.RCCS.RCS01.ArmgNumber success!
+12:31:30 INFO: add item RemotePLC.RCCS.RCS02.ArmgNumber success!
+12:31:30 INFO: add item RemotePLC.RCCS.RCS02.ArmgNumber success!
+12:31:30 INFO: add item RemotePLC.RCCS.Communication.Audio1_OnOff success!
+12:31:30 INFO: add item RemotePLC.RCCS.Communication.Audio2_OnOff success!
+12:31:30 INFO: add item LocalPLC_STS.STS1.Audio_OnOff success!
+12:31:35 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+12:31:35 INFO: screen switch error: can not find data group:1,screen id:3 mode:0
+12:31:35 INFO: screen switch error: can not find data group:1,screen id:4
+12:31:35 INFO: screen switch error: can not find data group:1,screen id:5
+12:31:35 INFO: screen switch error: can not find data group:1,screen id:6
+12:31:54 INFO: audio device id£º1 stop to connect audio device id:4,success
+12:31:54 TVWALL: Ip:10.60.1.3£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":1,"mode":1}
+12:31:55 TVWALL: Ip:10.60.1.3£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000021","monitor_id":1,"stream_type":1}]}
+12:31:56 TVWALL: Ip:10.60.1.3£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":2,"number":4,"mode":1}
+12:31:57 TVWALL: Ip:10.60.1.3£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000015","monitor_id":65,"stream_type":1},{"ipc_id":"3301061000016","monitor_id":66,"stream_type":1},{"ipc_id":"3301061000017","monitor_id":67,"stream_type":1},{"ipc_id":"3301061000018","monitor_id":68,"stream_type":1}]}
+12:31:58 INFO: screen switch error: can not find data group:2,screen id:3 mode:0
+12:31:58 INFO: screen switch error: can not find data group:2,screen id:4
+12:31:58 INFO: screen switch error: can not find data group:2,screen id:5
+12:31:58 INFO: screen switch error: can not find data group:2,screen id:6
+12:32:11 INFO: audio device id£º2 stop to connect audio device id:5,success
+12:32:11 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":3,"mode":1}
+12:32:12 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000034","monitor_id":1,"stream_type":1},{"ipc_id":"3301061000041","monitor_id":2,"stream_type":1},{"ipc_id":"3301061000042","monitor_id":3,"stream_type":1}]}
+12:32:13 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":2,"number":1,"mode":1}
+12:32:14 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000029","monitor_id":65,"stream_type":1}]}
+12:32:15 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":3,"number":1,"mode":1}
+12:32:16 TVWALL: Ip:10.60.1.4£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000030","monitor_id":129,"stream_type":1}]}
+12:32:17 INFO: screen switch error: can not find data group:3,screen id:4
+12:32:17 INFO: screen switch error: can not find data group:3,screen id:5
+12:32:17 INFO: screen switch error: can not find data group:3,screen id:6

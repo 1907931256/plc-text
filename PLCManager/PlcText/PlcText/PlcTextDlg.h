@@ -24,6 +24,8 @@
 #include "PtzTestPanel.h"
 #include "BugTrap.h"
 
+#include "VS300ClientSDK.h"
+
 //#define DEBUG_MODE_Z
 #define LOG_MAX_LEN 2048
 #define REQUEST_SLEEP_TIME 30000
@@ -201,6 +203,16 @@ public:  //2017/03/15 dataViewer
 	afx_msg LRESULT OnPtzTestClick(WPARAM wParam,LPARAM lParam);
 	CPtzTestPanel* mPtzTest;
 	afx_msg LRESULT OnPtzOperation(WPARAM wParam,LPARAM lParam);
+
+	//====as300 sdk 获取相机状态
+	bool as300LoginStatus;
+	bool ipcStatusFromAs300Sdk;
+	long m_as300_login_id;
+	void getIpcStatusAs300Sdk();
+	void as300ServerLogin();
+	void as300ServerLogout();
+	void checkIpcStatusAs300Sdk();
+	void setIpcStatus();
 
 public:
 	void InitLanguage();

@@ -1,0 +1,17 @@
+16:37:00 INFO: openSocket failed
+16:37:00 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:37:02 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:37:03 INFO: openSocket successful
+16:37:03 INFO: daveNewConnection: 60173944, Mpi=2, nrack=0, slot=2
+16:37:03 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+16:37:03 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:37:03 INFO: screen switch error: can not find data group:1,screen id:3 mode:0
+16:37:03 INFO: screen switch error: can not find data group:1,screen id:4
+16:37:03 INFO: screen switch error: can not find data group:1,screen id:5
+16:37:03 INFO: screen switch error: can not find data group:1,screen id:6
+16:37:09 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:37:10 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:37:11 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:37:17 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:37:18 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:37:19 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445

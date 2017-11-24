@@ -1,0 +1,37 @@
+16:12:43 INFO: openSocket successful
+16:12:43 INFO: daveNewConnection: 65945520, Mpi=2, nrack=0, slot=2
+16:12:43 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+16:14:28 INFO: screen switch error: can not find data group:1,screen id:6
+16:14:42 INFO: screen switch error: can not find data group:2,screen id:6
+16:14:42 INFO: screen switch error: can not find data group:3,screen id:6
+16:14:42 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.11, port-33445
+16:14:44 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.12, port-33445
+16:14:46 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.13, port-33445
+16:14:48 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.14, port-33445
+16:14:49 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.15, port-33445
+16:14:51 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.16, port-33445
+16:14:53 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.21, port-33445
+16:14:55 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.22, port-33445
+16:14:57 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.23, port-33445
+16:14:59 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.24, port-33445
+16:15:00 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.25, port-33445
+16:15:02 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.26, port-33445
+16:15:02 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":4,"mode":1}
+16:15:03 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"330106100100601","monitor_id":1,"stream_type":1},{"ipc_id":"330106100101201","monitor_id":2,"stream_type":1},{"ipc_id":"330106100102401","monitor_id":3,"stream_type":1},{"ipc_id":"330106100102201","monitor_id":4,"stream_type":1}]}
+16:15:04 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":2,"number":1,"mode":1}
+16:15:05 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"330106100100201","monitor_id":65,"stream_type":1}]}
+16:15:06 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":3,"number":1,"mode":1}
+16:15:07 TVWALL: Ip:172.21.4.22£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"330106100100101","monitor_id":129,"stream_type":1}]}
+16:15:08 TVWALL: Ip:172.21.4.21£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":3,"mode":1}
+16:15:09 TVWALL: Ip:172.21.4.21£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"330106100100701","monitor_id":1,"stream_type":1},{"ipc_id":"330106100102601","monitor_id":2,"stream_type":1},{"ipc_id":"330106100102701","monitor_id":3,"stream_type":1}]}
+16:15:10 TVWALL: Ip:172.21.4.21£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":3,"number":4,"mode":1}
+16:15:11 TVWALL: Ip:172.21.4.21£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"330106100100501","monitor_id":129,"stream_type":1},{"ipc_id":"330106100101801","monitor_id":130,"stream_type":1},{"ipc_id":"330106100102301","monitor_id":131,"stream_type":1},{"ipc_id":"330106100102501","monitor_id":132,"stream_type":1}]}
+16:15:12 INFO: screen switch error: can not find data group:1,screen id:6
+16:15:13 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.27, port-33445
+16:15:15 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.28, port-33445
+16:15:17 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.29, port-33445
+16:15:18 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.30, port-33445
+16:15:20 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.31, port-33445
+16:15:22 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.32, port-33445
+16:15:28 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.11, port-33445
+16:15:30 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.12, port-33445

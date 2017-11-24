@@ -1,0 +1,7 @@
+15:03:57 INFO: openSocket failed
+15:03:57 INFO: wait HeartBeat timeout, tvwall_ip-10.212.58.29, port-33445
+15:03:59 INFO: wait HeartBeat timeout, tvwall_ip-10.212.58.30, port-33445
+15:04:00 INFO: wait HeartBeat timeout, tvwall_ip-172.27.21.100, port-33445
+15:04:01 INFO: wait HeartBeat timeout, tvwall_ip-172.27.21.20, port-33445
+15:04:02 INFO: wait HeartBeat timeout, tvwall_ip-172.27.21.30, port-33445
+15:04:03 INFO: wait HeartBeat timeout, tvwall_ip-172.27.21.40, port-33445

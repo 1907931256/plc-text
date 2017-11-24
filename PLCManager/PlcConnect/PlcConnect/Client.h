@@ -55,6 +55,8 @@ static modbus_mapping_t *mbMapping;
 static bool mModbusServerListen;
 static int mModbusServerSocket;
 
+#define M2W(mStrNull, pWBuf, nWSize) MultiByteToWideChar(CP_ACP, 0, mStrNull, -1, pWBuf, nWSize)//string to wstring
+#define W2M(wStrNull, pMBuf, nMSize) WideCharToMultiByte(CP_ACP, 0, wStrNull, -1, pMBuf, nMSize, NULL, NULL)//wstring to string
 
 class CClient;
 typedef std::map<long, CClient*> Clientmap;
@@ -590,6 +592,7 @@ public:
 	void StartGetOpcData();
 	void StopGetOpcData();
 	void opcServerConnect();
+	void opcServerDisconnect();
 	static void *WorkThreadReadOpcData(void *lpParam);
 	static void *WorkThreadReConnectOpc(void *lpParam);
 	wchar_t * UTF8ToUnicode( const char* str );
@@ -611,7 +614,8 @@ public:
 	char* UnicodeToUtf8(const wchar_t* buf);
 	LRESULT OnRecvStatus(WPARAM wParam, LPARAM lParam);
 	static void CALLBACK OnStatusCallBack(DWORD dwInstance, WPARAM wParam, LPARAM lParam);
-
+    BOOL MStrToWStr(CStringW & strCS, std::string & sStr);
+	BOOL WStrToMStr(CStringW & strCS, std::string & sStr);
 
 protected:
 	CClientManager();
@@ -767,6 +771,8 @@ public:
 	std::map<int,bool>mGroupSwitchFirst;
 	//==2017/6/9 PTZ指令直接发送到相机
 	bool mPtzCommandToCam;
+	//==2017/10/13 PTZ指令特殊发送的相机
+	std::map<int,int>mPtzCommandSendSpecialMap ; //1: to cam, 0:to tvwall
 
 	int ptzOperationCmdOld;
 	//===========TCP/IP Connect PLC 2017/3/27=======
@@ -858,6 +864,9 @@ public:
 	void HeartBeetModbus();
 	bool AutoZoom(int nGroup, string strPUID);
 	bool sceneZoom(const unsigned char*pBuf,std::string puid);//根据场景ZOOM 判断 2017/1/9
+
+	//=== 判断该相机是否为特殊PTZ发送方式
+	bool isSpecialPtz(int nGroup,int iIPCIndex,int& specialValue);
 protected:
 	CClient(CClientManager *pClientMgr, PLCADDRDataInfo info);
 

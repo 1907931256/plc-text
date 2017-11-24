@@ -1,0 +1,43 @@
+16:34:33 INFO: openSocket failed
+16:34:33 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:34:35 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:34:37 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:34:43 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:34:45 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:34:47 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:34:53 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:34:55 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:34:56 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:02 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:03 INFO: openSocket failed
+16:35:03 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:05 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:11 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:13 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:15 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:17 INFO: openSocket successful
+16:35:17 INFO: daveNewConnection: 59256440, Mpi=2, nrack=0, slot=2
+16:35:17 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+16:35:17 INFO: screen switch error: can not find data group:1,screen id:3 mode:0
+16:35:17 INFO: screen switch error: can not find data group:1,screen id:4
+16:35:17 INFO: screen switch error: can not find data group:1,screen id:5
+16:35:17 INFO: screen switch error: can not find data group:1,screen id:6
+16:35:21 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:22 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:23 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:24 TVWALL: Ip:10.60.1.2£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":1,"mode":1}
+16:35:25 TVWALL: Ip:10.60.1.2£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000009","monitor_id":1,"stream_type":1}]}
+16:35:29 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:30 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:31 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:37 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:38 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:39 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:45 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:46 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:47 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+16:35:52 TVWALL: Ip:10.60.1.2£¬port:33445, info:{"key_id":12,"command":"SCREEN_CUT","reset":1,"screen_id":1,"number":1,"mode":1}
+16:35:53 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+16:35:53 TVWALL: Ip:10.60.1.2£¬port:33445, info:{"key_id":12,"command":"MAP_IPC","TextBar":0,"maps":[{"ipc_id":"3301061000009","monitor_id":1,"stream_type":1}]}
+16:35:54 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+16:35:55 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445

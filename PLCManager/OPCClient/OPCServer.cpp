@@ -683,7 +683,7 @@ COPCGroup* COPCServer::add_group(COPCGroup *group)
 	DWORD	rate;
 	
 	HRESULT hr = opc_server.AddGroup(
-		L"Chenmaoxiang",
+		L"Mago",
 		active,
 		update_rate,
 		(OPCHANDLE)group,
@@ -706,7 +706,7 @@ COPCGroup* COPCServer::add_group(COPCGroup *group)
 #ifdef FULL_TEST
 	IOPCGroupStateMgt* pTest=NULL;
 	hr = opc_server.GetGroupByName( 
-		L"Chenmaoxiang", 
+		L"Mago", 
 		IID_IOPCGroupStateMgt, 
 		(LPUNKNOWN*)&pTest );
 	if( SUCCEEDED(hr) )
@@ -974,8 +974,9 @@ void COPCServer::remove_group(COPCGroup *group)
 
 //读取点
 //void COPCGroup::read_item(Item *item)
-int COPCGroup::read_item(Item *item)
+int COPCGroup::read_item(bool& readStatus,Item *item)
 {
+	readStatus = true;
 	//OPCITEMRESULT*	results;
 	HRESULT*	errors;
 	HRESULT hr;
@@ -1047,9 +1048,103 @@ int COPCGroup::read_item(Item *item)
 			CoTaskMemFree(errors);
 		}
 		else{
-			CString errorLog;
-			errorLog.Format(_T("SysncIO Read %s failed: %s"),item->name,hr);
-			TRACE(errorLog);
+			readStatus = false;
+		//	CString errorLog;
+		//	errorLog.Format(_T("SysncIO Read %s failed: %s"),item->name,hr);
+		//	TRACE(errorLog);
+		
+			
+			//	theDoc->ReportError(_T("SysncIO Read: "), hr);
+			//return 0;
+		}
+
+		sync_io.Detach();
+	}
+	return result;
+}
+
+//读取点
+//void COPCGroup::read_item(Item *item)
+int COPCGroup::read_item(Item *item)
+{
+
+	//OPCITEMRESULT*	results;
+	HRESULT*	errors;
+	HRESULT hr;
+	int result=0;
+
+	OPCSyncIO sync_io;
+	hr = sync_io.Attach(opc_group);
+	if(SUCCEEDED(hr)){
+		OPCITEMSTATE* item_state = NULL;
+		hr = sync_io.Read(
+			OPC_DS_CACHE,
+			1,
+			&item->hServerHandle,
+			&item_state,
+			&errors);
+		if(SUCCEEDED(hr)){
+			ASSERT(item_state->hClient == (OPCHANDLE)item);
+			item->quality = item_state->wQuality;
+			item->value = item_state->vDataValue;
+
+			//CString errorLog;
+			//CString valueGet = item->value.boolVal ? _T("1") : _T("0");
+			//
+			//errorLog.Format(_T("SysncIO Read %s success value: "),item->name);
+			//errorLog = errorLog + valueGet + _T("\n");
+			//TRACE(errorLog);
+
+			switch(item->value.vt){
+				case VT_I2:
+					//strType = _T("int");
+					//strValue.Format(_T("%d"), item->value.iVal);
+					result = item->value.intVal;
+					break;
+				case VT_UI1:
+					//strType = _T("uint");
+					//strValue.Format(_T("%d"),item->value.bVal);
+					result = item->value.intVal;
+					break;
+				case VT_I4:
+					//strType = _T("long");
+					//strValue.Format(_T("%d"), item->value.lVal);
+					result = item->value.intVal; //数据丢失！！！
+					break;
+				case VT_R4:
+					//strType = _T("float");
+					//strValue.Format(_T("%f"), item->value.fltVal);
+					break;
+				case VT_R8:
+					//strType = _T("double");
+					//strValue.Format(_T("%f"), item->value.dblVal);
+					break;
+				case VT_BOOL:
+					//strType = _T("bool");
+					//strValue = item->value.boolVal ? _T("1") : _T("0");
+					result = item->value.boolVal ? 1 : 0;
+					break;
+				case VT_BSTR:
+					//strType = _T("string");
+					//strValue = item->value.bstrVal;
+					break;
+				default:
+					//strType = _T("unknown");
+					//strValue = _T("");
+					break;
+			}
+
+			VariantClear(&item_state->vDataValue);
+			CoTaskMemFree(item_state);
+			CoTaskMemFree(errors);
+		}
+		else{
+
+				CString errorLog;
+			//	errorLog.Format(_T("SysncIO Read %s failed: %s"),item->name,hr);
+			//	TRACE(errorLog);
+
+
 			//	theDoc->ReportError(_T("SysncIO Read: "), hr);
 			//return 0;
 		}

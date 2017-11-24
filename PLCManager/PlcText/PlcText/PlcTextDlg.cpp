@@ -334,7 +334,7 @@ BOOL CPlcTextDlg::OnInitDialog()
 					WStrToMStr(GroupIPCId[2],ipcIdStr);
 					ipcGet.ipcId = ipcIdStr;
 					ipcGet.ipcStatus = 0;
-					mIpcInfoMap.insert(std::make_pair(ipcIdStr.substr(0,ipcIdStr.length()),ipcGet));//AS300 IPCID 比配置少两位
+					mIpcInfoMap.insert(std::make_pair(ipcIdStr.substr(0,ipcIdStr.length()-2),ipcGet));//AS300 IPCID 比配置少两位
 				}
 				m_nGroup++;
 			}
@@ -358,15 +358,24 @@ BOOL CPlcTextDlg::OnInitDialog()
 	/////==========ipc get from as3oo database=====
 	int ipcStaFromdBbEnable=0;
 	iniFile.ReadInt(_T("IPCINFOFROMAS300"),_T("Enable"),ipcStaFromdBbEnable);
-	if(ipcStaFromdBbEnable)
+	if(ipcStaFromdBbEnable==1)
 	{
 		ipcStaFromAs300 = true;
 		mAs300DatabaseConnect = false;
+		ipcStatusFromAs300Sdk = false;
+	}
+	else if(ipcStaFromdBbEnable==2)
+	{
+		ipcStatusFromAs300Sdk = true;
+		as300LoginStatus = false;
+		ipcStaFromAs300 = false;
 	}
 	else
 	{
 		ipcStaFromAs300 = false;
 		mAs300DatabaseConnect = false;
+		ipcStatusFromAs300Sdk = false;
+		as300LoginStatus = false;
 	}
 
 	m_LogList.SetHorizontalExtent(2000);
@@ -432,7 +441,6 @@ BOOL CPlcTextDlg::OnInitDialog()
 	CString title = _T("Mago ") + _CS("SoftwareTitle") + dllNameTitle + _T("         ") + GetVersionData() + _T("    ") + GetBuildTime();
 	this->SetWindowText(title);
 
-	getIpcStatusMysql();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -833,6 +841,7 @@ void CPlcTextDlg::Restart()
 				CString str;
 				str.Format(_T(", %d"), err);
 				MessageBox(_CS("Restart_Failed")+str);
+				ipcStatusFromAs300Sdk = false;
 			}
 		}
 		Sleep(200);
@@ -843,7 +852,16 @@ void CPlcTextDlg::Run()
 {
 	while(m_bStart)
 	{
-		if(!ipcStaFromAs300)
+		if(ipcStaFromAs300)
+		{
+			getIpcStatusMysql();
+	
+		}
+		else if(ipcStatusFromAs300Sdk)
+		{
+			getIpcStatusAs300Sdk();
+		}
+		else 
 		{
 			if (GetTickCount() - m_lHeartTime >= 5000)
 			{
@@ -855,10 +873,6 @@ void CPlcTextDlg::Run()
 				m_lIpcStateTime = GetTickCount();
 				GetIpcStateList();
 			}
-		}
-		else 
-		{
-			getIpcStatusMysql();
 		}
 		Sleep(1000);
 		
@@ -1560,26 +1574,7 @@ void CPlcTextDlg::getIpcStatusMysql()
 			m_pDBConnector = NULL;
 			mAs300DatabaseConnect = false;
 		}
-		for(std::map<std::string,ipcInfo>::iterator ipcInfoIte=mIpcInfoMap.begin();ipcInfoIte!=mIpcInfoMap.end();ipcInfoIte++)
-		{
-			int iState = ipcInfoIte->second.ipcStatus;
-			std::string sOnLine, sOffLine;
-			WStrToMStr(_CS("OnLine"), sOnLine);
-			WStrToMStr(_CS("OffLine"), sOffLine);
-			std::string sState = iState == 2 ? sOnLine : sOffLine;
-			char szlog[LOG_MAX_LEN] = {0};
-			_snprintf(szlog, LOG_MAX_LEN-1, "(%s, %s)", ipcInfoIte->second.ipcId.c_str(), sState.c_str());
-			wchar_t *p = UTF8ToUnicode(ipcInfoIte->second.ipcName.c_str());
-			CString strName(p);
-			CString strIdState(szlog);
-			CString csChlId(ipcInfoIte->second.ipcId.c_str());
-			free(p);
-			InsertTree(ipcInfoIte->second.group, iState, strIdState, strName, csChlId);
-			char ipcStateW[100]={0};
-			sprintf_s(ipcStateW,sizeof(ipcStateW)-1,"%d,%d,%d",ipcInfoIte->second.group,ipcInfoIte->second.index,iState); //group index status
-			LoadInstance::Instance()->set_ipc_state(ipcStateW);
-			ipcInfoIte->second.ipcStatus=0;
-		}
+		setIpcStatus();
 	}
 
 }
@@ -1602,4 +1597,92 @@ LRESULT CPlcTextDlg::OnPtzOperation(WPARAM wParam,LPARAM lParam)
 	ptzConfig = (PtzTestParam*)wParam;
 	LoadInstance::Instance()->ptz_operation_test(ptzConfig->nGroup,ptzConfig->nIndex,ptzConfig->cmdIndex,ptzConfig->type);
 	return 0;
+}
+
+void CPlcTextDlg::getIpcStatusAs300Sdk()
+{
+	if(as300LoginStatus==false)
+	{
+		as300ServerLogin();
+	}
+	else
+	{
+		checkIpcStatusAs300Sdk();
+	}
+
+}
+
+
+void CPlcTextDlg::as300ServerLogin()
+{
+	SDK_CUInit();
+
+	CString strServerIp,strDBAccount,strDBPassword,strDatabase;
+	CString cstrPath;
+	MStrToWStr(cstrPath, GetCurrentPath());
+	CIniFile iniFile(cstrPath+ _T("\\config\\")+_T("General.ini"));
+	int port=0;
+	iniFile.ReadString(_T("AS300SERVER"),_T("ServerIP"),strServerIp);
+	iniFile.ReadString(_T("AS300SERVER"),_T("UserName"),strDBAccount);
+	iniFile.ReadString(_T("AS300SERVER"),_T("Password"),strDBPassword);
+	iniFile.ReadInt(_T("AS300SERVER"),_T("Port"),port);
+	std::string m_strServerIp,m_strDBAccount,m_strDBPassword,m_strDatabase;
+	WStrToMStr(strServerIp, m_strServerIp);
+	WStrToMStr(strDBAccount,m_strDBAccount);
+	WStrToMStr(strDBPassword,m_strDBPassword);
+	long lRet = -1;
+	if(!as300LoginStatus)
+		lRet = SDK_CULogin((char*)m_strServerIp.c_str(),port,(char*)m_strDBAccount.c_str(),(char*)m_strDBPassword.c_str(), &m_as300_login_id,0);
+	if(lRet==0)
+		as300LoginStatus = true;
+	else
+		MessageBox(_T("AS300 Login error!"));
+}
+
+void CPlcTextDlg::as300ServerLogout()
+{
+	SDK_CULogout( m_as300_login_id);
+	SDK_CUClear();
+}
+
+void CPlcTextDlg::checkIpcStatusAs300Sdk()
+{
+	for(std::map<std::string,ipcInfo>::iterator ipcInfoIte=mIpcInfoMap.begin();ipcInfoIte!=mIpcInfoMap.end();ipcInfoIte++)
+	{
+		int nStatus = 0;
+		SDK_CUGetDeviceStatus(m_as300_login_id,(char*)ipcInfoIte->first.c_str(), nStatus);
+		if(nStatus==0)
+		{
+			ipcInfoIte->second.ipcStatus=0; //掉线
+		}
+		else if(nStatus==1)
+		{
+			ipcInfoIte->second.ipcStatus=2;//在线
+		}
+	}
+	setIpcStatus();
+}
+
+void CPlcTextDlg::setIpcStatus()
+{
+	for(std::map<std::string,ipcInfo>::iterator ipcInfoIte=mIpcInfoMap.begin();ipcInfoIte!=mIpcInfoMap.end();ipcInfoIte++)
+	{
+		int iState = ipcInfoIte->second.ipcStatus;
+		std::string sOnLine, sOffLine;
+		WStrToMStr(_CS("OnLine"), sOnLine);
+		WStrToMStr(_CS("OffLine"), sOffLine);
+		std::string sState = iState == 2 ? sOnLine : sOffLine;
+		char szlog[LOG_MAX_LEN] = {0};
+		_snprintf(szlog, LOG_MAX_LEN-1, "(%s, %s)", ipcInfoIte->second.ipcId.c_str(), sState.c_str());
+		wchar_t *p = UTF8ToUnicode(ipcInfoIte->second.ipcName.c_str());
+		CString strName(p);
+		CString strIdState(szlog);
+		CString csChlId(ipcInfoIte->second.ipcId.c_str());
+		free(p);
+		InsertTree(ipcInfoIte->second.group, iState, strIdState, strName, csChlId);
+		char ipcStateW[100]={0};
+		sprintf_s(ipcStateW,sizeof(ipcStateW)-1,"%d,%d,%d",ipcInfoIte->second.group,ipcInfoIte->second.index,iState); //group index status
+		LoadInstance::Instance()->set_ipc_state(ipcStateW);
+		ipcInfoIte->second.ipcStatus=0;
+	}
 }

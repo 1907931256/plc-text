@@ -1,0 +1,17 @@
+15:59:31 INFO: openSocket successful
+15:59:31 INFO: daveNewConnection: 61620144, Mpi=2, nrack=0, slot=2
+15:59:31 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+16:08:20 INFO: screen switch error: can not find data group:1,screen id:1
+16:08:21 INFO: screen switch error: can not find data group:1,screen id:2
+16:08:22 INFO: screen switch error: can not find data group:1,screen id:3
+16:08:28 INFO: screen switch error: can not find data group:1,screen id:4
+16:08:48 INFO: screen switch error: can not find data group:1,screen id:5
+16:08:49 INFO: screen switch error: can not find data group:1,screen id:6
+16:09:12 INFO: screen switch error: can not find data group:2,screen id:1
+16:09:14 INFO: screen switch error: can not find data group:2,screen id:2
+16:09:17 INFO: screen switch error: can not find data group:2,screen id:3
+16:09:17 INFO: screen switch error: can not find data group:2,screen id:4
+16:09:18 INFO: screen switch error: can not find data group:2,screen id:5
+16:09:18 INFO: screen switch error: can not find data group:2,screen id:6
+16:11:13 INFO: screen switch error: can not find data group:3,screen id:1
+16:11:21 INFO: screen switch error: can not find data group:3,screen id:2

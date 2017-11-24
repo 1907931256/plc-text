@@ -1,0 +1,195 @@
+10:35:57 INFO: audio server set success
+10:35:58 INFO: opc server ZPMC.OPCServer.2 connect success!
+10:35:58 INFO: opc server h|1Èã îþîþîþîþîþîþîþîþîþîþîþîþîþîþîþîþîþîþîþîþo	1ÃÅtšéˆD1 connect success!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.SPR20 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.SPR40 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.SPR45 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.SPR2020 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.SPR20 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.SPR40 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.SPR45 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.SPR2020 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode1 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode2 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode3 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode4 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode5 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode6 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode7 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode8 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTV_Mode9 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode1 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode2 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode3 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode4 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode5 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode6 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode7 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode8 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTV_Mode9 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode1 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode2 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode3 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode4 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode5 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode6 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode7 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode8 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTV_Mode9 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.ROS_SPR_20CMD failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.ROS_SPR_40CMD failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.ROS_SPR_45CMD failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.ROS_SPR_2020_FEET failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTVM1 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTVM2 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTVM4 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTVM3 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.CCTVM5 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTVM1 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTVM2 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTVM4 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTVM3 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.CCTVM5 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTVM1 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTVM2 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTVM4 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTVM3 failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.CCTVM5 failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG1.TPOS failured!
+10:35:58 INFO: add item LocalPLC_RMG.RMG2.TPOS failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.ROS_HPOS failured!
+10:35:58 INFO: add item RemotePLC.RCCS.RCS01.ArmgNumber failured!
+10:35:58 INFO: add item RemotePLC.RCCS.RCS02.ArmgNumber failured!
+10:35:58 INFO: add item RemotePLC.RCCS.RCS02.ArmgNumber failured!
+10:35:58 INFO: add item RemotePLC.RCCS.Communication.Audio1_OnOff failured!
+10:35:58 INFO: add item RemotePLC.RCCS.Communication.Audio2_OnOff failured!
+10:35:58 INFO: add item LocalPLC_STS.STS1.Audio_OnOff failured!
+10:36:03 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.2, port-33445
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:03 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.3, port-33445
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:04 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: wait HeartBeat timeout, tvwall_ip-10.60.1.4, port-33445
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS01.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber
+10:36:05 INFO: can not find ros set RemotePLC.RCCS.RCS02.ArmgNumber

@@ -1,0 +1,12 @@
+18:35:33 INFO: openSocket successful
+18:35:33 INFO: daveNewConnection: 17055664, Mpi=2, nrack=0, slot=2
+18:35:33 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+18:35:34 INFO: screen switch error: can not find data group:1,screen id:3 mode:0
+18:35:34 INFO: screen switch error: can not find data group:1,screen id:4
+18:35:34 INFO: screen switch error: can not find data group:1,screen id:5
+18:35:34 INFO: screen switch error: can not find data group:1,screen id:6
+18:36:18 PTZ: selectedByte-5; iMaskPtz-1; groupNum-1; ipcIndex-1; cmd-UP iPtzOld:0 iPtzNew:3 failure
+18:36:18 INFO: wait HeartBeat timeout, tvwall_ip-192.168.2.193, port-33445
+18:36:24 INFO: wait HeartBeat timeout, tvwall_ip-192.168.2.193, port-33445
+18:36:30 INFO: wait HeartBeat timeout, tvwall_ip-192.168.2.193, port-33445
+18:36:36 INFO: wait HeartBeat timeout, tvwall_ip-192.168.2.193, port-33445

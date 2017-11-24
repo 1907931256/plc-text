@@ -1,0 +1,57 @@
+15:58:01 INFO: openSocket successful
+15:58:01 INFO: daveNewConnection: 58666616, Mpi=2, nrack=0, slot=2
+15:58:01 INFO: connect plc success£¬ip: 127.0.0.1, port: 102
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:1
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:2
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:3
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:4
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:5
+15:58:02 INFO: screen switch error: can not find data group:1,screen id:6
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:1
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:2
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:3
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:4
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:5
+15:58:02 INFO: screen switch error: can not find data group:2,screen id:6
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:1
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:2
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:3
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:4
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:5
+15:58:02 INFO: screen switch error: can not find data group:3,screen id:6
+15:58:02 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.11, port-33445
+15:58:04 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.12, port-33445
+15:58:06 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.13, port-33445
+15:58:08 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.14, port-33445
+15:58:10 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.15, port-33445
+15:58:11 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.16, port-33445
+15:58:13 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.21, port-33445
+15:58:15 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.22, port-33445
+15:58:17 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.23, port-33445
+15:58:19 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.24, port-33445
+15:58:20 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.25, port-33445
+15:58:22 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.26, port-33445
+15:58:24 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.27, port-33445
+15:58:26 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.28, port-33445
+15:58:28 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.29, port-33445
+15:58:30 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.30, port-33445
+15:58:31 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.31, port-33445
+15:58:33 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.32, port-33445
+15:58:40 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.11, port-33445
+15:58:41 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.12, port-33445
+15:58:43 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.13, port-33445
+15:58:45 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.14, port-33445
+15:58:47 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.15, port-33445
+15:58:49 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.16, port-33445
+15:58:50 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.21, port-33445
+15:58:52 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.22, port-33445
+15:58:54 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.23, port-33445
+15:58:56 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.24, port-33445
+15:58:58 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.25, port-33445
+15:58:59 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.26, port-33445
+15:59:01 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.27, port-33445
+15:59:03 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.28, port-33445
+15:59:05 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.29, port-33445
+15:59:07 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.30, port-33445
+15:59:09 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.31, port-33445
+15:59:10 INFO: wait HeartBeat timeout, tvwall_ip-172.21.4.32, port-33445
